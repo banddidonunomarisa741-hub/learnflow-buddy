@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "learnflow-strategies": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["mcp/strategy-server.mjs"],
+      "runtime": {"type": "node", "version": "20"},
+      "timeout": 30000
+    }
+  }
+}

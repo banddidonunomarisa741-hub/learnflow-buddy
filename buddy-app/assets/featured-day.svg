@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="910" viewBox="0 0 1000 910" role="img" aria-label="LearnFlow 精选场景日间背景">
+<defs>
+  <radialGradient id="base-glow"><stop stop-color="#FFD07A" stop-opacity=".70"/><stop offset="1" stop-color="#FFD07A" stop-opacity="0"/></radialGradient>
+  <linearGradient id="overlay-left" x1="0" x2="1"><stop stop-color="#FFF8EF" stop-opacity=".94"/><stop offset=".48" stop-color="#FFF8EF" stop-opacity=".42"/><stop offset="1" stop-color="#FFF8EF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="overlay-top" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#FFF8EF" stop-opacity=".60"/><stop offset=".55" stop-color="#FFF8EF" stop-opacity="0"/></linearGradient>
+  <linearGradient id="overlay-bottom" x1="0" y1="1" x2="0" y2="0"><stop stop-color="#FFF8EF" stop-opacity=".86"/><stop offset=".35" stop-color="#FFF8EF" stop-opacity=".12"/><stop offset=".66" stop-color="#FFF8EF" stop-opacity="0"/></linearGradient>
+</defs>
+<g id="base-illustration">
+  <rect width="1000" height="910" fill="#FFF3E4"/>
+  <ellipse cx="767" cy="490" rx="490" ry="470" fill="url(#base-glow)"/>
+  <g fill="none" stroke="#EBD4AF" stroke-width="1.6">
+    <circle cx="748" cy="462" r="320"/><circle cx="748" cy="462" r="255" stroke-dasharray="4 13"/>
+    <path d="M454 712H936M502 742H950M568 771H922"/>
+    <path d="m563 228 13-19 22 2m286 460 22-3 14-15M471 508l-19 21 6 17"/>
+  </g>
+  <g transform="translate(590 300) rotate(9 158 158) scale(2.3)">
+<defs><linearGradient id="outer" x2="0" y2="1"><stop stop-color="#FF8844"/><stop offset="1" stop-color="#FFBB33"/></linearGradient><linearGradient id="inner" x2="0" y2="1"><stop stop-color="#FF9F22"/><stop offset="1" stop-color="#FFDD00"/></linearGradient></defs>
+<rect x="5" y="5" width="118" height="118" rx="30" fill="url(#outer)"/>
+<path d="M20 85 9 61Q7 56 15 56L40 58 70 39 80 18Q84 10 90 17L108 38 121 48 119 91Q119 109 101 118L49 123Q29 123 24 106Z" fill="#FFF8EF"/>
+<path d="M37 71 71 51Q94 39 103 57L118 83Q123 95 110 104L77 123 49 122 34 98Q25 82 37 71Z" fill="url(#inner)"/>
+<rect x="53" y="86" width="13" height="25" rx="6.5" transform="rotate(-28 59 98)" fill="#FFF"/>
+<rect x="86" y="68" width="13" height="25" rx="6.5" transform="rotate(-28 92 80)" fill="#FFF"/>
+</g>
+  <g fill="#FFFBF4" stroke="#DFAA61" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M461 584q65-23 127 13v111q-63-35-127-12Zm127 13q64-34 130-15v112q-65-16-130 14Z"/>
+    <path d="M475 708q52-17 111 11l7 0q51-26 111-14" fill="none"/>
+    <path d="M482 609q40-7 78 11m-78 13q40-7 78 11m-78 13q30-5 60 5m48-54q39-18 78-12m-78 36q39-18 78-12m-78 36q26-12 50-13" fill="none" opacity=".72"/>
+  </g>
+  <g transform="translate(770 685) rotate(-11)" fill="#FFFBF4" stroke="#DFAA61" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <rect width="141" height="25" rx="7"/><path d="M9 31h126q8 0 8 8v12H10q-9 0-9-10t8-10Z"/>
+    <path d="M21 10h99M21 41h105" opacity=".52"/>
+  </g>
+  <g fill="none" stroke="#DFAA61" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M818 224h82q12 0 12 12v49q0 12-12 12h-31l-15 15v-15h-36q-12 0-12-12v-49q0-12 12-12Z" fill="#FFFBF4"/>
+    <path d="m831 261 12 12 28-30M736 173v22m-11-11h22M928 571v18m-9-9h18"/>
+  </g>
+  <g fill="#DFAA61"><circle cx="470" cy="368" r="4"/><circle cx="929" cy="371" r="4"/><circle cx="659" cy="800" r="3"/><circle cx="537" cy="206" r="3"/></g>
+</g>
+<!-- Three separate overlay layers, matching the official Buddy scene-background structure. -->
+<rect id="overlay-layer-1" width="1000" height="910" fill="url(#overlay-left)"/>
+<rect id="overlay-layer-2" width="1000" height="910" fill="url(#overlay-top)"/>
+<rect id="overlay-layer-3" width="1000" height="910" fill="url(#overlay-bottom)"/>
+</svg>

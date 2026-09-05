@@ -1,0 +1,135 @@
+{
+  "date": "2026-09-05T16:49:38.545Z",
+  "url": "http://127.0.0.1:4173/",
+  "syntheticData": true,
+  "mockedModel": true,
+  "tests": [
+    {
+      "id": "01-confirmed-memory-context",
+      "status": "PASS",
+      "detail": {
+        "memories": 1,
+        "requestKeys": [
+          "messages",
+          "memories",
+          "strategies",
+          "preferences",
+          "scene"
+        ]
+      }
+    },
+    {
+      "id": "02-session-restoration",
+      "status": "PASS",
+      "detail": {
+        "savedSessions": 1
+      }
+    },
+    {
+      "id": "03-memory-off",
+      "status": "PASS",
+      "detail": {
+        "memories": []
+      }
+    },
+    {
+      "id": "04-request-race",
+      "status": "PASS",
+      "detail": {
+        "blocked": true,
+        "requestCards": [
+          "roots",
+          "plain"
+        ],
+        "usage": {
+          "roots": {
+            "actual": 50,
+            "estimated": 0
+          },
+          "plain": {
+            "actual": 50,
+            "estimated": 0
+          }
+        },
+        "savedScene": "exam"
+      }
+    },
+    {
+      "id": "05-memory-edit-preserves-fields",
+      "status": "PASS",
+      "detail": {
+        "chosen": {
+          "format": "自然段落",
+          "guidance": "直接讲清楚"
+        },
+        "scene": "exam",
+        "content": "QA_MEMORY_MARKER\n输出偏好：自然段落。引导：直接讲清楚。"
+      }
+    },
+    {
+      "id": "06-ten-minute-plan",
+      "status": "PASS",
+      "detail": {
+        "allocation": "2 + 6 + 2"
+      }
+    },
+    {
+      "id": "07-full-backup-roundtrip",
+      "status": "PASS",
+      "detail": {
+        "memories": 1,
+        "tasks": 1,
+        "rating": 4
+      }
+    },
+    {
+      "id": "08-invalid-backup-no-write",
+      "status": "PASS",
+      "detail": {
+        "toast": "恢复失败：不是受支持的学习流备份"
+      }
+    },
+    {
+      "id": "09-card-html-escaped",
+      "status": "PASS",
+      "detail": {
+        "payload": "img/onerror shown as text",
+        "autoEnabled": false
+      }
+    },
+    {
+      "id": "10-backup-id-attribute-escaped",
+      "status": "PASS",
+      "detail": {
+        "rejected": true,
+        "injected": false,
+        "toast": "恢复失败：策略字段无效"
+      }
+    },
+    {
+      "id": "11-complete-block-reload-idempotent",
+      "status": "PASS",
+      "detail": {
+        "blocks": 1
+      }
+    },
+    {
+      "id": "12-mobile-navigation",
+      "status": "PASS",
+      "detail": {
+        "opened": true,
+        "closed": true,
+        "overflow": false,
+        "viewport": 390
+      }
+    }
+  ],
+  "errors": [],
+  "browser": "152.0.7977.83",
+  "hashes": {
+    "public/app.js": "a735b3f798fb61744469a8624a5a9bf45894faece41e6df77fef07b1153becb4",
+    "public/data.js": "8c0fc8631a7aa2279471528fcb25a3f1257a7bf0df321b8d680b74ec03ae2625",
+    "public/styles.css": "e45892c00abc8cba23025f801e4092cf83dce3d3ab1eef7b4993c84328f01bfc",
+    "server/server.mjs": "b00c8de7e93ff60aa01e359002b7e4bf5980acf08d9fa67ce1ff1f1a600d6239"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "format": "learnflow-config-source/v1",
+  "status": "local-source-not-platform-import",
+  "notice": "这是 LearnFlow 的控制台配置源稿，不是腾讯公开导入 schema。需在控制台填入/映射真实资源 ID 后导出官方 JSON 并完成宿主预览与审核。",
+  "app": {
+    "name": "LearnFlow 学习流",
+    "description": "把有效学习方法变成可选择、可验证、可带走的策略卡，让自主学习者在应试、自学和项目学习中形成自己的学习流程。",
+    "avatar": "assets/app-icon-256.png",
+    "appId": null,
+    "clientId": null,
+    "oauthScopes": [],
+    "oauthCallbackUrl": null,
+    "trustedOrigins": []
+  },
+  "home": {
+    "slogan": "找到你的学法，让每一步都算数。",
+    "modes": [
+      {"id": "exam", "name": "应试突破", "systemPromptFile": "modes/exam.md", "skills": ["exam-evidence", "retrieval", "plain-tone"]},
+      {"id": "self", "name": "自主探索", "systemPromptFile": "modes/self.md", "skills": ["self-map", "socratic", "plain-tone"]},
+      {"id": "project", "name": "项目共创", "systemPromptFile": "modes/project.md", "skills": ["pbl-coach", "formative-evidence", "plain-tone"]}
+    ],
+    "capsules": [
+      {"id": "vocabulary", "title": "把单词串成词族", "prompt": "我想按词根词缀记单词，请先用一个小词族带我练，再让我回忆。", "mode": "exam", "skills": ["root-affix", "retrieval"], "expert": "learnflow-exam-coach"},
+      {"id": "question-review", "title": "从原文证据复盘一道题", "prompt": "请根据我提供的题目和作答，定位证据、分析干扰项，最后给一题迁移练习。", "mode": "exam", "skills": ["exam-evidence"], "expert": "learnflow-exam-coach"},
+      {"id": "concept", "title": "讲懂一个卡住的概念", "prompt": "我想把一个概念真正讲明白，请先看我的解释，再找一处关键缺口。", "mode": "self", "skills": ["feynman", "socratic"], "expert": "learnflow-learning-guide"},
+      {"id": "roadmap", "title": "把目标拆成第一步", "prompt": "请把我的学习目标拆成先修关系和可完成的小成果，先安排今天的一步。", "mode": "self", "skills": ["self-map"], "expert": "learnflow-learning-guide"},
+      {"id": "project-map", "title": "从选题到可展示成果", "prompt": "请帮我把项目想法变成驱动问题、角色分工和里程碑，用产物说明完成标准。", "mode": "project", "skills": ["pbl-coach"], "expert": "learnflow-project-coach"},
+      {"id": "teacher-review", "title": "给老师一份过程证据", "prompt": "请基于我主动提供的学习产物整理过程性评价草稿，列出证据和待核验项。", "mode": "project", "skills": ["formative-evidence"], "expert": "learnflow-teaching-partner"},
+      {"id": "personal-strategy", "title": "把好用的方法留下", "prompt": "请把我明确选择的学习方法整理成可编辑的专属策略草稿，确认后再保存。", "mode": "self", "skills": ["memory-distill"], "expert": "learnflow-learning-guide"}
+    ],
+    "builtInConnectors": []
+  },
+  "marketplace": {
+    "skillsSource": "skills/",
+    "expertsSource": "experts.source.json",
+    "featuredScenes": {
+      "enabled": true,
+      "backgrounds": {"day": "assets/featured-day.png", "night": "assets/featured-night.png"},
+      "editableSources": {"day": "assets/featured-day.svg", "night": "assets/featured-night.svg"},
+      "width": 1000,
+      "height": 910,
+      "gradientOverlayCount": 3,
+      "expertReferences": ["learnflow-learning-guide", "learnflow-exam-coach", "learnflow-project-coach", "learnflow-teaching-partner"],
+      "consoleMapping": "在市场配置的专家页精选场景分别上传日间/夜间PNG；本字段为工程源稿，平台资源ID与具体字段以控制台导出为准。"
+    },
+    "connectors": [{"source": "learnflow-learning-strategies", "status": "local-stdio-tested-not-listed", "autoEnable": false}],
+    "ecosystemCandidates": [
+      {"name": "腾讯文档", "purpose": "经授权导出和分享学习产物", "status": "not-connected"},
+      {"name": "QQ / 微信触达", "purpose": "用户主动订阅的学习提醒或远程任务", "status": "requires-official-channel-authorization"},
+      {"name": "腾讯会议", "purpose": "经授权读取课堂纪要", "status": "requires-connector-and-meeting-access"}
+    ]
+  },
+  "other": {
+    "placeholder": {"zh": "带着一个问题、一份资料，或一个还没开始的目标来。", "en": "Bring a question, a resource, or a learning goal."},
+    "modelSelection": {"policy": "inherit-platform-pool-until-console-verified", "modelIds": [], "defaultModelId": null},
+    "skipFirstBindSuggested": true,
+    "memoryPolicy": "opt-in-confirm-before-persist-revocable"
+  },
+  "preview": {"publicWebsitePath": "../public/", "platformPreviewUrl": null, "platformExportFile": null, "hostPreviewVerified": false},
+  "requiredBeforePublish": ["确认主体权限与教育服务类目", "填写真实对外联系邮箱", "在平台上传资源并回填真实资源 ID", "确认品牌授权和图标原创/许可", "根据实际功能配置最小 OAuth scope 与合法回调域名", "导出官方 JSON 并在指定客户端预览", "创建审核与配置审核通过"]
+}

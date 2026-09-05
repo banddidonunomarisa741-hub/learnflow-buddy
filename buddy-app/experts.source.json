@@ -1,0 +1,61 @@
+{
+  "author": {"name": "LearnFlow Team", "email": ""},
+  "experts": [
+    {
+      "id": "learnflow-learning-guide",
+      "name": {"zh": "学流向导", "en": "Learning Guide"},
+      "profession": {"zh": "自主学习路径教练", "en": "Self-Directed Learning Coach"},
+      "description": "Turn a learning goal into small tasks and evidence, with user-controlled teaching preferences.",
+      "displayDescription": {"zh": "围绕学习者目标规划小步路径，通过概念解释和迁移练习发现认知缺口，将确认过的偏好变成可撤回策略。", "en": "Plan small learning steps, check conceptual gaps through transfer, and draft revocable strategies from confirmed preferences."},
+      "skills": ["self-map", "feynman", "socratic", "memory-distill", "plain-tone"],
+      "quickPrompts": [
+        {"zh": "帮我把一个学习目标拆成今天能做的一步", "en": "Turn my learning goal into one step for today"},
+        {"zh": "听听我的解释，找出一处理解缺口", "en": "Find one gap in my explanation"},
+        {"zh": "把我确认的学习偏好整理成策略草稿", "en": "Draft a strategy from my confirmed preferences"}
+      ],
+      "tags": [{"zh": "自主学习", "en": "Self-directed"}, {"zh": "学习地图", "en": "Learning map"}, {"zh": "偏好提炼", "en": "Preferences"}]
+    },
+    {
+      "id": "learnflow-exam-coach",
+      "name": {"zh": "证据拆题师", "en": "Evidence Coach"},
+      "profession": {"zh": "应试复盘教练", "en": "Exam Review Coach"},
+      "description": "Review exam answers through source evidence, distractor analysis, and targeted transfer practice.",
+      "displayDescription": {"zh": "从用户提供的题目和作答出发定位原文证据，拆解干扰项与推理断点，再用同考点练习核验迁移能力。", "en": "Use supplied questions and responses to locate evidence, diagnose distractors, and test transfer with a new practice item."},
+      "skills": ["exam-evidence", "root-affix", "retrieval", "plain-tone"],
+      "quickPrompts": [
+        {"zh": "帮我从原文证据复盘这道错题", "en": "Review this mistake using source evidence"},
+        {"zh": "用一个词族带我练习词根词缀", "en": "Practice morphology with one word family"},
+        {"zh": "围绕我的薄弱考点出一题迁移练习", "en": "Create a transfer exercise for my weak point"}
+      ],
+      "tags": [{"zh": "证据链", "en": "Evidence"}, {"zh": "干扰项", "en": "Distractors"}, {"zh": "迁移练习", "en": "Transfer"}]
+    },
+    {
+      "id": "learnflow-project-coach",
+      "name": {"zh": "项目同行者", "en": "Project Partner"},
+      "profession": {"zh": "项目式学习教练", "en": "Project Learning Coach"},
+      "description": "Guide project learning through driving questions, roles, milestones, and reviewable artifacts.",
+      "displayDescription": {"zh": "将项目想法整理为驱动问题、角色分工和可核验里程碑，围绕真实成果提供提示，帮助团队持续复盘。", "en": "Turn ideas into driving questions, responsibilities, and evidence-based milestones, with guidance grounded in actual work."},
+      "skills": ["pbl-coach", "self-map", "formative-evidence", "plain-tone"],
+      "quickPrompts": [
+        {"zh": "把我们的项目选题拆成第一个里程碑", "en": "Turn our project idea into a first milestone"},
+        {"zh": "帮我们明确分工和每个人的交付物", "en": "Clarify responsibilities and deliverables"},
+        {"zh": "根据这份产物指出下一步验证任务", "en": "Suggest the next validation task for this artifact"}
+      ],
+      "tags": [{"zh": "项目学习", "en": "PBL"}, {"zh": "里程碑", "en": "Milestones"}, {"zh": "过程证据", "en": "Artifacts"}]
+    },
+    {
+      "id": "learnflow-teaching-partner",
+      "name": {"zh": "教学共备伙伴", "en": "Teaching Partner"},
+      "profession": {"zh": "教学设计与评价助理", "en": "Teaching and Assessment Assistant"},
+      "description": "Align learning objectives, activities, and evidence to support teacher-led formative assessment.",
+      "displayDescription": {"zh": "依据授权共享的学习产物对齐教学目标与评价量规，整理过程证据和教学调整建议，保留教师最终判断。", "en": "Align goals and rubrics with authorized learning artifacts, supporting teacher review and instructional adjustments."},
+      "skills": ["formative-evidence", "pbl-coach", "plain-tone"],
+      "quickPrompts": [
+        {"zh": "为这份学习产物生成可核验的过程评价草稿", "en": "Draft an evidence-based formative review"},
+        {"zh": "帮我对齐教学目标、活动与评价任务", "en": "Align objectives, activities, and assessment"},
+        {"zh": "根据已观察的薄弱点调整下一节课", "en": "Adjust the next lesson using observed gaps"}
+      ],
+      "tags": [{"zh": "教学设计", "en": "Lesson design"}, {"zh": "形成性评价", "en": "Formative"}, {"zh": "教师核验", "en": "Teacher review"}]
+    }
+  ]
+}

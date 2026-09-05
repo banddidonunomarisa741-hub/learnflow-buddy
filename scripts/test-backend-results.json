@@ -1,0 +1,13 @@
+{
+  "verifiedAt": "2026-09-06",
+  "command": "node scripts/test-backend.mjs",
+  "passed": 30,
+  "runtime": "Node.js 24.19.0 / Windows",
+  "scope": ["HTTP interface contract", "missing model configuration", "origin and host validation", "static path isolation", "bounded input", "preference validation", "memory opt-out and opt-in", "reported and unavailable token usage", "safe upstream errors", "MCP initialization and three tools"],
+  "fixtureOnly": true,
+  "liveTencentTest": false,
+  "liveModelTest": false,
+  "workbuddyHostImportTest": false,
+  "portableSkillValidation": {"validator": "skill-creator/scripts/quick_validate.py", "passed": 10},
+  "remaining": ["Tencent OAuth and application review", "WorkBuddy host import and relative working directory behavior", "macOS and Linux runtime validation", "real learner evaluation"]
+}

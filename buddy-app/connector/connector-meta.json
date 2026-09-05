@@ -1,0 +1,14 @@
+{
+  "name": "LearnFlow 学习策略",
+  "name_zh": "LearnFlow 学习策略",
+  "name_en": "LearnFlow Strategies",
+  "description": "Discover bundled learning methods and create editable personal strategy drafts, without reading private files.",
+  "description_zh": "检索随包学习策略，生成可编辑的个人策略草稿。仅访问安装包内容，不读取私人文件，不自动保存记忆。",
+  "description_en": "Find bundled strategies and draft personal learning methods. Reads only this package and never persists memory.",
+  "source": "learnflow-learning-strategies",
+  "type": "mcp",
+  "version": "0.1.0",
+  "minWorkbuddyVersion": "5.0.0",
+  "examples_zh": ["有哪些适合英语词汇复习的方法？", "根据我确认的偏好生成词根词缀策略草稿"],
+  "examples_en": ["List strategies for vocabulary review.", "Draft a morphology strategy from my stated preferences."]
+}
