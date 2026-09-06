@@ -2,9 +2,17 @@
 
 需要 Node.js 20+，没有 npm 依赖。仓库根目录执行 `node server/server.mjs`，打开 http://127.0.0.1:4173。Windows 也可运行 `powershell -ExecutionPolicy Bypass -File scripts/start-local.ps1`。
 
-服务仅监听 127.0.0.1，只公开 public/。不读取桌面登录态、浏览器配置、工作目录以外的文件，不保存对话，不记录请求正文或密钥。每个浏览器 Origin 有自己的 localStorage；换域名、端口或清除站点数据都可能导致看不到原有数据，请先导出。
+服务仅监听 127.0.0.1，只公开 public/。适配器不提取桌面登录密钥或浏览器配置；仅检测安装元数据，CLI 自己处理正常认证，不保存对话，不记录请求正文或密钥。每个浏览器 Origin 有自己的 localStorage；换域名、端口或清除站点数据都可能导致看不到原有数据，请先导出。
 
-## 两种真实接入
+## 点击连接（新增）
+
+线上页面点击“连接学习助手”，下载 ZIP，解压并运行“安装连接助手.cmd”。安装到当前用户 LocalAppData/ LearnFlowConnector，注册 learnflow://connect；无需管理员权限。之后点击打开按钮进入本机页面，在本机确认内容发送范围。学习记录按网站地址隔离，请通过导出/恢复备份迁移。
+
+本机页面自动检测 WorkBuddy 附带的公开 CodeBuddy CLI；选择并同意后使用 `-p --tools "" --strict-mcp-config --setting-sources "" --no-session-persistence` 进行文本推理。内容通过 stdin 传递，无 shell 拼接。该入口经过当前机器 WorkBuddy 5.4.7 实测，但不是 LearnBuddy 原生 API，也不保证其他安装版本支持。CLI 通过自身认证调用模型，适配器不读取或复制密钥。可能使用账号额度；服务商自身的数据保留政策仍适用。
+
+也可在表单填写兼容 API 或正式 OAuth 访问令牌，不必编辑环境变量。配置仅保留在服务内存，断开清除；程序重启需重新同意。关闭页面不等于停止本机服务。服务保留严格同源限制，公网网页不能直接读取本机连接配置。
+
+## 其他正式接口
 
 默认不连接任何模型：`GET /api/health` 的 configured 为 false，`POST /api/chat` 返回 503/MODEL_NOT_CONFIGURED。页面预设对话不是模型回答。
 
@@ -13,7 +21,7 @@
 
 WorkBuddy 消息接口是共享宿主会话，公开接口没有本适配器需要的任务隔离、完成态及 token 消耗字段。适配器仅序列化自身请求、返回收到的增量文字；不保证外部并行消息的归属或整个任务已完成。首次收到文字返回 received；30 秒无文字返回 202/pending；宿主要求确认返回 requires_action。应到 WorkBuddy 检查后续结果，不自动代答审批，不重试可能已受理的消息。
 
-静态 Netlify / GitHub Pages 网站不运行本后端，保持预设演示。使用本地完整版本时，前后端由同一 loopback 服务提供。不要把 API 密钥放入 HTML、localStorage、URL 或公开仓库。不要为了静态网页方便而放宽本机 API 的 Origin 校验。
+静态 Netlify / GitHub Pages 网站不运行本后端，可通过连接向导安装并打开本机页面。使用本地完整版本时，前后端由同一 loopback 服务提供。不要把 API 密钥放入 HTML、localStorage、URL 或公开仓库。不要为了静态网页方便而放宽本机 API 的 Origin 校验。
 
 ## 前后端契约
 

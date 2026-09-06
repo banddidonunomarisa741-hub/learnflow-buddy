@@ -1,4 +1,7 @@
 import http from 'node:http';
+import {discoverCLI, cliChat} from './local-cli.mjs';
+const LOCAL_CLI = await discoverCLI();
+let cliBusy = false;
 import { readFile, stat } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -6,12 +9,12 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const PUBLIC = path.join(ROOT, 'public');
 const PORT = Number(process.env.LEARNFLOW_PORT || 4173);
-const PROVIDER = process.env.LEARNFLOW_PROVIDER || 'unconfigured';
-const BASE = process.env.LEARNFLOW_API_BASE || '';
-const MODEL = process.env.LEARNFLOW_MODEL || '';
-const KEY = process.env.LEARNFLOW_API_KEY || '';
-const WB_TOKEN = process.env.LEARNFLOW_WORKBUDDY_ACCESS_TOKEN || '';
-const WB_ENABLED = process.env.LEARNFLOW_WORKBUDDY_ENABLE_AGENT === 'true';
+let PROVIDER = process.env.LEARNFLOW_PROVIDER || 'unconfigured';
+let BASE = process.env.LEARNFLOW_API_BASE || '';
+let MODEL = process.env.LEARNFLOW_MODEL || '';
+let KEY = process.env.LEARNFLOW_API_KEY || '';
+let WB_TOKEN = process.env.LEARNFLOW_WORKBUDDY_ACCESS_TOKEN || '';
+let WB_ENABLED = process.env.LEARNFLOW_WORKBUDDY_ENABLE_AGENT === 'true';
 const WB_BASE = 'https://www.workbuddy.cn/openapi/v2';
 const MIME = { '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.jpg': 'image/jpeg', '.woff2': 'font/woff2', '.ico': 'image/x-icon', '.md': 'text/plain; charset=utf-8', '.zip': 'application/zip', '.pdf': 'application/pdf' };
 const UNAVAILABLE = { total_tokens: null, prompt_tokens: null, completion_tokens: null, source: 'unavailable' };
@@ -21,6 +24,7 @@ class APIError extends Error { constructor(status, code, message) { super(messag
 const fail = (status, code, message) => { throw new APIError(status, code, message); };
 
 function configured() {
+  if (PROVIDER === 'local-codebuddy') return Boolean(LOCAL_CLI);
   if (PROVIDER === 'openai-compatible') {
     try { const u = new URL(BASE); return Boolean(MODEL && (u.protocol === 'https:' || (u.protocol === 'http:' && ['localhost', '127.0.0.1', '[::1]'].includes(u.hostname))) && !u.username && !u.password && !u.search && !u.hash); } catch { return false; }
   }
@@ -115,7 +119,7 @@ async function compatibleChat(chat) {
   return { status: 'completed', reply, usage, provider: 'openai-compatible', model: typeof data.model === 'string' ? data.model : MODEL };
 }
 async function workbuddyChat(chat) {
-  if (workbuddyBusy) fail(409, 'WORKBUDDY_BUSY', '当前本地助理已有一个 LearnFlow 请求，请等待它返回。');
+  if (workbuddyBusy || cliBusy) fail(409, 'WORKBUDDY_BUSY', '当前本地助理已有一个 LearnFlow 请求，请等待它返回。');
   workbuddyBusy = true;
   try {
     const headers = { Authorization: `Bearer ${WB_TOKEN}`, 'Content-Type': 'application/json', Accept: 'application/json' };
@@ -153,11 +157,29 @@ const server = http.createServer(async (req, res) => {
   try {
     validateBrowser(req);
     const pathname = new URL(req.url, `http://127.0.0.1:${PORT}`).pathname;
-    if (pathname === '/api/health' && req.method === 'GET') return json(res, 200, { ok: true, service: 'LearnFlow local adapter', provider: PROVIDER, configured: configured(), model: PROVIDER === 'openai-compatible' ? MODEL || null : null, mode: configured() ? 'live-configured-unverified' : 'demo', storesConversations: false, note: configured() ? '已配置不代表已通过真实服务联调。' : '未配置合法模型接口；网页可使用明确标注的预设演示。' });
+    if (pathname === '/api/connection' && req.method === 'POST') {
+      const data = await body(req);
+      if (workbuddyBusy || cliBusy) fail(409, 'BUSY', '请等待当前任务结束后再修改连接。');
+      if (data?.disconnect === true) { PROVIDER = 'unconfigured'; BASE = MODEL = KEY = WB_TOKEN = ''; WB_ENABLED = false; return json(res, 200, {ok:true, configured:false}); }
+      if (data?.consent !== true) fail(400, 'CONSENT_REQUIRED', '请先确认本轮对话、策略与已确认记忆的发送范围。');
+      if (!['local-codebuddy','openai-compatible','workbuddy-localassistant'].includes(data.provider)) fail(400, 'INVALID_PROVIDER', '请选择支持的接口类型。');
+      for (const k of ['base','model','key','token']) if (data[k] !== undefined && (typeof data[k] !== 'string' || data[k].length > 8192 || /[\r\n]/.test(data[k]))) fail(400, 'INVALID_CONFIG', '接口配置格式错误。');
+      if (data.provider === 'openai-compatible') {
+        let u; try { u = new URL(data.base); } catch { fail(400, 'INVALID_BASE', '请填写完整接口地址。'); }
+        if (!(u.protocol === 'https:' || (u.protocol === 'http:' && ['localhost','127.0.0.1','[::1]'].includes(u.hostname))) || u.username || u.password || u.search || u.hash || !data.model?.trim()) fail(400, 'INVALID_CONFIG', '接口需使用 HTTPS（本机可 HTTP），并填写模型名。');
+      } else if (data.provider === 'local-codebuddy') { if (!LOCAL_CLI) fail(400, 'CLI_UNAVAILABLE', '未检测到可用的本机命令行入口。'); } else if (!data.token?.trim()) fail(400, 'TOKEN_REQUIRED', '需要通过官方 OAuth 获得的访问令牌，安装客户端不能替代此授权。');
+      PROVIDER = data.provider; BASE = (data.base || '').replace(/\/$/, ''); MODEL = data.model || ''; KEY = data.key || ''; WB_TOKEN = data.token || ''; WB_ENABLED = PROVIDER === 'workbuddy-localassistant';
+      return json(res, 200, {ok:true, configured:configured(), verified:false, provider:PROVIDER});
+    }
+    if (pathname === '/api/health' && req.method === 'GET') return json(res, 200, { ok: true, service: 'LearnFlow local adapter', provider: PROVIDER, localCLIAvailable: Boolean(LOCAL_CLI), configured: configured(), model: PROVIDER === 'openai-compatible' ? MODEL || null : null, mode: configured() ? 'live-configured-unverified' : 'demo', storesConversations: false, note: configured() ? '已配置不代表已通过真实服务联调。' : '未配置合法模型接口；网页可使用明确标注的预设演示。' });
     if (pathname === '/api/chat' && req.method === 'POST') {
       const chat = validateChat(await body(req));
       if (!configured()) fail(503, 'MODEL_NOT_CONFIGURED', '尚未配置合法模型接口。本地与静态网页可使用预设演示；接入说明见 server/README.md。');
-      const result = PROVIDER === 'openai-compatible' ? await compatibleChat(chat) : await workbuddyChat(chat);
+      let result;
+      if (PROVIDER === 'local-codebuddy') {
+        if(cliBusy) fail(409, 'BUSY', '本机模型正在回复，请等待当前任务结束。');
+        cliBusy=true; try { result=await cliChat(LOCAL_CLI, providerMessages(chat)); } catch(e) { fail(502, 'LOCAL_CLI_FAILED', e.message); } finally { cliBusy=false; }
+      } else result = PROVIDER === 'openai-compatible' ? await compatibleChat(chat) : await workbuddyChat(chat);
       return json(res, ['pending', 'requires_action'].includes(result.status) ? 202 : 200, result);
     }
     if (pathname.startsWith('/api/')) fail(404, 'API_NOT_FOUND', '接口不存在或请求方法不受支持。');
