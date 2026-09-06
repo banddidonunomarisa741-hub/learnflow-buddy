@@ -33,13 +33,13 @@ def footer(c,d):
  if d.page>1:c.drawString(58,813,TITLE+' · 项目解决方案');c.drawRightString(537,30,str(d.page))
  c.restoreState()
 dest=OUT/'LearnFlow学习流动-项目解决方案.pdf'
-doc=Document(str(dest),pagesize=A4,leftMargin=58,rightMargin=58,topMargin=58,bottomMargin=48,title=TITLE+'——'+SUB,author=TITLE+'学生团队')
+doc=Document(str(dest),pagesize=A4,leftMargin=58,rightMargin=58,topMargin=58,bottomMargin=48,title=TITLE,author=TITLE+'学生团队')
 doc.addPageTemplates(PageTemplate(id='main',frames=[Frame(58,48,479,736,id='body',leftPadding=0,rightPadding=0,topPadding=0,bottomPadding=0)],onPage=footer))
-story=[Spacer(1,32),para(TITLE,'cover'),para('——'+SUB,'subtitle'),para('项目解决方案','h1'),Spacer(1,15)]
+story=[Spacer(1,32),para(TITLE,'cover'),para('自主学习支持平台','subtitle'),para('项目解决方案','h1'),Spacer(1,15)]
 rows=[['参赛方向','中国国际大学生创新大赛 · 产业赛道'],['命题企业','腾讯科技（深圳）有限公司'],['申报单位','中国地质大学（北京）独立学生团队'],['项目阶段','已运行原型；正式平台应用身份尚待审核'],['文档版本',DATA['version']]]
 t=Table([[para(a,'small'),para(b,'small')] for a,b in rows],colWidths=[88,391],hAlign='LEFT');t.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'TOP'),('LINEBELOW',(0,0),(-1,-1),.3,colors.HexColor('#cccccc')),('TOPPADDING',(0,0),(-1,-1),9),('BOTTOMPADDING',(0,0),(-1,-1),9)]));story += [t,Spacer(1,25),para('摘要','h2'),para('本方案以学习者为中心，将可进化的学习策略、逐题学习路线、对话后的可选择行动、经确认的学习块与可再次打开的资料组合成连续的自主学习支持过程。项目以大学生可触达的真实学习任务为初期验证对象，开源发布前端与策略组件，并面向腾讯 Buddy 生态准备应用材料。'),para('本版区分已实现能力、单机联调结果和后续计划。已跑通的本机 CodeBuddy 通道不等于 LearnBuddy 原生 API；正式 OAuth 与 Buddy 应用上架仍以平台审核和真实联调为准。使用量不代表学习效果，所有效果主张均须另行验证。'),PageBreak(),para('目录','cover')]
 toc=TableOfContents();toc.levelStyles=[ParagraphStyle('toc',fontName='Body',fontSize=10.3,leading=17,spaceBefore=3,wordWrap='CJK')];story += [toc,PageBreak()]
-md=['# '+TITLE+'——'+SUB,'','## 项目解决方案','']
+md=['# '+TITLE,'','## 项目解决方案','',SUB,'']
 for n,p in enumerate(DATA['pages'][1:],1):
  title=p['title'].replace('\n',' ');story.append(para(f'{n}　{title}','h1'));story.append(para(p['lede']));md += ['## '+str(n)+' '+title,'',p['lede'],'']
  for j,s in enumerate(p['sections'],1):

@@ -11,7 +11,7 @@ const brand = path.join(root,'output/brand');fs.mkdirSync(brand,{recursive:true}
 const cat = path.join(brand,'learnflow-logo.png');
 const C={ink:'1E2936',muted:'657184',orange:'FF8844',gold:'FFBB33',cream:'FFF8EF',white:'FFFFFF',line:'E8E0D7',panel:'F5F6F8'};
 const pptx = new pptxgen();
-pptx.layout='LAYOUT_WIDE';pptx.author='LearnFlow学习流动学生团队';pptx.subject='本地原型与 Buddy 应用配置材料';pptx.title='LearnFlow学习流动——基于可进化学习策略与腾讯 Buddy 生态的自主学习支持平台';pptx.company='独立学生团队';pptx.lang='zh-CN';
+pptx.layout='LAYOUT_WIDE';pptx.author='LearnFlow学习流动学生团队';pptx.subject='本地原型与 Buddy 应用配置材料';pptx.title='LearnFlow学习流动';pptx.company='独立学生团队';pptx.lang='zh-CN';
 pptx.theme={headFontFace:'Microsoft YaHei',bodyFontFace:'Microsoft YaHei',lang:'zh-CN'};
 function text(s,t,x,y,w,h,fs=20,color=C.ink,bold=false,opts={}){s.addText(t,{x,y,w,h,fontFace:'Microsoft YaHei',fontSize:fs,color,bold,margin:0,breakLine:false,vertAlign:'mid',fit:'shrink',...opts});}
 function rect(s,x,y,w,h,fill,rad=true,line=fill){s.addShape(rad?pptx.ShapeType.roundRect:pptx.ShapeType.rect,{x,y,w,h,rectRadius:.12,radius:.12,line:{color:line,width:.6},fill:{color:fill}});}
