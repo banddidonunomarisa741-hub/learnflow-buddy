@@ -1,4 +1,4 @@
-$ErrorActionPreference = 'Stop'
+﻿$ErrorActionPreference = 'Stop'
 $source = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $target = Join-Path $env:LOCALAPPDATA 'LearnFlowConnector'
 $node = (Get-Command node -ErrorAction SilentlyContinue).Source

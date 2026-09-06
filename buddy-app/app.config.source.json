@@ -3,7 +3,7 @@
   "status": "local-source-not-platform-import",
   "notice": "这是 LearnFlow 的控制台配置源稿，不是腾讯公开导入 schema。需在控制台填入/映射真实资源 ID 后导出官方 JSON 并完成宿主预览与审核。",
   "app": {
-    "name": "LearnFlow 学习流",
+    "name": "LearnFlow学习流动",
     "description": "把有效学习方法变成可选择、可验证、可带走的策略卡，让自主学习者在应试、自学和项目学习中形成自己的学习流程。",
     "avatar": "assets/app-icon-256.png",
     "appId": null,

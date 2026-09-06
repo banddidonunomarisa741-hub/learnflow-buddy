@@ -1,4 +1,4 @@
-param([int]$Port = 4173)
+﻿param([int]$Port = 4173)
 $ErrorActionPreference = 'Stop'
 $learnflowRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $learnflowNode = (Get-Command node -ErrorAction SilentlyContinue).Source

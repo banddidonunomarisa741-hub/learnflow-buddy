@@ -8,8 +8,8 @@
 | GitHub 源码 | 已公开推送 | https://github.com/banddidonunomarisa741-hub/learnflow-buddy |
 | GitHub Pages | 工作流 success，真实浏览器打开成功 | https://banddidonunomarisa741-hub.github.io/learnflow-buddy/ |
 | Netlify 静态站 | 部署 ready，真实浏览器打开成功 | https://learnflow-buddy-2026.netlify.app |
-| 项目策划书 | 20 页 PDF，已逐页渲染检查 | `output/pdf/LearnFlow-项目策划书.pdf` |
-| 答辩幻灯片 | 16 页可编辑 PPTX、对应 PDF、演讲备注 | `output/slides/LearnFlow-答辩演示.pptx` |
+| 项目解决方案 | 17 页 PDF，已逐页渲染检查 | `output/pdf/LearnFlow学习流动-项目解决方案.pdf` |
+| 答辩幻灯片 | 16 页可编辑 PPTX、对应 PDF、演讲备注 | `output/slides/LearnFlow学习流动-答辩演示.pptx` |
 | 评委追问 | 12 道校内 + 14 道腾讯企业问题及回答依据 | `docs/JUDGES-QA.md` |
 | Buddy 开发交付包 | 已生成 10 策略、4 专家候选、MCP、应用配置源稿与规范视觉 | `buddy-app/`；打包版本在完整交付 ZIP |
 | 腾讯正式应用 | 尚未上架 | 主体/账户权限、真实联系方式、资源 ID、OAuth、宿主验证及平台审核未完成 |
@@ -22,7 +22,7 @@ GitHub Pages 首次构建发生在新仓库 Pages 未启用时，因此失败；
 - 12 项定向浏览器验证通过；Chrome 桌面与 390 px 手机视口，0 页面脚本错误。
 - 30 项本地后端/MCP 测试通过。真实用量缺失时保持未知，不使用虚构计费数据。
 - 10 个 Skill 通过相关结构校验；Buddy 发布校验正确列出尚未满足的外部前提。
-- 20 页策划 PDF 与 16 页答辩 PDF 全部完成渲染检查；PPTX 文本仍可编辑。
+- 17 页策划 PDF 与 16 页答辩 PDF 全部完成渲染检查；PPTX 文本仍可编辑。
 - 两个线上站点已打开并检查正确标题、页面内容和策略入口。
 
 这些是工程验收，不是教学效果实验、腾讯官方认证或所有设备的兼容保证。

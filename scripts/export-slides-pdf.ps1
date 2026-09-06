@@ -1,7 +1,7 @@
-$ErrorActionPreference = 'Stop'
+﻿$ErrorActionPreference = 'Stop'
 $documentRoot = Split-Path -Parent $PSScriptRoot
-$pptxPath = Join-Path $documentRoot 'output/slides/LearnFlow-答辩演示.pptx'
-$pdfPath = Join-Path $documentRoot 'output/pdf/LearnFlow-答辩演示.pdf'
+$pptxPath = Join-Path $documentRoot 'output/slides/LearnFlow学习流动-答辩演示.pptx'
+$pdfPath = Join-Path $documentRoot 'output/pdf/LearnFlow学习流动-答辩演示.pdf'
 $powerpoint = New-Object -ComObject PowerPoint.Application
 $presentation = $null
 try {

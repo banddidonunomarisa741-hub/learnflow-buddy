@@ -5,9 +5,9 @@ import xml.etree.ElementTree as ET
 from pypdf import PdfReader
 ROOT=Path(__file__).resolve().parents[1]
 PDF=ROOT/'output/pdf'
-slides=ROOT/'output/slides/LearnFlow-答辩演示.pptx'
+slides=ROOT/'output/slides/LearnFlow学习流动-答辩演示.pptx'
 checks=[]
-for name,count in [('LearnFlow-项目策划书.pdf',20),('LearnFlow-答辩演示.pdf',16)]:
+for name,count in [('LearnFlow学习流动-项目解决方案.pdf',17),('LearnFlow学习流动-答辩演示.pdf',16)]:
     file=PDF/name
     reader=PdfReader(str(file))
     texts=[p.extract_text() or '' for p in reader.pages]
@@ -25,6 +25,6 @@ with zipfile.ZipFile(slides) as z:
     assert len(pagefiles)==16 and len(notefiles)==16
     assert texts>150,'Slides must include editable text, not flattened screenshots.'
     checks.append({'file':slides.name,'slides':len(pagefiles),'speaker_note_pages':len(notefiles),'editable_text_runs':texts,'bytes':slides.stat().st_size,'sha256':hashlib.sha256(slides.read_bytes()).hexdigest()})
-result={'status':'pass','checks':checks,'visual_review':'All 20 proposal pages and 16 slide pages rendered with Poppler; contact sheets and selected full-size pages inspected.'}
+result={'status':'pass','checks':checks,'visual_review':'17 solution pages and 16 slide pages rendered; contact sheets and selected full-size pages inspected.'}
 (ROOT/'output/document-checks.json').write_text(json.dumps(result,ensure_ascii=False,indent=2),encoding='utf-8')
 print(json.dumps(result,ensure_ascii=False,indent=2))

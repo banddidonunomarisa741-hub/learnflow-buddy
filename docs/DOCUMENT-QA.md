@@ -4,7 +4,7 @@
 
 ## 交付文件
 
-- `output/pdf/LearnFlow-项目策划书.pdf`：20 页 A4，新版项目策划书，带章节书签。
+- `output/pdf/LearnFlow-项目解决方案.pdf`：20 页 A4，新版项目解决方案，带章节书签。
 - `output/slides/LearnFlow-答辩演示.pptx`：16 页，文字和形状可编辑，逐页附演讲者备注。
 - `output/pdf/LearnFlow-答辩演示.pdf`：由本机 PowerPoint 原生导出，16 页，与 PPTX 版式对应。
 - `docs/PLAN-SOURCE.md`：20 页完整内容源稿。

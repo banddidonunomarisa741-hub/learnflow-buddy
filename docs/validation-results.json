@@ -86,7 +86,7 @@
       "id": "08-invalid-backup-no-write",
       "status": "PASS",
       "detail": {
-        "toast": "恢复失败：不是受支持的学习流备份"
+        "toast": "恢复失败：不是受支持的学习流动备份"
       }
     },
     {

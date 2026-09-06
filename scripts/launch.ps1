@@ -1,4 +1,4 @@
-param([int]$Port = 4173)
+﻿param([int]$Port = 4173)
 $ErrorActionPreference = 'Stop'
 $learnflowRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $learnflowUrl = "http://127.0.0.1:$Port"
