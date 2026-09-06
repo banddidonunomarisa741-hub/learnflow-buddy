@@ -15,7 +15,7 @@ python scripts/build-documents.py
 
 PPT 使用 Microsoft PowerPoint 原生导出为 PDF：运行 `scripts/export-slides-pdf.ps1`。没有 PowerPoint 时可自行用已安装的幻灯片软件导出；不应将只转换图片的版本宣称为可编辑 PPT。
 
-内容来源为 `docs/plan-data.json`、`docs/slides-data.json`。文档复用 `public/assets/buddy-cat.svg`、`output/brand/buddy-cat.png` 和 `output/playwright/home-desktop.png`。其他截图以验证报告中的路径为准。
+内容来源为 `docs/plan-data.json`、`docs/slides-data.json`。文档复用 `public/assets/learnflow-logo.svg`、`output/brand/learnflow-logo.png` 和 `output/playwright/home-desktop.png`。其他截图以验证报告中的路径为准。
 
 本地测试：`npm test`；启动服务器后，`node docs/validation-script.cjs` 执行独立合成数据的浏览器复测。它将重写测试截图和报告 JSON，不使用个人浏览器资料。
 

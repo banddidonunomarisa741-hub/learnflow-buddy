@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="暖橙学习猫">
-<defs><linearGradient id="outer" x2="0" y2="1"><stop stop-color="#FF8844"/><stop offset="1" stop-color="#FFBB33"/></linearGradient><linearGradient id="inner" x2="0" y2="1"><stop stop-color="#FF9F22"/><stop offset="1" stop-color="#FFDD00"/></linearGradient></defs>
-<rect x="5" y="5" width="118" height="118" rx="30" fill="url(#outer)"/>
-<path d="M20 85 9 61Q7 56 15 56L40 58 70 39 80 18Q84 10 90 17L108 38 121 48 119 91Q119 109 101 118L49 123Q29 123 24 106Z" fill="#FFF8EF"/>
-<path d="M37 71 71 51Q94 39 103 57L118 83Q123 95 110 104L77 123 49 122 34 98Q25 82 37 71Z" fill="url(#inner)"/>
-<rect x="53" y="86" width="13" height="25" rx="6.5" transform="rotate(-28 59 98)" fill="#FFF"/>
-<rect x="86" y="68" width="13" height="25" rx="6.5" transform="rotate(-28 92 80)" fill="#FFF"/>
-</svg>

@@ -123,7 +123,7 @@ def main():
     write(connector / "mcp/strategy-server.mjs", (ROOT / "mcp/strategy-server.mjs").read_text(encoding="utf-8"))
     for p in skills:
         write(connector / "skills" / p.parent.name / "SKILL.md", converted[p.parent.name])
-    shutil.copyfile(ROOT / "assets/buddy-cat.svg", connector / "icon.svg")
+    shutil.copyfile(ROOT / "assets/learnflow-logo.svg", connector / "icon.svg")
     zip_tree(connector, DIST / "connector-learnflow-learning-strategies.zip")
     if args.local_config:
         write(DIST / "local-mcp.json", {"mcpServers": {"learnflow-strategies": {"type": "stdio", "command": "node", "args": [str((ROOT / "mcp/strategy-server.mjs").resolve())]}}})

@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
 const sharp = require(process.env.LEARNFLOW_SHARP_MODULE || 'sharp');
 const assets = path.join(path.dirname(fileURLToPath(import.meta.url)), 'assets');
-const cat = (await readFile(path.join(assets, 'buddy-cat.svg'), 'utf8')).replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
+const cat = (await readFile(path.join(assets, 'learnflow-logo.svg'), 'utf8')).replace(/^[\s\S]*?<svg[^>]*>/, '').replace(/<\/svg>\s*$/, '');
 
 for (const mode of ['day', 'night']) {
   const night = mode === 'night';

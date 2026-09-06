@@ -8,7 +8,7 @@ const sharp = require(path.join(modules, 'sharp'));
 const data = JSON.parse(fs.readFileSync(path.join(root,'docs/slides-data.json'),'utf8'));
 const out = path.join(root,'output/slides');fs.mkdirSync(out,{recursive:true});
 const brand = path.join(root,'output/brand');fs.mkdirSync(brand,{recursive:true});
-const cat = path.join(brand,'buddy-cat.png');
+const cat = path.join(brand,'learnflow-logo.png');
 const C={ink:'1E2936',muted:'657184',orange:'FF8844',gold:'FFBB33',cream:'FFF8EF',white:'FFFFFF',line:'E8E0D7',panel:'F5F6F8'};
 const pptx = new pptxgen();
 pptx.layout='LAYOUT_WIDE';pptx.author='LearnFlow学习流动学生团队';pptx.subject='本地原型与 Buddy 应用配置材料';pptx.title='LearnFlow学习流动——基于可进化学习策略与腾讯 Buddy 生态的自主学习支持平台';pptx.company='独立学生团队';pptx.lang='zh-CN';
@@ -20,7 +20,7 @@ function cards(s,d){const n=d.cards.length,g=.27,w=(12.03-(n-1)*g)/n;d.cards.for
 function steps(s,steps){const n=steps.length,g=.23,w=(12.02-(n-1)*g)/n;steps.forEach((v,k)=>{let x=.65+k*(w+g);rect(s,x,3.08,w,1.56,k===n-1?C.ink:C.cream);text(s,`0${k+1}`,x+.17,3.29,w-.34,.24,10.5,k===n-1?C.gold:C.orange,true);text(s,v,x+.17,3.83,w-.34,.45,n===6?18.5:19,k===n-1?C.white:C.ink,true,{align:'center'});if(k<n-1)text(s,'›',x+w+.045,3.68,.15,.4,24,C.orange,true);});text(s,'完成之后回到下一次学习，带着已经确认的策略继续。',.9,5.22,11.6,.42,18,C.muted,false,{align:'center'});}
 
 (async()=>{
-await sharp(path.join(root,'public/assets/buddy-cat.svg')).resize(640,640).png().toFile(cat);
+await sharp(path.join(root,'public/assets/learnflow-logo.svg')).resize(640,640).png().toFile(cat);
 const screenshotCandidates=[path.join(root,'output/playwright/home-desktop.png'),...['learnflow-workbench.png','workbench-desktop.png','desktop-home.png'].map(n=>path.join(root,'output/screenshots',n))];
 const screenshot=screenshotCandidates.find(p=>fs.existsSync(p));
 let screenshotSize=null;

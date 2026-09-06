@@ -26,9 +26,9 @@ for name in DOC_FILES:
     if (ROOT/'docs'/name).is_file():source.append(ROOT/'docs'/name)
 for name in SCRIPT_FILES:
     if (ROOT/'scripts'/name).is_file():source.append(ROOT/'scripts'/name)
-for name in ['docs/plan-data.json','docs/slides-data.json','output/playwright/home-desktop.png','output/brand/buddy-cat.png']:
+for name in ['docs/plan-data.json','docs/slides-data.json','output/playwright/home-desktop.png','output/brand/learnflow-logo.png']:
     if (ROOT/name).is_file():source.append(ROOT/name)
-source+=files_in('docs/validation-screenshots')
+# Historical screenshots are not distributed; use current product captures.
 for folder in ['output/pdf','output/slides']:
     source.extend(p for p in (ROOT/folder).glob('LearnFlow学习流动-*') if p.suffix in ['.pdf','.pptx'])
 source=sorted(set(source))

@@ -26,7 +26,7 @@ MCP 工具是策略与工具接口的分工实例，Skill 无需“变成 MCP”
 | 其他配置 | other | 双语占位文案；从控制台实际模型池选择，不臆造模型 ID |
 | 预览调试 | 前端本地演示、validation-report.json | 下载指定 WorkBuddy 客户端，打开平台预览链接，导出官方 JSON |
 
-专家页精选场景已提供 assets/featured-day.png 与 featured-night.png 两套 1000×910 背景；每套由极简学习插画底图与三层独立渐变蒙层组成，左侧保留内容空间。对应 SVG 可编辑，猫咪直接复用统一矢量，不另造角色。控制台资源也复制到 dist/console-assets/，并纳入完整 Buddy 源包。应用头像是 256×256；专家头像共用统一猫咪图形，512×512 且小于 500 KB。仓库 assets/icon-16.svg 用于 16px 交互图标，不能拿 512px 头像替代线性图标规范。
+专家页精选场景已提供 assets/featured-day.png 与 featured-night.png 两套 1000×910 背景；每套由极简学习插画底图与三层独立渐变蒙层组成，左侧保留内容空间。对应 SVG 可编辑，标识统一使用团队提供的 F 形 Logo。控制台资源也复制到 dist/console-assets/，并纳入完整 Buddy 源包。应用头像是 256×256；专家头像共用统一 F 形标识，512×512 且小于 500 KB。仓库 assets/icon-16.svg 用于 16px 交互图标，不能拿 512px 头像替代线性图标规范。
 
 如需重新生成背景，安装 Sharp 后运行 `node buddy-app/generate-backgrounds.mjs`；也可通过 LEARNFLOW_SHARP_MODULE 指定已有 Sharp 模块路径。普通打包只使用已生成的 SVG/PNG，无需安装图像库。
 
