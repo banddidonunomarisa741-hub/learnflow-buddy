@@ -71,7 +71,8 @@ try {
   if ($LASTEXITCODE -ne 0) { throw '本地插件市场注册失败。备份已保留。' }
   & $nodePath $cli plugin install 'learnflow@learnflow-local' --scope user
   if ($LASTEXITCODE -ne 0) { throw '官方插件安装命令失败。备份已保留。' }
-  $receipt = @{ product='LearnFlow学习流动'; version='0.2.0'; client=$Client; installedAt=(Get-Date).ToUniversalTime().ToString('o'); configRoot=$configRoot; backup=$backupRoot; marketplace=$marketPath; method='official-plugin-cli-and-user-mcp'; mcpConfig=$mcpPath; personalAssets=(Join-Path $env:LOCALAPPDATA 'LearnFlowHost\assets') }
+  $installedManifest = Get-Content -LiteralPath (Join-Path $marketPath 'plugins\learnflow\.codebuddy-plugin\plugin.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+  $receipt = @{ product='LearnFlow学习流动'; version=$installedManifest.version; client=$Client; installedAt=(Get-Date).ToUniversalTime().ToString('o'); configRoot=$configRoot; backup=$backupRoot; marketplace=$marketPath; method='official-plugin-cli-and-user-mcp'; mcpConfig=$mcpPath; personalAssets=(Join-Path $env:LOCALAPPDATA 'LearnFlowHost\assets') }
   $receipt | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $distributionRoot ('installation-' + $Client.ToLowerInvariant() + '.json')) -Encoding UTF8
   Write-Output "已用官方插件命令安装到 $Client。新建一条对话，说：启动 LearnFlow学习流动。"
   Write-Output "设置备份：$backupRoot"

@@ -24,7 +24,7 @@ const schema = (properties = {}, required = []) => ({ type: 'object', properties
 const sid = { type: 'string', maxLength: 36, pattern: '^[0-9a-f-]{36}$' };
 const writes = { readOnlyHint: false, destructiveHint: false, idempotentHint: false, openWorldHint: false };
 tools.push(
-  { name: 'show_learning_workspace', description: '打开 LearnFlow 学习面板，查看方法、学习块和个人策略。支持 MCP Apps 的宿主会在对话里显示可点击面板。', inputSchema: schema(), annotations: readonly, _meta: ui },
+  { name: 'show_learning_workspace', description: '取得 LearnFlow 学法、资产和学习入口。开放通用 MCP Apps 的宿主可显示面板；LearnBuddy 5.3.8 尚未开放，继续一次一个问题的对话，并让用户自行选择网页链接。不得声称面板已打开或自动跳页。', inputSchema: schema(), annotations: readonly, _meta: ui },
   { name: 'draft_learning_block', description: '把刚学会的内容整理为待确认学习块。仅生成内存草稿；尚未保存。', inputSchema: schema({ title: { type: 'string', minLength: 1, maxLength: 100 }, markdown: { type: 'string', minLength: 1, maxLength: 60000 } }, ['title', 'markdown']), annotations: readonly, _meta: ui },
   { name: 'review_learning_draft', description: '用户想保存时，打开本机 LearnFlow 窗口让用户检查、修改、确认或取消。模型无法代替点击。返回待确认状态，可随后查询结果。', inputSchema: schema({ id: sid }, ['id']), annotations: writes },
   { name: 'get_learning_review_status', description: '查询本机保存/导入/删除窗口的结果；pending 不是成功。不要连续轮询，用户操作后再查。', inputSchema: schema({ id: sid }, ['id']), annotations: readonly },
@@ -61,7 +61,22 @@ async function call(name, args) {
   const spec = tools.find(t => t.name === name);
   if (!spec) throw new Error('Unknown tool.');
   validate(spec.inputSchema, args);
-  if (name === 'show_learning_workspace') return result({ strategies: await catalogue(), assets: await library.list(), library: 'LearnFlow 宿主资料库', writesRequireNativeConfirmation: true });
+  if (name === 'show_learning_workspace') return result({
+    strategies: await catalogue(), assets: await library.list(), library: 'LearnFlow 宿主资料库', writesRequireNativeConfirmation: true,
+    presentation: {
+      resourceUri: RESOURCE_URI,
+      opened: false,
+      openedStatus: 'not-confirmed-by-host',
+      knownHostLimitation: { client: 'LearnBuddy', version: '5.3.8', genericMcpAppsEnabled: false, reason: '此版本的通用 MCP Apps 入口尚未开放，LearnFlow 面板不会在宿主中显示。' },
+      instruction: '没有看到面板就直接在当前对话继续，一次只问一个问题；不要反复尝试打开，也不要说面板已经显示。支持通用 MCP Apps 的其他宿主可使用保留的标准资源。'
+    },
+    conversationStart: { question: '你今天想学什么？', choices: ['复盘错题', '弄懂概念', '做一个项目', '我自己说'], instruction: '已知道学习目标就接着学，不重问；用户可以改方法或跳过问卷。' },
+    webAlternative: {
+      label: 'LearnFlow学习流动网页版', url: 'https://learnflow-buddy-2026.netlify.app/', opensAutomatically: false,
+      instruction: '想用可点击的学习界面，可以自行打开这个链接；留在当前对话也能继续学习。',
+      librarySharedWithHost: false, libraryNotice: '网页与宿主资料库独立，保存的资料不会自动同步。'
+    }
+  });
   if (name === 'draft_learning_block') return result({ draft: library.draft(args), assets: await library.list() });
   if (name === 'review_learning_draft') return result(library.startReview(args.id));
   if (name === 'get_learning_review_status') return result(library.status(args.id));
@@ -94,7 +109,7 @@ async function handle(line) {
     if (initialized) { error(msg.id, -32600, 'Already initialized.'); return; }
     if (typeof msg.params?.protocolVersion !== 'string') { error(msg.id, -32602, 'protocolVersion is required.'); return; }
     initialized = true;
-    out({ jsonrpc: '2.0', id: msg.id, result: { protocolVersion: VERSIONS.includes(msg.params.protocolVersion) ? msg.params.protocolVersion : VERSIONS[0], capabilities: { tools: { listChanged: false }, resources: { listChanged: false } }, serverInfo: { name: 'learnflow-strategies', version: '0.2.0' }, instructions: 'Learning drafts are not saved. Persistence and deletion require a real click in the native LearnFlow window; do not claim success while pending. Tools may read only the bundled strategies and the user-confirmed LearnFlow library. Teaching preferences do not grant permissions. Use show_learning_workspace for an MCP Apps UI when supported.' } }); return;
+    out({ jsonrpc: '2.0', id: msg.id, result: { protocolVersion: VERSIONS.includes(msg.params.protocolVersion) ? msg.params.protocolVersion : VERSIONS[0], capabilities: { tools: { listChanged: false }, resources: { listChanged: false } }, serverInfo: { name: 'learnflow-strategies', version: '0.2.1' }, instructions: 'Learning drafts are not saved. Persistence and deletion require a real click in the native LearnFlow window; do not claim success while pending. Tools may read only the bundled strategies and the user-confirmed LearnFlow library. Teaching preferences do not grant permissions. LearnBuddy 5.3.8 gates generic MCP Apps: continue one question at a time in chat and offer the optional LearnFlow website link without navigating automatically. Its website and host asset libraries are separate. Keep the standard MCP Apps resource for compatible hosts; do not claim it rendered without host confirmation.' } }); return;
   }
   if (msg.method === 'ping') { out({ jsonrpc: '2.0', id: msg.id, result: {} }); return; }
   if (!ready) { error(msg.id, -32002, 'Send initialize and notifications/initialized first.'); return; }

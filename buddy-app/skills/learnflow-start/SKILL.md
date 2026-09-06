@@ -4,13 +4,15 @@ description: 用户明确要求开始 LearnFlow学习流动、打开 LearnFlow �
 license: MIT
 metadata:
   display_description: 从一个问题开始，一次只选一步。
-  version: 0.2.0
+  version: 0.2.1
   author: LearnFlow Team
   display_name: LearnFlow学习流动
   description_en: Start LearnFlow only when the learner asks, with one question at a time and user-confirmed saved work.
 ---
 
-先调用 `show_learning_workspace`。如果宿主没有显示交互面板，直接在对话里继续，不让用户为界面问题停下来，也不要说面板已经打开。
+先调用 `show_learning_workspace` 取得可用学法和学习入口。LearnBuddy 5.3.8 还没有开放通用 MCP Apps 面板，直接在对话里继续，一次只问一个问题。其他支持通用 MCP Apps 的宿主可以显示标准面板；工具返回资源不等于面板已经显示，没看到就不说“已打开”，也不要反复重试。
+
+用户想用可点击的学习界面时，给出 [LearnFlow学习流动网页版](https://learnflow-buddy-2026.netlify.app/)，由用户自己点开；不要调用浏览器或系统命令自动跳页。说明一次：网页与宿主资料库独立，保存的资料不会自动同步。用户留在对话里就接着学，不催他去网页。
 
 新开始时一次只问一个问题。先问“你今天想学什么？”，给“复盘错题 / 弄懂概念 / 做一个项目 / 我自己说”这些能直接回复的选项。再补缺少的时间和基础信息；用户已经说过的不要重问。学习者想直接开练就跳过问卷。
 
@@ -24,6 +26,6 @@ metadata:
 
 教材：用户想保存一份 PDF 时调用 `import_learning_pdf`，让用户自己选文件。保存完成后展示标题，用户想打开时调用 `open_learning_asset`。不要遍历磁盘找教材。删除也有本机确认窗口。
 
-可点击的学习面板和资料库由本插件提供；模型选择、图片/文件附件、任务和已有腾讯连接器由 LearnBuddy 自身提供。QQ、腾讯文档、会议等能力只有在宿主里实际存在且用户授权后才能调用。没有连接时说清楚缺哪一步，不把模拟输出写成已发送。
+本插件提供学习流程、资料库，以及供兼容宿主使用的标准面板。模型选择、图片/文件附件、任务和已有腾讯连接器由 LearnBuddy 自身提供。QQ、腾讯文档、会议等能力只有在宿主里实际存在且用户授权后才能调用。没有连接时说清楚缺哪一步，不把模拟输出写成已发送。
 
 回答完可以留一两个贴着本轮内容的选择，例如“再做一道相似题”或“换个日常例子”。用户愿意自己写就等他写；不把固定流程当成必须完成的作业。

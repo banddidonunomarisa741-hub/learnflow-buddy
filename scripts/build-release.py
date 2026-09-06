@@ -43,7 +43,7 @@ for folder in ['output/pdf','output/slides']:
     source.extend(p for p in (ROOT/folder).glob('LearnFlow学习流动-*-1.4.*') if p.suffix in ['.pdf','.pptx'])
 source=sorted(set(source))
 catalogue=ROOT/'docs/FILE-CATALOG.json'
-catalogue.write_text(json.dumps({'version':'1.4.0','source_files':[p.relative_to(ROOT).as_posix() for p in source],'buddy_packages':[p.name for p in (ROOT/'buddy-app/dist').glob('*.zip')],'note':'Source list excludes this catalogue. Buddy ZIP packages are included in the complete delivery archive; build them from source for the source-only archive.'},ensure_ascii=False,indent=2),encoding='utf-8')
+catalogue.write_text(json.dumps({'version':'1.4.1','source_files':[p.relative_to(ROOT).as_posix() for p in source],'buddy_packages':[p.name for p in (ROOT/'buddy-app/dist').glob('*.zip')],'note':'Source list excludes this catalogue. Buddy ZIP packages are included in the complete delivery archive; build them from source for the source-only archive.'},ensure_ascii=False,indent=2),encoding='utf-8')
 source.append(catalogue)
 def archive(name,entries):
     with zipfile.ZipFile(OUT/name,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
@@ -58,6 +58,6 @@ marketplace=ROOT/'buddy-app/dist/learnflow-marketplace'
 if marketplace.is_dir():
     bundle_entries += [(p,p.relative_to(ROOT).as_posix()) for p in marketplace.rglob('*') if p.is_file()]
 records.append(archive('LearnFlow-完整交付包.zip',bundle_entries))
-manifest={'version':'1.4.0','archives':records,'source_files':[p.relative_to(ROOT).as_posix() for p in source],'excluded':'Private Obsidian notes, original PDF, browser records, credentials, temporary dependencies, machine-specific MCP settings'}
+manifest={'version':'1.4.1','archives':records,'source_files':[p.relative_to(ROOT).as_posix() for p in source],'excluded':'Private Obsidian notes, original PDF, browser records, credentials, temporary dependencies, machine-specific MCP settings'}
 (OUT/'manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8')
 print(json.dumps({'archives':records,'source_count':len(source)},ensure_ascii=True))

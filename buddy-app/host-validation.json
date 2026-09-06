@@ -1,7 +1,8 @@
 {
   "verifiedAt": "2026-09-06",
   "client": "LearnBuddy 5.3.8 bundled CodeBuddy",
-  "localPluginVersion": "0.2.0",
+  "localPluginVersion": "0.2.1",
+  "previousLiveModelTestPluginVersion": "0.2.0",
   "officialPluginValidation": true,
   "officialMarketplaceInstall": true,
   "mcpConnected": true,
@@ -21,7 +22,41 @@
     "emptyLibrary": true,
     "learnbuddyEmbeddedPreviewVerified": false
   },
-  "automaticLibraryChecksPassed": 26,
+  "installedHostMcpAppsSupport": {
+    "client": "LearnBuddy 5.3.8",
+    "checkedAt": "2026-09-06",
+    "method": "read-only inspection of installed application resources",
+    "rendererImplementationPresent": true,
+    "genericMcpAppsEnabled": false,
+    "status": "generic-apps-gated-in-this-build",
+    "allowedAppIds": ["ardot/open_design", "ardot/create_design"],
+    "requiresDesignSessionForAllowedApps": true,
+    "learnflowEmbeddedPanelAvailable": false,
+    "reason": "The general MCP Apps entry returns false; normal app-open notifications and loadApp both apply a gate accepting only the two first-party design app IDs in a design session.",
+    "evidence": [
+      {
+        "resource": "renderer/assets/src-DD8KJ0dq.js",
+        "sha256": "eadaa1a82c74055ad99c337248caf9398b36aed6944f8d66b65b9a71b8af44a8",
+        "bytes": 701660,
+        "module": "mcp-apps-feature-gate.ts",
+        "line": 777,
+        "functions": ["isMcpAppsTodoEntryEnabled", "canOpenMcpAppThroughTodoGate"]
+      },
+      {
+        "resource": "renderer/assets/index-BzLR5tnd.js",
+        "sha256": "05eca44c8a5e9fa4cfd1a6571511208d1bdf7b71b74954a47fc1ceeca88931ae",
+        "bytes": 2148446,
+        "module": "use-mcp-apps-host.ts",
+        "gateAppliedTo": ["onOpenHostRequested", "loadApp"]
+      }
+    ],
+    "publicDocumentation": "https://open.workbuddy.cn/docs/buddy-app",
+    "documentationScope": "MCP Apps integration is documented for Buddy applications; arbitrary apps are not enabled in this installed LearnBuddy build.",
+    "fallback": "Continue one question at a time in the host conversation. Offer the published LearnFlow website only as a user-clicked link; web and host asset libraries remain separate.",
+    "clientModified": false,
+    "clientSourceRedistributed": false
+  },
+  "automaticLibraryChecksPassed": 30,
   "cliExitCode": 3221226505,
   "cliExitClean": false,
   "platformPublished": false
