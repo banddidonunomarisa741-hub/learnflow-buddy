@@ -1,11 +1,11 @@
-﻿param([int]$Port = 4173)
+﻿param([int]$Port = 4173,[switch]$NoOpen)
 $ErrorActionPreference = 'Stop'
 $learnflowRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $learnflowUrl = "http://127.0.0.1:$Port"
 $learnflowReady = $false
 try { $learnflowHealth = Invoke-RestMethod "$learnflowUrl/api/health" -TimeoutSec 2; $learnflowReady = $learnflowHealth.service -eq 'LearnFlow local adapter' } catch { }
 # Only replace an older instance launched from this exact helper installation.
-if ($learnflowReady -and $learnflowHealth.adapterVersion -ne '1.3.0') {
+if ($learnflowReady -and $learnflowHealth.adapterVersion -ne '1.4.0') {
   $learnflowEntry = Join-Path $learnflowRoot 'server\server.mjs'
   $learnflowListener = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1
   if ($learnflowListener) {
@@ -23,4 +23,4 @@ if (-not $learnflowReady) {
   Start-Process -FilePath $learnflowNode -ArgumentList ('"' + (Join-Path $learnflowRoot 'server\server.mjs') + '"') -WorkingDirectory $learnflowRoot -WindowStyle Hidden
   Start-Sleep -Seconds 2
 }
-Start-Process $learnflowUrl
+if(-not $NoOpen){Start-Process $learnflowUrl}

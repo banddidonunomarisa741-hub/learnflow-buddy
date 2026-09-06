@@ -1,0 +1,33 @@
+{
+  "date": "2026-09-06",
+  "browser": "Edge via Playwright CLI, isolated lf-ux session on port 4181",
+  "actualModelChecks": [
+    "Local consent and real model probe showed successful connection in dialog and persistent banner",
+    "Model picker loaded 15 runtime-provided models, searched hy3, selected via keyboard; real reply rendered comparison table and Python code",
+    "Auto model streamed real output: MutationObserver captured 262 visible intermediate updates, body grew from 2 to 365 characters",
+    "Stop button aborted a real pending request and restored the input draft",
+    "Injected one HTTP 503 test response, then real retry succeeded; user message appeared only once",
+    "TXT attachment contained a test-only identifier absent from prompt; actual model returned the exact identifier"
+  ],
+  "interactionChecks": [
+    "All seven onboarding questions completed; empty custom-goal default corrected",
+    "Edited follow-up text survived route navigation",
+    "Dropped a text file into composer and verified text attachment prepared",
+    "Saved one test answer as a confirmed Markdown learning asset and removed the test copy afterwards",
+    "390 px mobile page had zero horizontal overflow; model dialog escaped to trigger focus"
+  ],
+  "automated": "node scripts/test-rich-text.mjs: 12 passed (HTML/script/URL safety, markdown rendering, metadata stream hiding)",
+  "screenshots": [
+    "home-desktop.png",
+    "home-mobile.png",
+    "learnflow-model-menu.png",
+    "learnflow-real-reply.png",
+    "models-mobile.png",
+    "chat-mobile.png"
+  ],
+  "limits": [
+    "QQ live account pairing verified separately by integration owner",
+    "No claims of unavailable model pricing, context sizes or free access",
+    "PDF text extraction does not read scanned pages without screenshots"
+  ]
+}

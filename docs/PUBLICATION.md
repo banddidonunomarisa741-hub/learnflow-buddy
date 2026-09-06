@@ -1,44 +1,24 @@
 # 实际发布与交付状态
 
-验证时间：2026-09-06，北京时间约 01:02。
+更新日期：2026-09-06。连接助手与交付材料版本 1.4。
 
-| 交付 | 实际状态 | 地址或材料 |
+| 交付 | 实际状态 | 入口 |
 | --- | --- | --- |
-| 本地学习工作台 | 已运行，默认预设演示 | `http://127.0.0.1:4173`；双击根目录启动文件 |
-| GitHub 源码 | 已公开推送 | https://github.com/banddidonunomarisa741-hub/learnflow-buddy |
-| GitHub Pages | 工作流 success，真实浏览器打开成功 | https://banddidonunomarisa741-hub.github.io/learnflow-buddy/ |
-| Netlify 静态站 | 部署 ready，真实浏览器打开成功 | https://learnflow-buddy-2026.netlify.app |
-| 项目解决方案 | 17 页 PDF，已逐页渲染检查 | `output/pdf/LearnFlow学习流动-项目解决方案.pdf` |
-| 答辩幻灯片 | 16 页可编辑 PPTX、对应 PDF、演讲备注 | `output/slides/LearnFlow学习流动-答辩演示.pptx` |
-| 评委追问 | 12 道校内 + 14 道腾讯企业问题及回答依据 | `docs/JUDGES-QA.md` |
-| Buddy 开发交付包 | 已生成 10 策略、4 专家候选、MCP、应用配置源稿与规范视觉 | `buddy-app/`；打包版本在完整交付 ZIP |
-| 腾讯正式应用 | 尚未上架 | 主体/账户权限、真实联系方式、资源 ID、OAuth、宿主验证及平台审核未完成 |
-| 任意学习资料模型处理 | 未做真实腾讯算力联调 | 网页默认预设演示；本地接口具备显式授权适配入口 |
+| 网页 MVP | 实时回答、模型选择、文件输入、学习块与资产 | [Netlify](https://learnflow-buddy-2026.netlify.app/) / [GitHub Pages](https://banddidonunomarisa741-hub.github.io/learnflow-buddy/) |
+| 本机连接助手 | 已安装；本机授权后调用模型 | http://127.0.0.1:4173 |
+| LearnBuddy 插件 | 正常安装；宿主已发现 12 个工具，模型成功检索策略 | [安装与验证](LEARNBUDDY-INSTALL.md) |
+| QQ 连接 | 本人扫码、网关就绪、唯一授权提醒的发送回执已实测；新版收件待验 | [QQ 说明](TENCENT-CONNECTORS.md) |
+| 解决方案 | 17 页正文式 PDF | output/pdf/LearnFlow学习流动-项目解决方案-1.4.pdf |
+| 答辩演示 | 16 页可编辑 PPTX、对应 PDF 与讲稿 | output/slides/LearnFlow学习流动-答辩演示-1.4.pptx |
+| 源码与组件 | 11 技能、4 专家、MCP 与插件安装包 | [GitHub](https://github.com/banddidonunomarisa741-hub/learnflow-buddy) |
+| 正式 Buddy | 未上架；企业认证、真实资源配置、预览与审核待完成 | [提审检查表](BUDDY-RELEASE-CHECKLIST.md) |
 
-GitHub Pages 首次构建发生在新仓库 Pages 未启用时，因此失败；已启用并重发，后续工作流成功。该记录用于如实说明部署历史，不代表当前站点失败。
+真实 CLI 模型通道、QQ 机器人和 WorkBuddy 正式 OAuth 是不同连接。前两者有单机实测结果，不能据此宣布 OAuth 或 Buddy 审核完成。学习面板资源可读取，也不证明每个宿主版本会显示全部交互。
 
-## 已执行的工程验证
+验证见 [MVP 记录](MVP-VALIDATION.md)、[网页流程](MVP-WEB-VALIDATION.md)、[QQ](TENCENT-CONNECTORS.md)、[宿主](LEARNBUDDY-INSTALL.md) 和 [文档版面](DOCUMENT-QA.md)。工程检查不证明教学效果。
 
-- 12 项定向浏览器验证通过；Chrome 桌面与 390 px 手机视口，0 页面脚本错误。
-- 30 项本地后端/MCP 测试通过。真实用量缺失时保持未知，不使用虚构计费数据。
-- 10 个 Skill 通过相关结构校验；Buddy 发布校验正确列出尚未满足的外部前提。
-- 17 页策划 PDF 与 16 页答辩 PDF 全部完成渲染检查；PPTX 文本仍可编辑。
-- 两个线上站点已打开并检查正确标题、页面内容和策略入口。
+两条公开地址托管静态前端，持续进程和身份留在本机。首次使用需安装助手，浏览器可能询问本地网络权限。QQ 提醒需要电脑联网且助手运行，受平台权限和额度限制。
 
-这些是工程验收，不是教学效果实验、腾讯官方认证或所有设备的兼容保证。
+上传内容由 scripts/build-release.py 的允许列表生成：网站源码、组件、公开材料和合成产品截图。私人 Obsidian 原文、原始参考 PDF、账号配置、QQ 凭据与收件、浏览器个人资料和临时调试脚本均不进入发布包。凭据管理器仅用于对应 GitHub / Netlify 请求，不把凭据写入源码或日志。
 
-## 公开内容与本机数据
-
-公开上传的内容来自文件白名单：网站源码、应用工程、公开策划材料和合成测试截图。没有上传 Obsidian 私人笔记原文、原始旧方案 PDF、浏览器个人资料、卡密、模型密钥或账号凭据。
-
-账号凭据仅经已有 Credential Manager / Netlify 配置用于对应服务的授权请求，没有写入源码、网址或日志。应用代码未上传用户本机学习记录；Netlify 托管响应会注入平台元信息和辅助脚本，线上 HTML 因此与本地文件不逐字节一致。GitHub 的文本行尾可能标准化为 LF；两站应用脚本均与源码内容一致。GitHub、Netlify 和本地的学习记录各自保存在对应浏览器来源下，可通过导出/恢复备份迁移。
-
-## 腾讯上架前的明确待办
-
-1. 到实际控制台核验个人账号是否拥有教育类 Buddy 创建权限；如不支持，再选择合规主体路线。公开文档有个人认证，不等于所有发布类别均向个人开放。
-2. 填写实际团队联系方式，完成所需主体材料；不要用虚构企业或邮箱绕过审核。
-3. 在市场创建并审核所需 Skill、专家、连接器，回填平台真实资源 ID 与模型 ID。
-4. 从控制台取得真实导出配置，适配源稿；在官方指定宿主中预览。
-5. 完成正式 OAuth 与应用权限联调，再提审 Buddy。QQ/微信主动提醒及会议资料仍需独立能力和授权。
-
-依据：[Buddy 应用官方流程](https://open.workbuddy.cn/docs/buddy-app)、[入驻规则](https://open.workbuddy.cn/docs/onboarding)、[Open API](https://open.workbuddy.cn/docs/openapi)。
+网页与宿主资料当前分别保存，可经用户导出、导入迁移；尚无自动云同步或公共多人策略市场。正式发布遵循 [腾讯 Buddy 流程](https://open.workbuddy.cn/docs/buddy-app)。公司注册、开发者认证、创建审核与配置审核分别核验。

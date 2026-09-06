@@ -1,41 +1,49 @@
-# LearnFlow · Buddy 应用工程交付
+# LearnFlow学习流动 · Buddy 工程
 
-本目录提供可复用策略、专家、实际 MCP 工具和一份逐模块控制台配置源稿。**尚未创建平台应用、取得应用 ID、导入官方配置、完成宿主预览或发布。**公开 Buddy 文档没有给出完整导入 JSON schema，因此 app.config.source.json 是本项目工程格式，不能宣称腾讯可直接导入。
+本工程可作为本地插件安装到 LearnBuddy / WorkBuddy，包含 11 个 Skill、4 个专家候选、12 个 MCP 工具和学习面板。正式 Buddy 应用仍需平台分配 ID、资源审核和指定客户端预览；本目录不伪造这些结果。
 
-## 立即使用
+## 在本机开始
 
-1. 在任意支持 SKILL.md 的学习 Agent 中安装 skills/ 下需要的策略。它们是通用 Markdown 与 metadata，保持触发范围和用户选择，能力仍受宿主模型与工具限制。
-2. 使用 Node.js 20+ 启动 `node buddy-app/mcp/strategy-server.mjs`，通过 MCP 客户端调用三个只读工具。手动终端里没有界面是正常的，因为它接收 JSON-RPC。
-3. 运行 `python buddy-app/build.py --local-config`。dist/ 下得到 10 个独立 WorkBuddy Skill ZIP、4 个专家 ZIP、1 个连接器 ZIP和完整源包。local-mcp.json 含本机绝对路径，仅用于本机导入，不纳入开源 source ZIP。
+完整交付包或独立本机安装包解压后，双击“安装LearnBuddy插件.cmd”即可，不需要 Python。只有从源码自行构建时先运行 `python buddy-app/build.py --local-config`；命令行安装也可运行 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/install-learnbuddy.ps1`。默认安装到 LearnBuddy，另可用 `-Client WorkBuddy`。安装器调用官方 `plugin marketplace add` / `plugin install`，并将 LearnFlow MCP 合并到宿主支持的用户级 `mcp.json`。已有设置备份，不修改客户端程序或登录凭据。
 
-## 格式与边界
+新建对话后说：“启动 LearnFlow学习流动，先陪我复盘一道题。”想看面板就说“打开 LearnFlow 学习面板”。面板显示取决于宿主的 MCP Apps 支持；没有面板时仍可在对话中使用策略和资产工具。本插件不替换 LearnBuddy 首页和侧栏。
 
-可移植 Skill 源文件把 WorkBuddy 的版本、作者、展示名等放在 metadata；构建工具将其转换为官方要求的顶层字段。专家目录使用 .codebuddy-plugin/plugin.json、agents/、avatars/、skills/，所有引用经过本地验证。专家公开邮箱尚空缺，不能以此通过正式发布校验。`python buddy-app/build.py --release` 在发布必填项仍缺失时应退出 2，这是预期保护，不代表源包损坏。
+桌面安装包 `dist/learnflow-learnbuddy-install.zip` 已包含安装器和相对目录，通用插件包 `dist/learnflow-plugin.zip`；单独的 Skill、专家与连接器 ZIP 也在 dist。开发安装器在上级 scripts 目录。详细步骤见 [本机安装说明](../docs/LEARNBUDDY-INSTALL.md)。
 
-MCP 工具是策略与工具接口的分工实例，Skill 无需“变成 MCP”才有价值。工具负责稳定检索和结构化草稿，Skill 决定何时用、如何教学；两者都需要在更换模型或宿主后复测。默认 MCP 不读取用户学习文件，不存储记忆，没有腾讯文档、QQ、微信或会议的真实授权。
+## 工具与资产
 
-前端 8 张卡的 ID 对照：evidence → exam-evidence；roots → root-affix；feynman → feynman；retrieval → retrieval；socratic → socratic；pbl → pbl-coach；plain → plain-tone；teacher → formative-evidence。self-map 与 memory-distill 是场景引导和记忆流程的支持技能。
+| 能力 | 工具 |
+| --- | --- |
+| 找学法、读步骤 | list_learning_strategies、get_learning_strategy |
+| 学习块、个人策略草稿 | draft_learning_block、draft_personal_strategy |
+| 保存前检查修改 | review_learning_draft |
+| 查看确认结果 | get_learning_review_status |
+| 资料库、读取复用 | list_learning_assets、read_learning_asset |
+| 导入用户亲自选择的 PDF | import_learning_pdf，最多 30 MB |
+| 用本机默认程序打开 | open_learning_asset |
+| 删除本机副本 | delete_learning_asset |
+| 学法卡片、三题入门选择、资料库面板 | show_learning_workspace |
 
-## 按官方五模块落地
+模型没有“confirmed=true 就直接保存”的接口。草稿在内存保留 30 分钟；真正写入和删除需要用户点击 Windows 原生确认窗口。内容可以修改，也能取消；pending 不能说成保存成功。PDF 只能复制用户在文件选择框里选中的文件，不扫描磁盘，删除副本不删原教材。
 
-| 控制台模块 | 本目录对应材料 | 待平台填写的内容 |
-| --- | --- | --- |
-| 创建应用 | app.config.source.json 的 app；assets/app-icon-256.png | 主体、应用 ID、授权项、回调与可信域 |
-| 首页配置 | home；modes/；7 个场景胶囊 | 把本地策略/专家标识映射为已审核资源 ID |
-| 市场配置 | dist/ 中 Skill、专家、连接器包 | 先提交资源，回填市场资源引用；自动内置连接器按官方 OAuth 要求配置 |
-| 其他配置 | other | 双语占位文案；从控制台实际模型池选择，不臆造模型 ID |
-| 预览调试 | 前端本地演示、validation-report.json | 下载指定 WorkBuddy 客户端，打开平台预览链接，导出官方 JSON |
+资产位于 `%LOCALAPPDATA%/LearnFlowHost/assets`，格式为 Markdown、SKILL.md 或 PDF。它与网页资料库目前分开，可把实际文件导出后交给其它工具使用。其它系统可使用策略和草稿，原生保存窗口尚未移植，不宣传全平台完整支持。
 
-专家页精选场景已提供 assets/featured-day.png 与 featured-night.png 两套 1000×910 背景；每套由极简学习插画底图与三层独立渐变蒙层组成，左侧保留内容空间。对应 SVG 可编辑，标识统一使用团队提供的 F 形 Logo。控制台资源也复制到 dist/console-assets/，并纳入完整 Buddy 源包。应用头像是 256×256；专家头像共用统一 F 形标识，512×512 且小于 500 KB。仓库 assets/icon-16.svg 用于 16px 交互图标，不能拿 512px 头像替代线性图标规范。
+## 腾讯生态
 
-如需重新生成背景，安装 Sharp 后运行 `node buddy-app/generate-backgrounds.mjs`；也可通过 LEARNFLOW_SHARP_MODULE 指定已有 Sharp 模块路径。普通打包只使用已生成的 SVG/PNG，无需安装图像库。
+LearnBuddy / WorkBuddy 内的 QQ 远程任务走宿主自己的“助理 / QQ 机器人”绑定。绑定后，QQ 任务可以使用已安装 LearnFlow Skill / MCP，仍服从宿主授权。腾讯文档、会议等也由实际安装并授权的宿主连接器提供。
 
-## 发布前仍需完成
+网页 QQ 是另一个本机收件箱和独立授权入口。这 12 个 MCP 工具不直接收发 QQ，安装插件不等于 QQ 已绑定。不要把网页扫码与宿主扫码混为一份许可。详见 [腾讯连接说明](../docs/TENCENT-CONNECTORS.md)。
 
-主体资格与相应教育类目以控制台及腾讯审核为准。官方入驻存在个人认证，但未核验个人账号的 Buddy 创建权限，不能下“必须先办公司”或“个人一定能发”的结论。可先开源策略和本地演示，同时向平台核验是否可使用学校/合作单位主体。
+## 验证范围
 
-真实 OAuth 由本人/主体完成，不能复制桌面会话 token 代替。学习者评分、使用强度是本地单用户原型数据，尚无公共多人市场、反刷量与在线审核服务。用户测试、延迟保持和迁移测验尚未完成，不能宣传已证明提分或教学效果。
+本机 LearnBuddy 5.3.8 官方 CLI 插件 / 市场结构验证与安装成功；真实模型通过 MCP 读取了 11 张策略卡。该 CLI 在完整结果后仍出现 Windows 退出码 3221226505，记为宿主异常，没有报告整体稳定性通过。
 
-用户的六级项目作为方法参考：[CET-6 Review Skill](https://github.com/banddidonunomarisa741-hub/cet6-intellect-crush-review-skill)。此包重新编写通用应试策略，没有复制题库、用户私人资料或原仓库全部实现。
+`node scripts/test-buddy-host.mjs` 有 26 项检查，覆盖草稿不落盘、确认 / 取消、修改后保存、跨实例读取、删除、路径限制和 MCP Apps 资源。原生窗口使用测试资料做过后台按钮验证，取消与保存返回不同结果。面板在独立 MCP Apps 协议测试宿主中完成真实 stdio 数据加载、逐题选择与学法回传；LearnBuddy 实际内嵌面板展示仍待指定客户端验证。
 
-官方依据：[Buddy 应用](https://open.workbuddy.cn/docs/buddy-app)、[Skill 格式](https://open.workbuddy.cn/docs/skill)、[专家格式](https://open.workbuddy.cn/docs/expert)、[连接器格式](https://open.workbuddy.cn/docs/connector)。
+## 正式发布
+
+app.config.source.json 是控制台填表源稿，不是腾讯官方导入 JSON。工程提供 3 个工作模式、7 个场景入口、头像与日夜背景。`python buddy-app/build.py --release` 在真实前置条件缺失时应退出 2。
+
+自动内置连接器需遵守 Buddy 文档的 OAuth 绑定要求，本地 stdio 不冒充 OAuth 服务。资源通过审核后回填真实 ID，再导出官方 JSON，完成指定客户端预览。[发布检查单](../docs/BUDDY-RELEASE-CHECKLIST.md) 列出材料与剩余条件。
+
+官方依据：[Buddy 应用](https://open.workbuddy.cn/docs/buddy-app)、[连接器](https://open.workbuddy.cn/docs/connector)、[Skill](https://open.workbuddy.cn/docs/skill)、[专家](https://open.workbuddy.cn/docs/expert)、[插件规范](https://www.codebuddy.cn/docs/cli/plugins-reference)、[MCP Apps](https://modelcontextprotocol.io/extensions/apps/overview)。

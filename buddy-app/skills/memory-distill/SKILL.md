@@ -3,7 +3,8 @@ name: memory-distill
 description: 在学习者要求保存学习偏好或将本轮方法固化为个人策略时，提炼可编辑、可撤回的最小记忆草稿；记忆关闭时不执行持久化。
 license: MIT
 metadata:
-  version: 0.1.0
+  display_description: 这次的学法不错？先写成草稿，下次想用再用。
+  version: 0.2.0
   author: LearnFlow Team
   display_name: 把好方法留下
   description_en: Distill a confirmed learning preference into an editable personal strategy draft.

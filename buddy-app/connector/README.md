@@ -1,9 +1,9 @@
-# LearnFlow 策略连接器
+# LearnFlow学习流动连接器
 
-采用官方 MCP + Skill 目录结构，提供真实 stdio JSON-RPC 服务。仅访问包内的策略，工具有 list_learning_strategies、get_learning_strategy、draft_personal_strategy。第三个工具返回可编辑的文本草稿，不写文件或浏览器存储，不收集个人学习数据，不包含腾讯生态连接器。
+提供 12 个本机 MCP 工具：策略检索、学习块和个人策略草稿、用户确认后保存、资料库、PDF 导入、打开和删除，以及 MCP Apps 学习面板。不需要填写腾讯访问令牌，不直接调用腾讯云模型或 QQ。
 
-执行 `python buddy-app/build.py` 生成可独立解压的 connector 包。打包结果包含 mcp/ 与 skills/，从解压目录运行 `node mcp/strategy-server.mjs`。源目录 connector/mcp.json 中相对启动路径基于解压目录；宿主的工作目录行为尚需 WorkBuddy 5.0.0+ 实测。跨平台导入时可将 args[0] 改为解压后的绝对路径。禁止把某个人电脑的绝对路径提交到公共市场。
+Node.js 20+，stdio。mcp.json 为打包目录内配置；本地安装器会生成实际绝对路径，避免工作目录不同而找不到脚本。市场包声明平台托管 Node；提交时须在指定客户端核验相对路径按连接器目录解析，不能发布开发机绝对路径。
 
-本地生成 `python buddy-app/build.py --local-config` 会额外生成仅供本机导入的 dist/local-mcp.json（绝对路径，不纳入公开 source zip）。可将该 JSON 作为自定义 MCP 配置使用，需宿主显式连接授权。它不是 Buddy 的内置 OAuth 连接器：官方首页自动启用的内置连接器要求支持 OAuth，本 stdio 工具只作为用户自选连接器。正式上架仍需 source 唯一性、安装路径和宿主兼容性验证及平台审核。
+保存操作必须经过 Windows 原生确认窗口。模型只能整理草稿和打开窗口，不能代替点击保存。PDF 只能导入用户亲自选择的文件。数据存放在 `%LOCALAPPDATA%/LearnFlowHost/assets`，不进入源码与发布 ZIP。
 
-协议依据：[MCP stdio](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports)。腾讯目录依据：[连接器规范](https://open.workbuddy.cn/docs/connector)。
+未确认、取消和失败均不能报告“已经保存”。其它系统仍可使用只读策略和草稿。此包尚未通过市场审核；若要自动启用远程 OAuth 连接器，应另外完成 HTTPS 服务、身份授权与平台审核。

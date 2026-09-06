@@ -4,6 +4,8 @@ import {listAssets,saveAsset,openAsset,assetFile,removeAsset} from './assets.mjs
 import {NEXT_POLICY,learningResponse} from './learning-response.mjs';
 import {discoverCLI, cliChat, cliModels} from './local-cli.mjs';
 import {attachments,addAttachments} from './attachments.mjs';
+import {compatibleStream} from './compatible-stream.mjs';
+import {qqConnector} from './tencent-ecosystem.mjs';
 const LOCAL_CLI = await discoverCLI();
 let cliBusy = false;
 import { readFile, stat } from 'node:fs/promises';
@@ -48,7 +50,7 @@ function validateBrowser(req) {
   if(trustedOrigins.has(req.headers.origin)){
     const p=new URL(req.url,'http://localhost').pathname;
     if(req.method==='OPTIONS'||['/api/health','/api/pair/request','/api/pair/poll'].includes(p))return;
-    if((['/api/chat','/api/models','/api/probe'].includes(p)||p.startsWith('/api/assets')||p==='/api/pair/revoke')&&validGrant(req.headers.origin,req.headers['x-learnflow-grant']))return;
+    if((['/api/chat','/api/chat/stream','/api/models','/api/probe'].includes(p)||p.startsWith('/api/assets')||p.startsWith('/api/ecosystem/qq/')||p==='/api/pair/revoke')&&validGrant(req.headers.origin,req.headers['x-learnflow-grant']))return;
     fail(403,'PAIR_REQUIRED','请先在本机窗口确认连接，再回到网页继续。');
   }
   if (req.headers.origin && !hosts.some(h => req.headers.origin === `http://${h}`)) fail(403, 'ORIGIN_REJECTED', '请在本地 LearnFlow 页面调用接口。静态托管页面使用预设演示。');
@@ -178,14 +180,14 @@ async function modelList(){
   }
   return {models:[{id:'host-default',label:'WorkBuddy 宿主默认模型'}],defaultModel:'host-default',attachments:false,source:'此官方文字通道不提供模型切换或附件'};
 }
-async function runChat(chat){
+async function runChat(chat,options={}){
   if(!configured())fail(503,'MODEL_NOT_CONFIGURED','请先连接学习助手。');
   if(PROVIDER==='local-codebuddy'){
     chat.model=chat.model||'auto';if(!(await cliModels(LOCAL_CLI)).includes(chat.model))fail(400,'MODEL_UNAVAILABLE','本机客户端未提供此模型，请刷新模型列表。');
     if(cliBusy)fail(409,'BUSY','本机模型正在回复，请等待当前任务结束。');
-    cliBusy=true;try{return await cliChat(LOCAL_CLI,providerMessages(chat),chat.model);}catch(e){fail(502,'LOCAL_CLI_FAILED',e.message+' 若附有图片，请尝试支持视觉的模型。');}finally{cliBusy=false;}
+    cliBusy=true;try{return await cliChat(LOCAL_CLI,providerMessages(chat),chat.model,options);}catch(e){if(options.signal?.aborted)fail(499,'CANCELLED','已停止生成。');fail(502,'LOCAL_CLI_FAILED',e.message+' 若附有图片，请尝试支持视觉的模型。');}finally{cliBusy=false;}
   }
-  if(PROVIDER==='openai-compatible')return compatibleChat(chat);
+  if(PROVIDER==='openai-compatible')return options.onDelta?compatibleStream({base:BASE,key:KEY,model:chat.model||MODEL,messages:providerMessages(chat),...options}):compatibleChat(chat);
   if(chat.files?.length)fail(400,'ATTACHMENTS_UNSUPPORTED','此宿主文字通道暂不支持附件，请切换本机助手或兼容模型接口。');
   if(chat.model&&chat.model!=='host-default')fail(400,'MODEL_UNAVAILABLE','此通道使用宿主默认模型。');
   return workbuddyChat(chat);
@@ -196,6 +198,12 @@ const server = http.createServer(async (req, res) => {
     validateBrowser(req);
     if(req.method==='OPTIONS'){res.writeHead(204);return res.end();}
     const pathname = new URL(req.url, `http://127.0.0.1:${PORT}`).pathname;
+    if(pathname.startsWith('/api/ecosystem/qq/')){
+      const data=['POST','DELETE'].includes(req.method)?await body(req,32000):{};
+      const local=!req.headers.origin||[`http://127.0.0.1:${PORT}`,`http://localhost:${PORT}`].includes(req.headers.origin);
+      try{return json(res,200,await qqConnector.route(req.method,pathname,data,local));}
+      catch(e){fail(e.status||500,e.code||'QQ_ERROR',e.code?e.message:'QQ 连接暂时遇到问题，请稍后再试。');}
+    }
     if(pathname==='/api/pair/request'&&req.method==='POST'){const d=await body(req);try{return json(res,200,requestPair(req.headers.origin,d.proof));}catch(e){fail(400,'PAIR_FAILED',e.message);}}
     if(pathname==='/api/pair/poll'&&req.method==='POST'){const d=await body(req);try{return json(res,200,pollPair(d.id,req.headers.origin,d.proof));}catch(e){fail(400,'PAIR_FAILED',e.message);}}
     if(pathname==='/api/pair/pending'&&req.method==='GET'){try{return json(res,200,readPair(new URL(req.url,'http://localhost').searchParams.get('id')));}catch(e){fail(400,'PAIR_FAILED',e.message);}}
@@ -229,7 +237,7 @@ const server = http.createServer(async (req, res) => {
       PROVIDER = data.provider; BASE = (data.base || '').replace(/\/$/, ''); MODEL = data.model || ''; KEY = data.key || ''; WB_TOKEN = data.token || ''; WB_ENABLED = PROVIDER === 'workbuddy-localassistant';
       return json(res, 200, {ok:true, configured:configured(), verified:false, provider:PROVIDER});
     }
-    if (pathname === '/api/health' && req.method === 'GET') return json(res, 200, { ok: true, service: 'LearnFlow local adapter', adapterVersion:'1.3.0', provider: PROVIDER, localCLIAvailable: Boolean(LOCAL_CLI), configured: configured(), model: PROVIDER === 'openai-compatible' ? MODEL || null : null, mode: configured() ? 'live-configured-unverified' : 'demo', storesConversations: false, note: configured() ? '已配置不代表已通过真实服务联调。' : '未配置合法模型接口；网页可使用明确标注的预设演示。' });
+    if (pathname === '/api/health' && req.method === 'GET') return json(res, 200, { ok: true, service: 'LearnFlow local adapter', adapterVersion:'1.4.0', provider: PROVIDER, localCLIAvailable: Boolean(LOCAL_CLI), configured: configured(), model: PROVIDER === 'openai-compatible' ? MODEL || null : null, mode: configured() ? 'live-configured-unverified' : 'demo', storesConversations: false, note: configured() ? '已配置不代表已通过真实服务联调。' : '未配置合法模型接口；网页可使用明确标注的预设演示。' });
     if(pathname==='/api/models'&&req.method==='GET')return json(res,200,await modelList());
     if(pathname==='/api/probe'&&req.method==='POST'){
       const d=await body(req);if(d.consent!==true)fail(400,'CONSENT_REQUIRED','请同意发送一次简短连接测试（消耗少量额度）。');
@@ -241,12 +249,27 @@ const server = http.createServer(async (req, res) => {
       const result=await runChat(chat);
       return json(res, ['pending', 'requires_action'].includes(result.status) ? 202 : 200, learningResponse(result));
     }
+    if(pathname==='/api/chat/stream'&&req.method==='POST'){
+      const chat=validateChat(await body(req,17000000));
+      if(!configured())fail(503,'MODEL_NOT_CONFIGURED','先连接一个学习助手，就可以聊了。');
+      if(PROVIDER==='local-codebuddy'&&cliBusy)fail(409,'BUSY','上一条还在回复，稍等或先停止。');
+      res.writeHead(200,{'Content-Type':'application/x-ndjson; charset=utf-8','Cache-Control':'no-store, no-transform','X-Content-Type-Options':'nosniff','X-Accel-Buffering':'no'});
+      const abort=new AbortController();const write=value=>{if(!res.destroyed&&!res.writableEnded)res.write(JSON.stringify(value)+'\n');};
+      res.on('close',()=>{if(!res.writableEnded)abort.abort();});
+      write({type:'status',phase:'preparing',message:'正在读你的问题…'});
+      const heartbeat=setInterval(()=>write({type:'ping'}),10000);
+      try{const result=learningResponse(await runChat(chat,{signal:abort.signal,onDelta:text=>write({type:'delta',text}),onStatus:message=>write({type:'status',phase:'preparing',message})}));write({type:'result',...result});}
+      catch(e){if(!abort.signal.aborted)write({type:'error',message:e.message||'这次没有收到回答，请重试。',code:e.code||'MODEL_ERROR'});}
+      finally{clearInterval(heartbeat);if(!res.destroyed)res.end();}
+      return;
+    }
     if (pathname.startsWith('/api/')) fail(404, 'API_NOT_FOUND', '接口不存在或请求方法不受支持。');
     if (!['GET', 'HEAD'].includes(req.method)) fail(405, 'METHOD_NOT_ALLOWED', '不支持该方法。');
     await serveStatic(req, res, pathname);
   } catch (err) { if (!res.headersSent) json(res, err.status || 500, { error: err.code || 'SERVER_ERROR', message: err instanceof APIError ? err.message : '本地服务发生错误。', provider: PROVIDER }); else res.end(); }
 });
-server.requestTimeout = 65000;
+server.requestTimeout = 160000;
 server.headersTimeout = 15000;
+for(const signal of ['SIGINT','SIGTERM'])process.once(signal,()=>{qqConnector.close();server.close(()=>process.exit(0));setTimeout(()=>process.exit(0),2000).unref();});
 server.listen(PORT, '127.0.0.1', () => process.stdout.write(`LearnFlow: http://127.0.0.1:${PORT} | provider=${PROVIDER} | configured=${configured()}\n`));
 server.on('error', err => { process.stderr.write(`LearnFlow could not start (${err.code || 'ERROR'}).\n`); process.exitCode = 1; });

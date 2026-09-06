@@ -3,7 +3,8 @@ name: retrieval
 description: 在学习者复习已学内容、需要主动回忆或安排间隔复习时，先检索再反馈，并按作答证据调整下一次练习。
 license: MIT
 metadata:
-  version: 0.1.0
+  display_description: 先别翻笔记，试着想一想；忘了的地方再补。
+  version: 0.2.0
   author: LearnFlow Team
   display_name: 先回忆再看
   description_en: Practice retrieval before feedback and plan a feasible spaced review.

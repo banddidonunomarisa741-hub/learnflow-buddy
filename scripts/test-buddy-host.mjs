@@ -1,0 +1,59 @@
+import assert from 'node:assert/strict';
+import { mkdtemp, rm, readFile } from 'node:fs/promises';
+import { spawn } from 'node:child_process';
+import os from 'node:os';
+import path from 'node:path';
+import { LearningLibrary } from '../buddy-app/mcp/library.mjs';
+
+const root = await mkdtemp(path.join(os.tmpdir(), 'learnflow-host-test-'));
+let checks = 0, response = { approved: false }, approvals = 0;
+const check = (value, text) => { assert.ok(value, text); checks++; };
+const lib = new LearningLibrary({ root, confirm: async () => { approvals++; return response; } });
+async function done(job) { for(let i=0;i<100;i++){const s=lib.status(job.id);if(s.status!=='pending')return s;await new Promise(r=>setTimeout(r,20))}throw Error('review timeout'); }
+const child = spawn(process.execPath, ['buddy-app/mcp/strategy-server.mjs'], { stdio: ['pipe','pipe','ignore'], windowsHide: true });
+let counter=0,buffer='';const pending=new Map();
+child.stdout.on('data',chunk=>{buffer+=chunk;let newline;while((newline=buffer.indexOf('\n'))>=0){const line=buffer.slice(0,newline);buffer=buffer.slice(newline+1);if(line.trim()){const message=JSON.parse(line);pending.get(message.id)?.(message);pending.delete(message.id)}}});
+const send = message => child.stdin.write(JSON.stringify(message)+'\n');
+function rpc(method,params={}) { const id=++counter;return new Promise(resolve=>{pending.set(id,resolve);send({jsonrpc:'2.0',id,method,params})}); }
+const tool=async(name,args={})=>(await rpc('tools/call',{name,arguments:args})).result;
+try {
+  check((await lib.list()).length===0,'fresh library is empty');
+  const draft=lib.draft({title:'转折词之后',markdown:'先看转折后的限定，再核对选项。'});
+  check(draft.saved===false && (await lib.list()).length===0,'draft does not write a learning asset');
+  check((await done(lib.startReview(draft.id))).status==='cancelled','native cancellation is respected');
+  check((await lib.list()).length===0,'cancelled review leaves no asset');
+  response={approved:true,title:'我改过的标题',markdown:'这是确认窗口修改过的内容。'};
+  const saved=await done(lib.startReview(draft.id));
+  check(saved.status==='saved'&&saved.asset.title===response.title,'actual reviewed content is saved');
+  const originalId=saved.asset.id;
+  check((await lib.get(originalId)).markdown===response.markdown,'next read receives reviewed content');
+  check((await lib.list()).length===1,'confirmed block is listed');
+  check(approvals===2,'each review invokes native confirmation interface');
+  let rejected=false;try{await lib.get('../settings.json')}catch{rejected=true}check(rejected,'asset path traversal rejected');
+  response={approved:false};check((await done(await lib.requestDelete(originalId))).status==='cancelled','cancelled delete preserves asset');
+  check((await lib.list()).length===1,'asset remains after cancelled delete');
+  response={approved:true};check((await done(await lib.requestDelete(originalId))).status==='deleted','confirmed delete succeeds');
+  check((await lib.list()).length===0,'confirmed deletion reflected in library');
+  const p=lib.draft({title:'词族复习',kind:'strategy',strategyId:'my-word-family',markdown:'---\nname: my-word-family\n---\n先看词族，再默写。'});
+  response={approved:true,title:p.title,markdown:p.markdown};const ps=await done(lib.startReview(p.id));
+  check(ps.asset.filename==='SKILL.md','personal strategy is portable SKILL.md');
+  const fresh = new LearningLibrary({root,confirm:async()=>({approved:false})});
+  check((await fresh.get(ps.asset.id)).markdown===p.markdown,'confirmed learning persists across process instance');
+  const init=await rpc('initialize',{protocolVersion:'2025-11-25',capabilities:{},clientInfo:{name:'LearnFlow test',version:'1'}});
+  check(init.result.serverInfo.version==='0.2.0','MCP version negotiated');
+  send({jsonrpc:'2.0',method:'notifications/initialized'});
+  const list=(await rpc('tools/list')).result.tools;
+  check(list.length===12,'twelve documented MCP tools discovered');
+  check(!list.some(t=>/save|commit|confirm/i.test(t.name)),'model has no direct confirmation-bypass commit tool');
+  const ui=list.find(t=>t.name==='show_learning_workspace');
+  check(ui._meta.ui.resourceUri==='ui://learnflow/workspace.html','MCP App resource advertised');
+  const resource=(await rpc('resources/read',{uri:ui._meta.ui.resourceUri})).result.contents[0];
+  check(resource.mimeType==='text/html;profile=mcp-app'&&resource.text.includes('ui/initialize'),'MCP App serves protocol UI');
+  check(resource.text.includes('data:image/png;base64,')&&!resource.text.includes('src="http'),'UI has final embedded logo and no remote asset requirement');
+  const invalid=await tool('get_learning_strategy',{id:'../../test'});check(invalid.isError===true,'MCP strategy traversal rejected');
+  const disabled=await tool('draft_personal_strategy',{id:'test',title:'测试',scope:'词汇',method:'词族',evidence:'选择词族',memoryEnabled:false});check(disabled.isError===true,'memory-off prevents strategy draft');
+  const spoof=await tool('draft_learning_block',{title:'test',markdown:'text',confirmed:true});check(spoof.isError===true,'unknown confirmation flag rejected');
+  const d=await tool('draft_learning_block',{title:'测试题',markdown:'测试用学习块'});check(d.structuredContent.draft.saved===false,'MCP draft stays unconfirmed');
+  check((await tool('list_learning_strategies')).structuredContent.strategies.length===11,'all packaged strategies available');
+  console.log(JSON.stringify({passed:checks,tests:'library confirmation, persistence, cancellation, deletion, path bounds, MCP tools and Apps resource',nativeWindow:'separate manual/UI verification required'},null,2));
+} finally { child.kill(); await rm(root,{recursive:true,force:true}); }

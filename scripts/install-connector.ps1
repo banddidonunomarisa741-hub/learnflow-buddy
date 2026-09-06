@@ -1,4 +1,5 @@
-﻿$ErrorActionPreference = 'Stop'
+﻿param([switch]$NoOpen)
+$ErrorActionPreference = 'Stop'
 $source = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $target = Join-Path $env:LOCALAPPDATA 'LearnFlowConnector'
 $node = (Get-Command node -ErrorAction SilentlyContinue).Source
@@ -12,4 +13,4 @@ New-ItemProperty -Path $protocol -Name 'URL Protocol' -Value '' -Force | Out-Nul
 # Fixed command, deliberately no URI interpolation or arbitrary arguments.
 $command = 'powershell.exe -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File "' + (Join-Path $target 'scripts\launch.ps1') + '"'
 Set-Item -Path "$protocol\shell\open\command" -Value $command
-& (Join-Path $target 'scripts\launch.ps1')
+& (Join-Path $target 'scripts\launch.ps1') -NoOpen:$NoOpen

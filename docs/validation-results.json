@@ -1,35 +1,32 @@
 {
-  "date": "2026-09-05T16:49:38.545Z",
+  "date": "2026-09-06T05:51:21.093Z",
   "url": "http://127.0.0.1:4173/",
   "syntheticData": true,
   "mockedModel": true,
+  "stream404Fixture": true,
+  "realAPIWrites": 0,
   "tests": [
     {
       "id": "01-confirmed-memory-context",
       "status": "PASS",
       "detail": {
-        "memories": 1,
-        "requestKeys": [
-          "messages",
-          "memories",
-          "strategies",
-          "preferences",
-          "scene"
-        ]
+        "examMemoryIncluded": true,
+        "selfSceneMemories": 0
       }
     },
     {
       "id": "02-session-restoration",
       "status": "PASS",
       "detail": {
-        "savedSessions": 1
+        "savedSessions": 2
       }
     },
     {
       "id": "03-memory-off",
       "status": "PASS",
       "detail": {
-        "memories": []
+        "memorySent": 0,
+        "sessionsUnchanged": true
       }
     },
     {
@@ -41,6 +38,7 @@
           "roots",
           "plain"
         ],
+        "savedScene": "exam",
         "usage": {
           "roots": {
             "actual": 50,
@@ -50,8 +48,7 @@
             "actual": 50,
             "estimated": 0
           }
-        },
-        "savedScene": "exam"
+        }
       }
     },
     {
@@ -62,15 +59,15 @@
           "format": "自然段落",
           "guidance": "直接讲清楚"
         },
-        "scene": "exam",
-        "content": "QA_MEMORY_MARKER\n输出偏好：自然段落。引导：直接讲清楚。"
+        "scene": "exam"
       }
     },
     {
       "id": "06-ten-minute-plan",
       "status": "PASS",
       "detail": {
-        "allocation": "2 + 6 + 2"
+        "allocation": "2 + 6 + 2",
+        "mode": "preset demo"
       }
     },
     {
@@ -93,7 +90,7 @@
       "id": "09-card-html-escaped",
       "status": "PASS",
       "detail": {
-        "payload": "img/onerror shown as text",
+        "payload": "img/onerror rendered as literal text",
         "autoEnabled": false
       }
     },
@@ -102,15 +99,16 @@
       "status": "PASS",
       "detail": {
         "rejected": true,
-        "injected": false,
-        "toast": "恢复失败：策略字段无效"
+        "injected": false
       }
     },
     {
       "id": "11-complete-block-reload-idempotent",
       "status": "PASS",
       "detail": {
-        "blocks": 1
+        "cancelledCount": 0,
+        "confirmedCount": 1,
+        "mockAssetSaves": 2
       }
     },
     {
@@ -125,11 +123,13 @@
     }
   ],
   "errors": [],
-  "browser": "152.0.7977.83",
+  "browser": "141.0.3537.92",
   "hashes": {
-    "public/app.js": "a735b3f798fb61744469a8624a5a9bf45894faece41e6df77fef07b1153becb4",
-    "public/data.js": "8c0fc8631a7aa2279471528fcb25a3f1257a7bf0df321b8d680b74ec03ae2625",
-    "public/styles.css": "e45892c00abc8cba23025f801e4092cf83dce3d3ab1eef7b4993c84328f01bfc",
-    "server/server.mjs": "b00c8de7e93ff60aa01e359002b7e4bf5980acf08d9fa67ce1ff1f1a600d6239"
+    "public/app.js": "871b225dec001fca8175f92d904a2f495661ff3613970e560c312f78857085f0",
+    "public/composer.js": "7656ba40f37222cb6b3a6d205813a61eb0bc50af9d8232c6e7d89d95e52b10de",
+    "public/rich-text.js": "f5395e240e12b39d0af897198f6784af62678c9ff0d387b2a2222167b9c392b9",
+    "public/data.js": "4f07cde6b596fc66af283e86f1855b135b702929fb0e0cfd245918abf09252ec",
+    "public/styles.css": "4feb9c8da58ce22ed84ddeee6c49a992853e8204910c77d25c94276dda4ab987",
+    "server/server.mjs": "a07d968f08456c79837a236e163153dbb455f67f663116504e0a915dd5d399e5"
   }
 }

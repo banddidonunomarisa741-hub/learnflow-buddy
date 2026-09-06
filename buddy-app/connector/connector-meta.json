@@ -1,14 +1,22 @@
 {
-  "name": "LearnFlow 学习策略",
-  "name_zh": "LearnFlow 学习策略",
-  "name_en": "LearnFlow Strategies",
-  "description": "Discover bundled learning methods and create editable personal strategy drafts, without reading private files.",
-  "description_zh": "检索随包学习策略，生成可编辑的个人策略草稿。仅访问安装包内容，不读取私人文件，不自动保存记忆。",
-  "description_en": "Find bundled strategies and draft personal learning methods. Reads only this package and never persists memory.",
+  "name": "LearnFlow学习流动",
+  "name_zh": "LearnFlow学习流动",
+  "name_en": "LearnFlow",
+  "description": "Choose a learning method and keep useful work in a local library after native user confirmation.",
+  "description_zh": "挑选学习方法，把学习块、个人策略和 PDF 存到本机。保存前由你检查确认，想看时直接打开。",
+  "description_en": "Choose learning methods. Review and save blocks, personal strategies and PDFs locally, then open them when needed.",
   "source": "learnflow-learning-strategies",
   "type": "mcp",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "minWorkbuddyVersion": "5.0.0",
-  "examples_zh": ["有哪些适合英语词汇复习的方法？", "根据我确认的偏好生成词根词缀策略草稿"],
-  "examples_en": ["List strategies for vocabulary review.", "Draft a morphology strategy from my stated preferences."]
+  "examples_zh": [
+    "打开 LearnFlow 学习面板",
+    "把这次错题复盘整理成学习块，让我确认后保存",
+    "打开我保存的教材"
+  ],
+  "examples_en": [
+    "Open my LearnFlow workspace.",
+    "Draft a learning block and let me review it before saving.",
+    "Open my saved textbook."
+  ]
 }

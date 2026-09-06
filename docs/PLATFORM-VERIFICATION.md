@@ -12,23 +12,23 @@
 | 是否存在官方接口 | 存在 OAuth 2.1 Open API，提供本地助理消息与云端任务等 | 不需要逆向桌面 token；须有已审核应用、合法授权和所需 scope |
 | 是否有公开匿名 LearnBuddy 模型接口 | 本次所查文档没有提供这种接口 | 不将普通模型兼容接口冒称 LearnBuddy 原生算力；默认用可辨认的预设演示 |
 | Skill 是否必须改为 MCP | 官方同时保留 Skill、专家和连接器，连接器推荐 MCP + Skill | Skill 管教学流程；MCP 管稳定工具调用。可移植性要靠接口边界、格式、版本和实测共同实现 |
-| 腾讯生态是否已连接 | 当前没有合法相关授权及实际账号/连接器接入 | QQ、微信、腾讯会议、腾讯文档在 Demo 中是能力规划，不能标为已接通 |
+| 腾讯生态是否已连接 | QQ 扫码已收到腾讯网关 READY，消息收发与提醒逐项验收 | 微信、腾讯会议、腾讯文档尚未在网页接通；QQ 与正式 Buddy 发布权限分别核验 |
 
 主体结论依据：[入驻开放平台](https://open.workbuddy.cn/docs/onboarding)、[开放平台概述](https://open.workbuddy.cn/docs/what-is-open-platform)。应用载体和流程依据：[Buddy 应用](https://open.workbuddy.cn/docs/buddy-app)。
 
 ## 本次实际产物
 
 - 本地静态网站与同源 loopback 后端；公开静态托管不承载服务端密钥或持续进程。
-- 10 个可移植 Skill 源文件；构建时转换为腾讯要求的 Skill 元数据。
+- 11 个可移植 Skill 源文件；构建时转换为腾讯要求的 Skill 元数据。
 - 4 个专家源配置与 ZIP：自主学习、应试复盘、PBL、教学设计/过程性评价。真实联系邮箱尚未提供，发布校验会报告缺失。
-- 真实 stdio MCP：检索策略、读取策略及哈希、生成个人策略草稿。仅访问随包数据，草稿返回文本，不自动保存记忆或读取私人文件。
+- 真实 stdio MCP：12 项学习与资料工具，包含检索、草稿、本人确认保存、资料库、导入与打开。文件操作限定在确认流程和插件资料库内；详细工具清单见宿主安装说明。
 - 3 个工作模式、7 个场景胶囊、双语输入提示及市场资源映射源稿。模型 ID 待控制台从实际模型池选取。
 
 包结构依据：[Skill](https://open.workbuddy.cn/docs/skill)、[专家](https://open.workbuddy.cn/docs/expert)、[连接器](https://open.workbuddy.cn/docs/connector)。MCP 实现参照 [stdio 传输](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports) 与 [生命周期](https://modelcontextprotocol.io/specification/2025-11-25/basic/lifecycle)。本地协议测试不等于腾讯宿主兼容性认证。
 
 ## 模型接口的真实边界
 
-server/server.mjs 有两种显式配置：兼容 Chat Completions 的自有模型接口；腾讯正式 Open API 的本地助理适配。没有自动发现桌面密钥，没有匿名调用。后者使用 /localassistant 与 /localassistant/message；需 user.localassistant.readable、user.localassistant.invokable。授权应用须先审核并由用户完成 OAuth。本项目没有实现正式 OAuth 登录/刷新，也尚未用腾讯真实凭据联调。[官方第三方应用](https://open.workbuddy.cn/docs/third-party-app)、[Open API](https://open.workbuddy.cn/docs/openapi)。
+server/server.mjs 提供已实测的本机 CodeBuddy CLI 通道，CLI 自己处理正常认证，不提取登录密钥。另有两种显式配置：兼容 Chat Completions 的自有模型接口；腾讯正式 Open API 的本地助理适配。没有自动发现桌面密钥，没有匿名调用。后者使用 /localassistant 与 /localassistant/message；需 user.localassistant.readable、user.localassistant.invokable。授权应用须先审核并由用户完成 OAuth。本项目没有实现正式 OAuth 登录/刷新，也尚未用腾讯真实凭据联调。[官方第三方应用](https://open.workbuddy.cn/docs/third-party-app)、[Open API](https://open.workbuddy.cn/docs/openapi)。
 
 WorkBuddy 的本地助理消息查询缺少本适配器所需的独立会话、任务完成与 token 数字段。实现只能读取增量回复并报告 pending/received/requires_action 等本地适配状态，不能据此保证宿主任务结束；并行宿主任务存在归属限制。因此原生路线下一步应优先评估官方云任务/ACP 的任务隔离，或与企业确认行业宿主接口。
 

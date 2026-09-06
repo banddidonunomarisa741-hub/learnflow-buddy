@@ -1,8 +1,8 @@
 # LearnFlow 本地接口
 
-需要 Node.js 20+，没有 npm 依赖。仓库根目录执行 `node server/server.mjs`，打开 http://127.0.0.1:4173。Windows 也可运行 `powershell -ExecutionPolicy Bypass -File scripts/start-local.ps1`。
+需要 Node.js 20+；QQ SDK 与 WebSocket 依赖已固定打包，用户无需执行 npm 下载。仓库根目录执行 `node server/server.mjs`，打开 http://127.0.0.1:4173。Windows 也可运行 `powershell -ExecutionPolicy Bypass -File scripts/start-local.ps1`。
 
-服务仅监听 127.0.0.1，只公开 public/。适配器不提取桌面登录密钥或浏览器配置；仅检测安装元数据，CLI 自己处理正常认证，不保存对话，不记录请求正文或密钥。每个浏览器 Origin 有自己的 localStorage；换域名、端口或清除站点数据都可能导致看不到原有数据，请先导出。
+服务仅监听 127.0.0.1，只公开 public/。模型适配器只检测安装元数据，CLI 自己处理正常认证；不提取桌面登录密钥、不记录请求正文或密钥。经用户确认的资产保存到本机资料目录，QQ 收件与提醒仅在内存中。每个浏览器 Origin 有自己的 localStorage；换域名、端口或清除站点数据都可能导致看不到原有数据，请先导出。
 
 ## 点击连接（新增）
 
@@ -46,3 +46,11 @@ POST /api/chat，请求 Content-Type 为 application/json：
 线上页点击“连接本机，在此网页继续学习”。浏览器可能询问本地网络访问权限；本机窗口会再次展示网站来源、模型额度与资产访问范围。确认后原网页取得仅在本机内存登记、绑定来源、最长 8 小时有效的连接许可。此许可不是腾讯 access_token，不泄露上游密钥。聊天与学习资产 API 接受此许可；配置接口和批准配对接口仍仅限本机同源页面。支持主动撤回，程序退出后全部失效。
 
 仅允许两个已发布来源，其他部署需由开发者明确加入允许列表。首次使用仍需安装本机助手。该方案不冒充腾讯 OAuth：正式应用尚未审核通过，官方单点登录不能宣称已完成。
+
+## 1.4：实时回答和 QQ
+
+`POST /api/chat/stream` 接受与 `/api/chat` 相同的输入，返回 NDJSON：`status` 表示准备中，`delta.text` 是正文增量，`result` 是最终回答和学习选项，`error` 是本次失败，`ping` 仅保持连接。浏览器停止会取消本机 CLI 或兼容服务请求。思考字段、工具事件和上游错误正文不透传到网页。
+
+`/api/ecosystem/qq/*` 提供明确授权的 QQ 连接、收件与提醒。扫码和机器人身份配置只能在本机页面进行；已配对网页可以访问收件与提醒，但不能取得身份凭据。发送要指定来自扫码或实际来信的账号、正文和唯一操作编号，并明确确认。详见 [QQ API 与运行限制](../docs/TENCENT-CONNECTORS.md)。
+
+QQ 凭据、收件和待发提醒只在服务内存中，退出即清除。更新版本应先提示用户断开并清楚告知需要重新扫码；不通过运行中调试器修改服务。已有提醒可能已被 QQ 接收时，不自动重发。

@@ -32,7 +32,7 @@ def footer(c,d):
  c.saveState();c.setFont('Body',8.5);c.setFillColor(colors.HexColor('#666666'))
  if d.page>1:c.drawString(58,813,TITLE+' · 项目解决方案');c.drawRightString(537,30,str(d.page))
  c.restoreState()
-dest=OUT/'LearnFlow学习流动-项目解决方案.pdf'
+dest=OUT/'LearnFlow学习流动-项目解决方案-1.4.pdf'
 doc=Document(str(dest),pagesize=A4,leftMargin=58,rightMargin=58,topMargin=58,bottomMargin=48,title=TITLE,author=TITLE+'学生团队')
 doc.addPageTemplates(PageTemplate(id='main',frames=[Frame(58,48,479,736,id='body',leftPadding=0,rightPadding=0,topPadding=0,bottomPadding=0)],onPage=footer))
 story=[Spacer(1,32),para(TITLE,'cover'),para('自主学习支持平台','subtitle'),para('项目解决方案','h1'),Spacer(1,15)]

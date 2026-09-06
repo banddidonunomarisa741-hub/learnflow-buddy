@@ -74,9 +74,12 @@ try {
   m = await rpc('initialize', { protocolVersion: '2025-11-25', capabilities: {}, clientInfo: { name: 'learnflow-integration-test', version: '1' } });
   check(m.result.protocolVersion === '2025-11-25', 'MCP negotiates supported protocol');
   mcp.stdin.write(JSON.stringify({ jsonrpc: '2.0', method: 'notifications/initialized' }) + '\n');
-  m = await rpc('tools/list', {}); check(m.result.tools.length === 3, 'MCP exposes three implemented tools');
+  m = await rpc('tools/list', {});
+  const hostTools = m.result.tools;
+  check(hostTools.length === 12 && ['show_learning_workspace','review_learning_draft','get_learning_review_status','list_learning_assets','import_learning_pdf'].every(name => hostTools.some(t => t.name === name)), 'MCP exposes twelve implemented learning and asset tools');
+  check(!hostTools.some(t => /^(save|commit|confirm)_/.test(t.name)) && hostTools.find(t => t.name === 'review_learning_draft').annotations.readOnlyHint === false, 'Persistence uses native user review without model-facing commit shortcut');
   m = await rpc('tools/call', { name: 'list_learning_strategies', arguments: {} });
-  const catalogue = JSON.parse(m.result.content[0].text); check(catalogue.strategies.length === 10, 'MCP reads ten bundled cards');
+  const catalogue = JSON.parse(m.result.content[0].text); check(catalogue.strategies.length === 11 && catalogue.strategies.some(s => s.id === 'learnflow-start'), 'MCP reads eleven bundled cards including explicit LearnFlow entry');
   m = await rpc('tools/call', { name: 'get_learning_strategy', arguments: { id: 'root-affix' } });
   data = JSON.parse(m.result.content[0].text); check(data.sha256.length === 64 && data.text.includes('词根'), 'MCP returns verifiable strategy text');
   m = await rpc('tools/call', { name: 'get_learning_strategy', arguments: { id: '../../server' } }); check(m.result.isError === true, 'MCP rejects arbitrary filesystem paths');

@@ -36,6 +36,6 @@ else if(d.kind==='comparison'){d.rows.forEach((a,k)=>{const y=2.66+k*1.05;rect(s
 else if(d.kind==='timeline'){d.phases.forEach((a,k)=>{let x=.7+k*4.04;rect(s,x,2.65,3.77,2.32,k===1?C.cream:C.panel);text(s,a[0],x+.23,2.97,3.31,.44,24,C.orange,true);text(s,a[1],x+.23,3.75,3.31,.91,20,C.ink);});d.routes.forEach((r,k)=>{rect(s,.7+k*6.09,5.53,5.86,.59,k===0?C.ink:C.cream);text(s,r,.92+k*6.09,5.69,5.4,.28,15.5,k===0?C.white:C.ink,true);});}
 else if(d.kind==='screenshot'){rect(s,.65,2.27,6.82,4.73,C.panel,true,C.line);if(screenshot)s.addImage({path:screenshot,...screenshotSize});else text(s,'本地工作台截图待最终运行检查',1.2,3.91,5.8,.65,24,C.muted);d.cards.forEach((a,k)=>{const y=2.55+k*1.37;rect(s,7.86,y,4.79,1.16,k===0?C.cream:C.panel);text(s,a[0],8.13,y+.17,4.25,.31,19,C.orange,true);text(s,a[1],8.13,y+.64,4.25,.32,17,C.ink);});}
 });
-const dest=path.join(out,'LearnFlow学习流动-答辩演示.pptx');await pptx.writeFile({fileName:dest});console.log(JSON.stringify({pptx:dest,slides:data.length,screenshot:screenshot||null}));
+const dest=path.join(out,'LearnFlow学习流动-答辩演示-1.4.pptx');await pptx.writeFile({fileName:dest});console.log(JSON.stringify({pptx:dest,slides:data.length,screenshot:screenshot||null}));
 })();
 

@@ -1,0 +1,82 @@
+{
+  "resources": [
+    {
+      "path": "index.html",
+      "status": 200,
+      "matchesWorkspace": true
+    },
+    {
+      "path": "data.js",
+      "status": 200,
+      "matchesWorkspace": true
+    },
+    {
+      "path": "bridge.js",
+      "status": 200,
+      "matchesWorkspace": true
+    },
+    {
+      "path": "experience.js",
+      "status": 200,
+      "matchesWorkspace": true
+    },
+    {
+      "path": "rich-text.js",
+      "status": 200,
+      "matchesWorkspace": true
+    },
+    {
+      "path": "composer.js",
+      "status": 200,
+      "matchesWorkspace": true
+    },
+    {
+      "path": "app.js",
+      "status": 200,
+      "matchesWorkspace": true
+    },
+    {
+      "path": "connection.js",
+      "status": 200,
+      "matchesWorkspace": true
+    },
+    {
+      "path": "ecosystem.js",
+      "status": 200,
+      "matchesWorkspace": true
+    },
+    {
+      "path": "styles.css",
+      "status": 200,
+      "matchesWorkspace": true
+    },
+    {
+      "path": "ecosystem.css",
+      "status": 200,
+      "matchesWorkspace": true
+    },
+    {
+      "path": "assets/learnflow-logo.svg",
+      "status": 200,
+      "matchesWorkspace": true
+    },
+    {
+      "path": "qq-connect.html",
+      "status": 200,
+      "matchesWorkspace": true
+    },
+    {
+      "path": "vendor/pdfjs/pdf.mjs",
+      "status": 200,
+      "matchesWorkspace": true
+    },
+    {
+      "path": "vendor/pdfjs/pdf.worker.mjs",
+      "status": 200,
+      "matchesWorkspace": true
+    }
+  ],
+  "assetListStatus": 200,
+  "assetCountOnly": 1,
+  "assetContentsOpened": 0
+}

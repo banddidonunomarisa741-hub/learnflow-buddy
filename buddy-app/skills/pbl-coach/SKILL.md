@@ -3,9 +3,10 @@ name: pbl-coach
 description: 在项目式学习中帮助明确驱动问题、分工、里程碑和成果证据；以学习者产物为依据提示下一步，不伪称已邀请成员或完成协作。
 license: MIT
 metadata:
-  version: 0.1.0
+  display_description: 想法先别越攒越多，挑一件今天能动手做的事。
+  version: 0.2.0
   author: LearnFlow Team
-  display_name: 项目拆成小胜利
+  display_name: 先把第一版做出来
   description_en: Coach project learning with a driving question, responsibilities, milestones, and evidence.
 ---
 

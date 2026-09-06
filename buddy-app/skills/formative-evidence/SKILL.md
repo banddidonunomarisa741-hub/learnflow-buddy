@@ -3,9 +3,10 @@ name: formative-evidence
 description: 教师或学习者要求过程性评价辅助时，将目标、可观察产物和评价量规对齐，生成供教师核验的建议，不自动形成正式成绩。
 license: MIT
 metadata:
-  version: 0.1.0
+  display_description: 把作业、修改和练习放在一起，看看进步发生在哪儿。
+  version: 0.2.0
   author: LearnFlow Team
-  display_name: 用学习产物说话
+  display_name: 这次学会了什么
   description_en: Align learning goals, observable evidence, and a teacher-reviewable formative rubric.
 ---
 

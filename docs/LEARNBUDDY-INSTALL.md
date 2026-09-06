@@ -1,0 +1,49 @@
+# LearnFlow学习流动 · 本机插件
+
+本机已安装到 LearnBuddy 的独立用户目录。使用官方插件命令注册，不改客户端程序，不接管无关任务。
+
+## 怎么开始
+
+新建 LearnBuddy 对话，输入：
+
+> 启动 LearnFlow学习流动。我要复盘一道六级阅读题，先给一点提示，别急着告诉我答案。
+
+想选学法，说“打开 LearnFlow 学习面板”；想留住成果，说“把刚才容易忘的地方整理成学习块”。保存时弹出带 F 标识的本机窗口，内容可以改；点保存才写文件，点“这次不保存”就取消。
+
+| 想做什么 | 可以这样说 |
+| --- | --- |
+| 开始学习 | 启动 LearnFlow，一次只问我一个问题 |
+| 找回内容 | 列出我保存在 LearnFlow 的学习资产 |
+| 固定自己的方法 | 以后词汇课就用词族，先整理成个人策略让我看一眼 |
+| 存教材 | 帮我保存一份 PDF，我来选文件 |
+| 打开教材 | 打开我刚保存的那份 PDF |
+| 撤回保存 | 删除这份学习块，我在窗口里确认 |
+
+MCP Apps 面板按协议开发和测试，实际内嵌显示仍取决于 LearnBuddy 版本。没有显示时，对话入口仍可用。模型选择、图片附件、原有腾讯连接器使用宿主自身界面。
+
+## 在另一台 Windows 安装
+
+1. 解压完整交付包或独立 learnflow-learnbuddy-install.zip，双击其中“安装LearnBuddy插件.cmd”。不需要 Python；请先安装 LearnBuddy / WorkBuddy。本地开发安装器需要 Node.js 20+；正式市场连接器声明托管运行时，仍需市场审核验证。
+2. 在交付目录运行 `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/install-learnbuddy.ps1`。
+3. 如果没找到客户端，追加 `-ClientPath "你的 LearnBuddy.exe 完整路径"`；WorkBuddy 用 `-Client WorkBuddy`。
+4. 重新打开技能页或新建对话。若没有即时刷新，正常退出再打开；脚本不会强行结束你的任务。
+
+设置备份在对应宿主目录 `learnflow-backups/时间戳`。脚本保留其它插件及用户 MCP 配置，只新增 LearnFlow；本机分发目录为 `%LOCALAPPDATA%/LearnFlowHost/distribution/learnflow-marketplace`。
+
+## 保存与卸载
+
+资产位于 `%LOCALAPPDATA%/LearnFlowHost/assets`，每个编号目录含 record.json 和学习块.md、SKILL.md 或 document.pdf。迁移时保留整个编号目录。宿主库与网页库当前分开：PDF 可在网页学习资产再次导入，SKILL.md 可交给支持 Skill 的工具使用。
+
+卸载：`powershell -NoProfile -ExecutionPolicy Bypass -File scripts/install-learnbuddy.ps1 -Uninstall`。移除插件注册和本安装器的 MCP 条目，保留个人学习资产与设置备份。
+
+## QQ 与权限
+
+宿主 QQ 走 LearnBuddy / WorkBuddy 原生助理中的 QQ 机器人入口。用户绑定后，远程任务才能进入该宿主。网页 QQ 是独立本机收件箱，授权互不替代。12 个 LearnFlow MCP 工具没有独立 QQ 收发接口。
+
+## 实测记录
+
+官方插件校验与安装通过：11 个 Skill、4 个专家、12 个 MCP 工具。LearnBuddy 5.3.8 附带 CLI 真实调用策略检索，返回 11 张卡。26 项自动检查通过；原生确认窗口用测试资料验证取消 / 保存，未写入用户个人资产。
+
+三题选择、学法回传与空资料库在独立 MCP Apps 协议测试宿主中通过；LearnBuddy 实际内嵌展示仍待验证。其 CLI 在完整回复后出现 Windows 退出码 3221226505，未因这个问题放开用户全局权限，也未报告客户端稳定性通过。
+
+参考：[官方插件规范](https://www.codebuddy.cn/docs/cli/plugins-reference)、[官方 MCP 配置](https://www.codebuddy.cn/docs/workbuddy/From-Beginner-to-Expert-Guide/Function-Description/MCP-Guide)。

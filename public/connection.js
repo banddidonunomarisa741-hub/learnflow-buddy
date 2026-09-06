@@ -7,9 +7,9 @@
   async function open(){
     if(running){if(!dialog.open)dialog.showModal();return;}
     const h=await health();
-    dialog.innerHTML='<button class="secondary" id="connection-close" style="float:right">关闭</button><h2>连接后，直接开始学习</h2><p>使用你本机已登录的学习助手。连接时发送一次简短测试，成功后立即显示结果。</p><p class="connection-result" id="connection-status" role="status" aria-live="polite"></p>';
+    dialog.innerHTML='<img class="connection-logo" src="./assets/learnflow-logo.svg" alt="LearnFlow"><button class="secondary" id="connection-close" style="float:right">关闭</button><h2>连接你的学习助手</h2><p>连接本机已登录的 WorkBuddy。会发送一条简短测试，结果直接显示在这里。</p><p class="connection-result" id="connection-status" role="status" aria-live="polite"></p>';
     if(h?.configured){
-      if(h.adapterVersion!=='1.3.0')dialog.insertAdjacentHTML('beforeend','<p>本机连接助手需要升级，才能使用模型列表和附件。</p><p><a class="primary" href="./downloads/learnflow-connector.zip" download>下载最新版，解压并运行安装连接助手.cmd</a></p>');
+      if(Number(h.adapterVersion?.split('.')[0]||0)<1||Number(h.adapterVersion?.split('.')[0]||0)===1&&Number(h.adapterVersion?.split('.')[1]||0)<4)dialog.insertAdjacentHTML('beforeend','<p>更新本机连接助手后，可使用实时回复和停止生成。</p><p><a class="primary" href="./downloads/learnflow-connector.zip" download>下载最新版，解压并运行安装连接助手.cmd</a></p>');
       dialog.insertAdjacentHTML('beforeend','<button class="primary" id="verify-connection">验证连接并开始学习</button> <button class="secondary" id="disconnect-connection">断开连接</button>');
     }else if(local&&h){
       dialog.insertAdjacentHTML('beforeend',`<form id="connection-form">${h.localCLIAvailable?'<p class="connection-found">✓ 已找到本机 WorkBuddy 学习助手</p>':'<p>未发现可用的本机入口，请填写自己的模型接口。</p>'}<details ${h.localCLIAvailable?'':'open'}><summary>使用自己的模型接口（可选）</summary><p><label><input type="checkbox" id="use-compatible" ${h.localCLIAvailable?'':'checked'}> 使用 OpenAI 兼容接口</label></p><label>接口地址<input name="base" placeholder="https://你的服务/v1" class="wide-button"></label><label>默认模型<input name="model" placeholder="服务商提供的模型标识" class="wide-button"></label><label>API Key<input name="key" type="password" autocomplete="new-password" class="wide-button"></label></details><p>点击下方按钮，即同意发送学习对话、你选择的附件、策略和允许使用的记忆，并进行一次连接测试；会消耗账号额度。密钥只留在本机服务内存中。</p><button type="submit" class="primary">同意连接并验证</button></form>`);
@@ -21,7 +21,7 @@
     dialog.querySelector('#connection-close').onclick=()=>dialog.close();
     dialog.querySelector('#verify-connection')?.addEventListener('click',()=>task(verify));
     dialog.querySelector('#disconnect-connection')?.addEventListener('click',()=>task(async()=>{if(!local)await window.LearnFlowBridge.disconnect();else{const r=await fetch('/api/connection',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({disconnect:true})});if(!r.ok)throw Error('当前任务尚未结束，请稍后断开。');window.dispatchEvent(new Event('learnflow-disconnected'));}status('已断开，可随时重新连接。');button.textContent='连接学习助手';}));
-    status(h?.configured?'已授权，点击验证即可确认模型现在是否可用。':'不需要复制 WorkBuddy 访问令牌。');if(!dialog.open)dialog.showModal();
+    status(h?.configured?'已授权，点击验证即可确认模型现在是否可用。':'确认后会测试一次模型连接。');if(!dialog.open)dialog.showModal();
   }
   function status(t){const el=dialog.querySelector('#connection-status');if(el)el.textContent=t;}
   async function task(fn){if(running)return;running=true;dialog.querySelectorAll('button:not(#connection-close)').forEach(b=>b.disabled=true);try{await fn();}catch(e){status('未完成：'+e.message);button.textContent='连接待检查';}finally{running=false;dialog.querySelectorAll('button').forEach(b=>b.disabled=false);}}

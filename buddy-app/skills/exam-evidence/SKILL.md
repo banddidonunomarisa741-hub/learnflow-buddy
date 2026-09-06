@@ -3,7 +3,8 @@ name: exam-evidence
 description: 对用户提供的考试题做答案隔离、原文证据定位和干扰项复盘；分析命题策略时区分可证结论与推测，不提供考试作弊帮助。
 license: MIT
 metadata:
-  version: 0.1.0
+  display_description: 别急着记答案，先找到原文里决定对错的那句话。
+  version: 0.2.0
   author: LearnFlow Team
   display_name: 从证据拆题
   description_en: Review exam questions with isolated answer keys, source evidence, and distractor analysis.

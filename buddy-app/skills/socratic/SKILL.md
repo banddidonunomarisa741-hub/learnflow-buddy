@@ -3,7 +3,8 @@ name: socratic
 description: 在学习者想通过追问理解概念或理清推理时，基于其当前回答提出一个关键问题；不在明确要求直接解答时强行反问。
 license: MIT
 metadata:
-  version: 0.1.0
+  display_description: 先追问一个关键处，给你留一点自己想通的空间。
+  version: 0.2.0
   author: LearnFlow Team
   display_name: 追问一小步
   description_en: Guide concept discovery with one grounded question at a time.

@@ -5,9 +5,9 @@ import xml.etree.ElementTree as ET
 from pypdf import PdfReader
 ROOT=Path(__file__).resolve().parents[1]
 PDF=ROOT/'output/pdf'
-slides=ROOT/'output/slides/LearnFlow学习流动-答辩演示.pptx'
+slides=ROOT/'output/slides/LearnFlow学习流动-答辩演示-1.4.pptx'
 checks=[]
-for name,count in [('LearnFlow学习流动-项目解决方案.pdf',17),('LearnFlow学习流动-答辩演示.pdf',16)]:
+for name,count in [('LearnFlow学习流动-项目解决方案-1.4.pdf',17),('LearnFlow学习流动-答辩演示-1.4.pdf',16)]:
     file=PDF/name
     reader=PdfReader(str(file))
     texts=[p.extract_text() or '' for p in reader.pages]

@@ -3,7 +3,8 @@ name: self-map
 description: 为自主学习目标构建可执行学习地图、先修关系和小成果检查点；检索资料时优先原始可靠来源并披露访问限制。
 license: MIT
 metadata:
-  version: 0.1.0
+  display_description: 知道想学什么，却不知道从哪儿开始？先找第一步。
+  version: 0.2.0
   author: LearnFlow Team
   display_name: 画出学习地图
   description_en: Turn a self-directed learning goal into prerequisites, small outputs, and checkpoints.

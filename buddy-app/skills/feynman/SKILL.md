@@ -3,7 +3,8 @@ name: feynman
 description: 在学习者需要检验概念理解、用自己的话解释或寻找解释漏洞时，用简短讲解和追问帮助重建概念，不替代已请求的直接答案。
 license: MIT
 metadata:
-  version: 0.1.0
+  display_description: 试着讲给第一次接触的人听，讲不顺的地方一起拆开。
+  version: 0.2.0
   author: LearnFlow Team
   display_name: 讲给小白听
   description_en: Check conceptual understanding through a plain explanation and a targeted transfer question.

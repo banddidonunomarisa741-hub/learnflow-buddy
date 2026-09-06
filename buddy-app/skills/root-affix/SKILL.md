@@ -3,7 +3,8 @@ name: root-affix
 description: 在英语词汇学习中按词根词缀和词族组织记忆，结合语境与主动回忆；只在构词解释可靠时拆分单词。
 license: MIT
 metadata:
-  version: 0.1.0
+  display_description: 把单词连成一个词族，再放回句子里记。
+  version: 0.2.0
   author: LearnFlow Team
   display_name: 词根串起单词
   description_en: Learn vocabulary with reliable morphology, word families, context, and recall.

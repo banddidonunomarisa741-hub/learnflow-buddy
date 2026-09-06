@@ -1,6 +1,6 @@
 # 再生成交付材料
 
-网站和本地后端无需第三方运行依赖，Node.js 20+ 即可 `npm start`。
+网站和本地后端使用 Node.js 20+ 即可 `npm start`，无需额外 npm 下载。QQ SDK、WebSocket 与二维码库已固定打包，许可证随源码提供。
 
 文档再生成使用 Python 的 `reportlab`、`pdfplumber`、`pypdf`，以及 Node 的 `pptxgenjs`、`sharp`。浏览器复测另需 `playwright` 与可用 Chrome。可在自己的环境安装依赖，或设置 `CODEX_NODE_MODULES` / `PLAYWRIGHT_MODULE` 指向已有运行库。
 

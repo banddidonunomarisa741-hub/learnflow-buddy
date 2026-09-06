@@ -1,0 +1,30 @@
+{
+  "origin": "http://127.0.0.1:4173",
+  "fixture": true,
+  "questions": [
+    "这次，你想从哪件事开始？",
+    "你最希望先解决什么？",
+    "今天能留出多少时间？",
+    "开始时，希望我怎样陪你？",
+    "哪种讲解让你更舒服？",
+    "遇到困难时，你希望怎样被支持？",
+    "要把确认过的学习偏好留下来吗？"
+  ],
+  "resourceErrors": [],
+  "pageErrors": [],
+  "apiMutations": [
+    "/api/ecosystem/qq/take"
+  ],
+  "qqTakeCalls": 1,
+  "chatCalls": 0,
+  "tutorial": 4,
+  "modelOptions": 3,
+  "selectedModel": "hy3",
+  "assetsEmptyUI": "还没有保存的资料回答下方点击“保存为学习资料”，核对后保存。也可以导入已有的 PDF。回到学习空间 →",
+  "qqMounted": "true",
+  "taskMatches": true,
+  "sessionHash": "#session",
+  "userMessages": 0,
+  "messageIsNotSent": true,
+  "mobileOverflow": 0
+}

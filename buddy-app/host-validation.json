@@ -1,0 +1,28 @@
+{
+  "verifiedAt": "2026-09-06",
+  "client": "LearnBuddy 5.3.8 bundled CodeBuddy",
+  "localPluginVersion": "0.2.0",
+  "officialPluginValidation": true,
+  "officialMarketplaceInstall": true,
+  "mcpConnected": true,
+  "mcpToolCount": 12,
+  "realModelStrategyRead": true,
+  "returnedStrategyCount": 11,
+  "nativeDialogTest": {
+    "method": "background button activation with synthetic draft",
+    "cancelApproved": false,
+    "saveApproved": true,
+    "personalAssetsWritten": false
+  },
+  "protocolUI": {
+    "harness": "independent MCP Apps test host using real stdio server",
+    "threeStepChoices": true,
+    "strategyHandoff": true,
+    "emptyLibrary": true,
+    "learnbuddyEmbeddedPreviewVerified": false
+  },
+  "automaticLibraryChecksPassed": 26,
+  "cliExitCode": 3221226505,
+  "cliExitClean": false,
+  "platformPublished": false
+}
