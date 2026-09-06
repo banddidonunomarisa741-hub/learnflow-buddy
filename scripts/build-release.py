@@ -4,9 +4,9 @@ import hashlib,json,zipfile
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'output'/'releases'; OUT.mkdir(parents=True,exist_ok=True)
 SKIP_PARTS={'.git','.build-deps','__pycache__','dist','node_modules','source-preview'}
-ROOT_FILES=['README.md','LICENSE','.gitignore','package.json','netlify.toml','双击启动学习流动.cmd','安装连接助手.cmd','交付导航.html']
-DOC_FILES=['LEARNING-EXPERIENCE.md','PROJECT-NAMES.md','RESEARCH.md','JUDGES-QA.md','PLATFORM-VERIFICATION.md','DEPLOYMENT.md','PLAN-SOURCE.md','DEFENSE-SCRIPT.md','DOCUMENT-QA.md','VALIDATION.md','validation-results.json','validation-script.cjs','PUBLICATION.md','BUILD.md']
-SCRIPT_FILES=['test-pairing.mjs','test-learning-assets.mjs','install-connector.ps1','start-local.ps1','launch.ps1','build-release.py','test-backend.mjs','test-backend-results.json','build-documents.py','build-deck.cjs','check-documents.py','export-slides-pdf.ps1']
+ROOT_FILES=['最新交付清单.md','README.md','LICENSE','.gitignore','package.json','netlify.toml','双击启动学习流动.cmd','安装连接助手.cmd','交付导航.html']
+DOC_FILES=['CHAT-UPGRADE.md','LEARNING-EXPERIENCE.md','PROJECT-NAMES.md','RESEARCH.md','JUDGES-QA.md','PLATFORM-VERIFICATION.md','DEPLOYMENT.md','PLAN-SOURCE.md','DEFENSE-SCRIPT.md','DOCUMENT-QA.md','VALIDATION.md','validation-results.json','validation-script.cjs','PUBLICATION.md','BUILD.md']
+SCRIPT_FILES=['test-chat-inputs.mjs','test-pairing.mjs','test-learning-assets.mjs','install-connector.ps1','start-local.ps1','launch.ps1','build-release.py','test-backend.mjs','test-backend-results.json','build-documents.py','build-deck.cjs','check-documents.py','export-slides-pdf.ps1']
 def files_in(folder):
     return [p for p in (ROOT/folder).rglob('*') if p.is_file() and not any(x in SKIP_PARTS for x in p.relative_to(ROOT).parts)]
 # Self-contained helper; exclude its own downloadable archive from its payload.

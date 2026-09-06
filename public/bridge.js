@@ -15,8 +15,17 @@
     popup.document.body.textContent='正在连接本机学习助手…';
     const proof=Array.from(crypto.getRandomValues(new Uint8Array(32)),x=>x.toString(16).padStart(2,'0')).join('');
     try{
-      const r=await raw(base+'/api/pair/request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({proof}),signal:AbortSignal.timeout(6000)});const d=await r.json();if(!r.ok)throw Error(d.message||'无法创建连接请求');
-      popup.location.href=base+'/#pair='+d.id;status('请在本机弹出的窗口确认，完成后会自动回到这里的学习对话。');
+      const request=()=>raw(base+'/api/pair/request',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({proof}),signal:AbortSignal.timeout(2500)});
+      let r;
+      try{r=await request();}catch{
+        status('正在唤起已安装的连接助手，请允许浏览器打开应用。首次使用需先下载并安装连接助手。');
+        popup.location.href='learnflow://connect';
+        const deadline=Date.now()+20000;
+        while(Date.now()<deadline){await new Promise(resolve=>setTimeout(resolve,1200));try{r=await request();break;}catch{}}
+        if(!r)throw Error('未找到连接助手。首次使用请下载并安装；已安装时请允许打开应用和访问本地网络，然后重试。');
+      }
+      const d=await r.json();if(!r.ok)throw Error(d.message||'无法创建连接请求');
+      popup.location.href=base+'/#pair='+d.id;status('请在弹出的本机窗口点击同意。确认后会自动测试模型并显示结果。');
       const until=Date.now()+180000;
       while(Date.now()<until){await new Promise(r=>setTimeout(r,1200));const r=await raw(base+'/api/pair/poll',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:d.id,proof}),signal:AbortSignal.timeout(5000)});const p=await r.json();if(!r.ok)throw Error(p.message);if(p.denied)throw Error('你已取消连接，尚未授权此网页。');if(p.token){grant=p.token;try{sessionStorage.setItem('learnflow.bridge',grant);}catch{}window.dispatchEvent(new Event('learnflow-connected'));status('已连接本机模型。你可以留在这个网页继续学习。');popup.close();return;}}
       throw Error('连接请求已过期，请重新发起。');

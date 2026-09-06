@@ -1,50 +1,31 @@
-/* Credentials remain in the loopback server's memory, never in browser storage. */
 (() => {
-  const local = ['127.0.0.1','localhost'].includes(location.hostname) && location.protocol === 'http:';
-  const dialog = document.createElement('dialog');
-  dialog.id = 'connection-dialog';
-  dialog.style.cssText = 'max-width:620px;width:calc(100% - 32px);border:1px solid #eadfd4;border-radius:24px;padding:28px;color:#34302b';
-  document.body.append(dialog);
-  const button = document.createElement('button'); button.className = 'secondary'; button.textContent = '连接学习助手';
-  document.querySelector('.top-actions').prepend(button);
-  async function health() {
-    if (!local) return window.LearnFlowBridge?.health();
-    try { const r = await fetch('/api/health', {signal:AbortSignal.timeout(2500)}); const d = await r.json(); return d.service === 'LearnFlow local adapter' ? d : null; } catch { return null; }
-  }
-  async function open() {
-    const h = await health();
-    dialog.innerHTML = `<button id="connection-close" class="secondary" style="float:right">关闭</button><h2>连接你的学习助手</h2><p>授权后发送当前对话、启用的策略，以及你允许使用的记忆。调用可能消耗服务额度。</p>`;
-    if (!local && h) {
-      dialog.insertAdjacentHTML('beforeend','<p>已授权当前网页连接本机学习助手。学习对话和资产功能可以在这里继续使用。</p><button class="secondary" id="remote-disconnect">断开此网页的连接</button>');
-      dialog.querySelector('#remote-disconnect').onclick=async()=>{await window.LearnFlowBridge.disconnect();dialog.close();button.textContent='连接学习助手';};
-    } else if (!h) {
-      dialog.insertAdjacentHTML('beforeend', `<p><button class="primary" id="pair-from-web">连接本机，在此网页继续学习</button></p><p id="pair-web-status" role="status"></p><p>首次使用需要本机连接助手。首次下载并解压后，双击“安装连接助手.cmd”；以后可直接点击下方按钮打开。</p><p><a class="primary" href="./downloads/learnflow-connector.zip" download>下载 Windows 连接助手</a></p><p><a class="secondary" href="learnflow://connect">已安装：打开本机 LearnFlow</a> <a href="http://127.0.0.1:4173/#session" target="_blank" rel="noopener">服务已启动：进入学习</a></p><p class="caption">Windows 或浏览器可能要求确认打开应用。首次安装需要 Node.js。线上与本机的学习记录分别保存在各自浏览器空间，可用“导出 / 恢复备份”迁移。打开客户端本身不代表取得模型调用授权。</p>`);
-      dialog.querySelector('#pair-from-web').onclick=async()=>{const b=dialog.querySelector('#pair-from-web');b.disabled=true;try{await window.LearnFlowBridge.connect(text=>dialog.querySelector('#pair-web-status').textContent=text);button.textContent='本机已连接';setTimeout(()=>dialog.close(),500);}catch(e){dialog.querySelector('#pair-web-status').textContent=e.message;}finally{b.disabled=false;}};
-    } else {
-      dialog.insertAdjacentHTML('beforeend', `<p class="caption">腾讯官方网页登录授权：等待团队应用审核启用。普通用户无需填写访问令牌。</p><p id="connection-status" role="status">${h.configured?'接口已配置；真实回复成功后才能确认可用。':'连接助手已启动，请选择接口。'}</p><form id="connection-form"><label>连接方式<select name="provider" class="wide-button">${h.localCLIAvailable?'<option value="local-codebuddy">自动连接本机 WorkBuddy 附带的 CodeBuddy</option>':''}<option value="openai-compatible">自己的模型接口（OpenAI 兼容）</option></select></label><p id="cli-fields" hidden>已检测到 WorkBuddy 附带的 CodeBuddy。使用该入口自身的正常认证，不复制登录密钥；禁用文件、命令与 MCP 工具。版本更新可能改变此入口，连接失败可切换正式授权通道。</p><div id="compatible-fields"><p><label>接口地址<input class="wide-button" name="base" placeholder="https://你的服务/v1" autocomplete="off"></label></p><p><label>模型名称<input class="wide-button" name="model" placeholder="服务商提供的模型名" autocomplete="off"></label></p><p><label>API Key（本机无密钥服务可留空）<input class="wide-button" name="key" type="password" autocomplete="new-password"></label></p></div><p><label><input type="checkbox" name="consent" required> 我同意发送上述学习内容；密钥仅保留到连接助手退出或我断开连接。</label></p><button class="primary" type="submit">同意并连接</button> <button class="secondary" type="button" id="connection-disconnect">断开并清除密钥</button></form>`);
-      const form = dialog.querySelector('form');
-      form.elements.provider.onchange = () => { const buddy = form.elements.provider.value === 'workbuddy-localassistant'; dialog.querySelector('#compatible-fields').hidden = form.elements.provider.value !== 'openai-compatible'; dialog.querySelector('#cli-fields').hidden = form.elements.provider.value !== 'local-codebuddy';  };
-      form.elements.provider.onchange();
-      form.onsubmit = async e => {
-        e.preventDefault(); const submit = form.querySelector('[type=submit]'); submit.disabled = true;
-        try {
-          const data = Object.fromEntries(new FormData(form)); data.consent = form.elements.consent.checked;
-          const r = await fetch('/api/connection', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}); const d = await r.json();
-          if (!r.ok) throw Error(d.message || '配置失败');
-          form.elements.key.value = '';
-          dialog.querySelector('#connection-status').textContent = '配置已接受，尚未验证模型。返回学习空间发送一条消息即可验证。';
-          window.dispatchEvent(new Event('learnflow-connected')); button.textContent = '接口已配置';
-        } catch(e) { dialog.querySelector('#connection-status').textContent = e.message; }
-        finally { submit.disabled = false; }
-      };
-      dialog.querySelector('#connection-disconnect').onclick = async () => {
-        try { const r = await fetch('/api/connection',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({disconnect:true})}); if(!r.ok) throw Error('暂时无法断开，请等待任务完成'); form.reset(); button.textContent='连接学习助手'; dialog.querySelector('#connection-status').textContent='已断开，服务内存中的密钥已清除。'; window.dispatchEvent(new Event('learnflow-disconnected')); } catch(e) { dialog.querySelector('#connection-status').textContent=e.message; }
-      };
+  const local=['127.0.0.1','localhost'].includes(location.hostname)&&location.protocol==='http:';
+  const dialog=document.createElement('dialog');dialog.id='connection-dialog';dialog.className='connection-dialog';document.body.append(dialog);
+  const button=document.createElement('button');button.className='secondary';button.textContent='连接学习助手';document.querySelector('.top-actions').prepend(button);
+  async function health(){if(!local)return window.LearnFlowBridge?.health();try{const r=await fetch('/api/health',{signal:AbortSignal.timeout(2500)});const d=await r.json();return d.service==='LearnFlow local adapter'?d:null;}catch{return null;}}
+  let running=false;
+  async function open(){
+    if(running){if(!dialog.open)dialog.showModal();return;}
+    const h=await health();
+    dialog.innerHTML='<button class="secondary" id="connection-close" style="float:right">关闭</button><h2>连接后，直接开始学习</h2><p>使用你本机已登录的学习助手。连接时发送一次简短测试，成功后立即显示结果。</p><p class="connection-result" id="connection-status" role="status" aria-live="polite"></p>';
+    if(h?.configured){
+      if(h.adapterVersion!=='1.3.0')dialog.insertAdjacentHTML('beforeend','<p>本机连接助手需要升级，才能使用模型列表和附件。</p><p><a class="primary" href="./downloads/learnflow-connector.zip" download>下载最新版，解压并运行安装连接助手.cmd</a></p>');
+      dialog.insertAdjacentHTML('beforeend','<button class="primary" id="verify-connection">验证连接并开始学习</button> <button class="secondary" id="disconnect-connection">断开连接</button>');
+    }else if(local&&h){
+      dialog.insertAdjacentHTML('beforeend',`<form id="connection-form">${h.localCLIAvailable?'<p class="connection-found">✓ 已找到本机 WorkBuddy 学习助手</p>':'<p>未发现可用的本机入口，请填写自己的模型接口。</p>'}<details ${h.localCLIAvailable?'':'open'}><summary>使用自己的模型接口（可选）</summary><p><label><input type="checkbox" id="use-compatible" ${h.localCLIAvailable?'':'checked'}> 使用 OpenAI 兼容接口</label></p><label>接口地址<input name="base" placeholder="https://你的服务/v1" class="wide-button"></label><label>默认模型<input name="model" placeholder="服务商提供的模型标识" class="wide-button"></label><label>API Key<input name="key" type="password" autocomplete="new-password" class="wide-button"></label></details><p>点击下方按钮，即同意发送学习对话、你选择的附件、策略和允许使用的记忆，并进行一次连接测试；会消耗账号额度。密钥只留在本机服务内存中。</p><button type="submit" class="primary">同意连接并验证</button></form>`);
+      dialog.querySelector('form').onsubmit=e=>{e.preventDefault();task(async()=>{const form=e.target;const data=Object.fromEntries(new FormData(form));data.provider=dialog.querySelector('#use-compatible').checked?'openai-compatible':'local-codebuddy';data.consent=true;const r=await fetch('/api/connection',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const d=await r.json();form.elements.key.value='';if(!r.ok)throw Error(d.message);window.dispatchEvent(new Event('learnflow-connected'));await verify();});};
+    }else{
+      dialog.insertAdjacentHTML('beforeend','<button class="primary" id="pair-from-web">同意连接本机并验证</button><p>会打开本机确认窗口，确认后自动回到此网页并测试模型。对话和主动选择的附件交给你授权的模型处理，消耗账号额度。</p><details><summary>第一次使用 / 没有弹出窗口？</summary><ol><li><a href="./downloads/learnflow-connector.zip" download>下载最新版 Windows 连接助手</a>，解压并双击“安装连接助手.cmd”。只需安装一次。</li><li>已安装时，<a href="learnflow://connect">点击唤起连接助手</a>，再点上方连接按钮。</li></ol><p>请允许浏览器打开确认窗口和访问本地网络。电脑需要 Node.js 20 及以上。</p></details>');
+      dialog.querySelector('#pair-from-web').onclick=()=>task(async()=>{await window.LearnFlowBridge.connect(status);await verify();});
     }
-    dialog.querySelector('#connection-close').onclick = () => { dialog.close(); dialog.innerHTML = ''; };
-    if(!dialog.open) dialog.showModal();
+    dialog.querySelector('#connection-close').onclick=()=>dialog.close();
+    dialog.querySelector('#verify-connection')?.addEventListener('click',()=>task(verify));
+    dialog.querySelector('#disconnect-connection')?.addEventListener('click',()=>task(async()=>{if(!local)await window.LearnFlowBridge.disconnect();else{const r=await fetch('/api/connection',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({disconnect:true})});if(!r.ok)throw Error('当前任务尚未结束，请稍后断开。');window.dispatchEvent(new Event('learnflow-disconnected'));}status('已断开，可随时重新连接。');button.textContent='连接学习助手';}));
+    status(h?.configured?'已授权，点击验证即可确认模型现在是否可用。':'不需要复制 WorkBuddy 访问令牌。');if(!dialog.open)dialog.showModal();
   }
-  window.addEventListener('learnflow-connected',()=>{if(window.LearnFlowBridge?.isRemote())button.textContent='本机已连接';});
-  button.onclick = open;
-  window.LearnFlowConnection = {open, health};
+  function status(t){const el=dialog.querySelector('#connection-status');if(el)el.textContent=t;}
+  async function task(fn){if(running)return;running=true;dialog.querySelectorAll('button:not(#connection-close)').forEach(b=>b.disabled=true);try{await fn();}catch(e){status('未完成：'+e.message);button.textContent='连接待检查';}finally{running=false;dialog.querySelectorAll('button').forEach(b=>b.disabled=false);}}
+  async function verify(){window.dispatchEvent(new Event('learnflow-connected'));button.textContent='正在验证模型…';await window.LearnFlowComposer.verify(status);button.textContent='✓ 学习助手已连接';if(!dialog.querySelector('#begin-connected')){const b=document.createElement('button');b.id='begin-connected';b.className='primary';b.textContent='开始学习 →';b.onclick=()=>{dialog.close();location.hash='session';document.querySelector('#chat-input')?.focus();};dialog.append(b);}}
+  window.addEventListener('learnflow-connected',()=>{button.textContent='已授权 · 可验证';});window.addEventListener('learnflow-verified',()=>{button.textContent='✓ 学习助手已连接';});window.addEventListener('learnflow-disconnected',()=>{button.textContent='连接学习助手';});
+  button.onclick=open;window.LearnFlowConnection={open,health};if(local)health().then(h=>{if(h?.configured)window.dispatchEvent(new Event('learnflow-connected'));});
 })();

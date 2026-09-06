@@ -4,10 +4,10 @@
 
 ## 交付文件
 
-- `output/pdf/LearnFlow-项目解决方案.pdf`：20 页 A4，新版项目解决方案，带章节书签。
-- `output/slides/LearnFlow-答辩演示.pptx`：16 页，文字和形状可编辑，逐页附演讲者备注。
-- `output/pdf/LearnFlow-答辩演示.pdf`：由本机 PowerPoint 原生导出，16 页，与 PPTX 版式对应。
-- `docs/PLAN-SOURCE.md`：20 页完整内容源稿。
+- `output/pdf/LearnFlow学习流动-项目解决方案.pdf`：17 页 A4，新版项目解决方案，带章节书签。
+- `output/slides/LearnFlow学习流动-答辩演示.pptx`：16 页，文字和形状可编辑，逐页附演讲者备注。
+- `output/pdf/LearnFlow学习流动-答辩演示.pdf`：由本机 PowerPoint 原生导出，16 页，与 PPTX 版式对应。
+- `docs/PLAN-SOURCE.md`：17 页完整内容源稿。
 - `docs/DEFENSE-SCRIPT.md`：16 页讲稿、建议演示顺序与临场边界用语。
 - `docs/plan-data.json`、`docs/slides-data.json`：可再次构建的结构化源稿。
 
