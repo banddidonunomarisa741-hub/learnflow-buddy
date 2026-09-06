@@ -40,8 +40,10 @@ function json(res, status, value) {
 function validateBrowser(req) {
   const hosts = [`127.0.0.1:${PORT}`, `localhost:${PORT}`];
   if (!hosts.includes(req.headers.host)) fail(403, 'INVALID_HOST', '仅接受本机访问。');
-  // A remote page may open the local confirmation UI; its API still requires local consent.
-  if(req.method==='GET'&&req.headers['sec-fetch-mode']==='navigate'&&new URL(req.url,'http://localhost').pathname==='/')return;
+  // Public UI files carry no credentials. Embedded browsers may load them without
+  // Sec-Fetch-Mode: navigate; protect private API requests, not the UI bootstrap.
+  const requestPath = new URL(req.url,'http://localhost').pathname;
+  if(['GET','HEAD'].includes(req.method)&&!requestPath.startsWith('/api/'))return;
   if(trustedOrigins.has(req.headers.origin)){
     const p=new URL(req.url,'http://localhost').pathname;
     if(req.method==='OPTIONS'||['/api/health','/api/pair/request','/api/pair/poll'].includes(p))return;
@@ -203,7 +205,7 @@ const server = http.createServer(async (req, res) => {
       PROVIDER = data.provider; BASE = (data.base || '').replace(/\/$/, ''); MODEL = data.model || ''; KEY = data.key || ''; WB_TOKEN = data.token || ''; WB_ENABLED = PROVIDER === 'workbuddy-localassistant';
       return json(res, 200, {ok:true, configured:configured(), verified:false, provider:PROVIDER});
     }
-    if (pathname === '/api/health' && req.method === 'GET') return json(res, 200, { ok: true, service: 'LearnFlow local adapter', provider: PROVIDER, localCLIAvailable: Boolean(LOCAL_CLI), configured: configured(), model: PROVIDER === 'openai-compatible' ? MODEL || null : null, mode: configured() ? 'live-configured-unverified' : 'demo', storesConversations: false, note: configured() ? '已配置不代表已通过真实服务联调。' : '未配置合法模型接口；网页可使用明确标注的预设演示。' });
+    if (pathname === '/api/health' && req.method === 'GET') return json(res, 200, { ok: true, service: 'LearnFlow local adapter', adapterVersion:'1.2.1', provider: PROVIDER, localCLIAvailable: Boolean(LOCAL_CLI), configured: configured(), model: PROVIDER === 'openai-compatible' ? MODEL || null : null, mode: configured() ? 'live-configured-unverified' : 'demo', storesConversations: false, note: configured() ? '已配置不代表已通过真实服务联调。' : '未配置合法模型接口；网页可使用明确标注的预设演示。' });
     if (pathname === '/api/chat' && req.method === 'POST') {
       const chat = validateChat(await body(req));
       if (!configured()) fail(503, 'MODEL_NOT_CONFIGURED', '尚未配置合法模型接口。本地与静态网页可使用预设演示；接入说明见 server/README.md。');

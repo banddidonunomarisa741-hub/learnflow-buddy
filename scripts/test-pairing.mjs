@@ -2,6 +2,14 @@ import assert from 'node:assert/strict';
 const base='http://127.0.0.1:4173',origin='https://learnflow-buddy-2026.netlify.app',proof='a'.repeat(64);let checks=0;
 async function post(route,data,headers={}){const r=await fetch(base+route,{method:'POST',headers:{'Content-Type':'application/json',...headers},body:JSON.stringify(data)});return {status:r.status,data:await r.json()};}
 function check(v){assert.ok(v);checks++;}
+for(const mode of ['navigate','cors','no-cors']){
+  const response=await fetch(base+'/',{headers:{'Sec-Fetch-Site':'cross-site','Sec-Fetch-Mode':mode}});
+  check(response.status===200&&(response.headers.get('content-type')||'').includes('text/html'));
+}
+check((await fetch(base+'/index.html',{headers:{Origin:'null','Sec-Fetch-Site':'cross-site'}})).status===200);
+check((await fetch(base+'/bridge.js',{headers:{'Sec-Fetch-Site':'cross-site'}})).status===200);
+check((await fetch(base+'/api/assets',{headers:{'Sec-Fetch-Site':'cross-site'}})).status===403);
+check((await post('/api/pair/approve',{id:'invalid',consent:true},{Origin:'null'})).status===403);
 let r=await post('/api/pair/request',{proof},{Origin:origin});check(r.status===200);const id=r.data.id;
 r=await post('/api/pair/approve',{id,consent:true},{Origin:origin});check(r.status===403);
 r=await post('/api/pair/poll',{id,proof:'b'.repeat(64)},{Origin:origin});check(r.status===400);
