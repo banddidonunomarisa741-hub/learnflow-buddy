@@ -29,7 +29,10 @@
     "rendererImplementationPresent": true,
     "genericMcpAppsEnabled": false,
     "status": "generic-apps-gated-in-this-build",
-    "allowedAppIds": ["ardot/open_design", "ardot/create_design"],
+    "allowedAppIds": [
+      "ardot/open_design",
+      "ardot/create_design"
+    ],
     "requiresDesignSessionForAllowedApps": true,
     "learnflowEmbeddedPanelAvailable": false,
     "reason": "The general MCP Apps entry returns false; normal app-open notifications and loadApp both apply a gate accepting only the two first-party design app IDs in a design session.",
@@ -40,14 +43,20 @@
         "bytes": 701660,
         "module": "mcp-apps-feature-gate.ts",
         "line": 777,
-        "functions": ["isMcpAppsTodoEntryEnabled", "canOpenMcpAppThroughTodoGate"]
+        "functions": [
+          "isMcpAppsTodoEntryEnabled",
+          "canOpenMcpAppThroughTodoGate"
+        ]
       },
       {
         "resource": "renderer/assets/index-BzLR5tnd.js",
         "sha256": "05eca44c8a5e9fa4cfd1a6571511208d1bdf7b71b74954a47fc1ceeca88931ae",
         "bytes": 2148446,
         "module": "use-mcp-apps-host.ts",
-        "gateAppliedTo": ["onOpenHostRequested", "loadApp"]
+        "gateAppliedTo": [
+          "onOpenHostRequested",
+          "loadApp"
+        ]
       }
     ],
     "publicDocumentation": "https://open.workbuddy.cn/docs/buddy-app",
@@ -59,5 +68,15 @@
   "automaticLibraryChecksPassed": 30,
   "cliExitCode": 3221226505,
   "cliExitClean": false,
-  "platformPublished": false
+  "platformPublished": false,
+  "desktopInstallationCorrection": {
+    "deliveryVersion": "1.4.2",
+    "reason": "Generic aggregate plugin registration did not materialize user skill cards or separately register expert plugins.",
+    "userSkillFilesVerified": 11,
+    "userSkillContentsMatchPackage": true,
+    "independentExpertRegistrationsVerified": 4,
+    "desktopCardsVisuallyVerified": false,
+    "copyFix": "Write our public skill content without copying EFS source attributes",
+    "existingUnmanagedSkillsOverwritten": false
+  }
 }

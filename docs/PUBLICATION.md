@@ -1,6 +1,6 @@
 # 实际发布与交付状态
 
-更新日期：2026-09-06。交付补丁 1.4.1；连接助手 1.4.0，解决方案 / PPT 1.4。
+更新日期：2026-09-06。交付补丁 1.4.2；连接助手 1.4.0，解决方案 / PPT 1.4。
 
 | 交付 | 实际状态 | 入口 |
 | --- | --- | --- |
@@ -13,7 +13,7 @@
 | 源码与组件 | 11 技能、4 专家、MCP 与插件安装包 | [GitHub](https://github.com/banddidonunomarisa741-hub/learnflow-buddy) |
 | 正式 Buddy | 未上架；企业认证、真实资源配置、预览与审核待完成 | [提审检查表](BUDDY-RELEASE-CHECKLIST.md) |
 
-真实 CLI 模型通道、QQ 机器人和 WorkBuddy 正式 OAuth 是不同连接。前两者有单机实测结果，不能据此宣布 OAuth 或 Buddy 审核完成。已查明本机 LearnBuddy 5.3.8 尚未开放普通插件的 MCP Apps 内嵌入口；1.4.1 补丁明确提供逐题对话和网页链接，保留标准面板资源供兼容宿主使用。没有修改客户端限制，也不再把当前面板状态写成待重试授权。
+真实 CLI 模型通道、QQ 机器人和 WorkBuddy 正式 OAuth 是不同连接。前两者有单机实测结果，不能据此宣布 OAuth 或 Buddy 审核完成。已查明本机 LearnBuddy 5.3.8 尚未开放普通插件的 MCP Apps 内嵌入口；1.4.2 补丁明确提供逐题对话和网页链接，保留标准面板资源供兼容宿主使用。没有修改客户端限制，也不再把当前面板状态写成待重试授权。
 
 验证见 [MVP 记录](MVP-VALIDATION.md)、[网页流程](MVP-WEB-VALIDATION.md)、[QQ](TENCENT-CONNECTORS.md)、[宿主](LEARNBUDDY-INSTALL.md) 和 [文档版面](DOCUMENT-QA.md)。工程检查不证明教学效果。
 

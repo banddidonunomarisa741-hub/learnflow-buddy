@@ -146,7 +146,11 @@ def main():
     zip_tree(plugin, DIST / "learnflow-plugin.zip")
     marketplace = DIST / "learnflow-marketplace"
     shutil.copytree(plugin, marketplace / "plugins/learnflow", dirs_exist_ok=True)
-    write(marketplace / ".codebuddy-plugin/marketplace.json", {"name": "learnflow-local", "owner": {"name": "LearnFlow Team"}, "plugins": [{"name": "learnflow", "source": "./plugins/learnflow", "description": "LearnFlow学习流动，本机开发测试包", "version": "0.2.1"}]})
+    market_entries = [{"name": "learnflow", "source": "./plugins/learnflow", "description": "LearnFlow学习流动，本机开发测试包", "version": "0.2.1"}]
+    for e in experts["experts"]:
+        shutil.copytree(DIST / "experts" / e["id"], marketplace / "plugins" / e["id"], dirs_exist_ok=True)
+        market_entries.append({"name": e["id"], "source": f"./plugins/{e['id']}", "description": e["description"], "version": "0.2.1"})
+    write(marketplace / ".codebuddy-plugin/marketplace.json", {"name": "learnflow-local", "owner": {"name": "LearnFlow Team"}, "plugins": market_entries})
     local_install = DIST / "learnflow-local-install"
     shutil.copytree(marketplace, local_install / "buddy-app/dist/learnflow-marketplace", dirs_exist_ok=True)
     (local_install / "scripts").mkdir(exist_ok=True)

@@ -39,6 +39,27 @@ try {
   if ($Uninstall) {
     & $nodePath $cli plugin uninstall 'learnflow@learnflow-local' --scope user
     if ($LASTEXITCODE -ne 0) { throw '官方插件卸载命令失败。个人学习资产未删除。' }
+    $settingsFile = Join-Path $configRoot 'settings.json'
+    $nativeSettings = Get-Content -LiteralPath $settingsFile -Raw -Encoding UTF8 | ConvertFrom-Json
+    foreach ($expertId in @('learnflow-learning-guide','learnflow-exam-coach','learnflow-project-coach','learnflow-teaching-partner')) {
+      $expertKey = $expertId + '@learnflow-local'
+      if ($nativeSettings.enabledPlugins.PSObject.Properties.Name -contains $expertKey) {
+        & $nodePath $cli plugin uninstall $expertKey --scope user
+        if ($LASTEXITCODE -ne 0) { throw ('专家卸载失败：' + $expertId) }
+      }
+    }
+    $userSkillsRoot = [IO.Path]::GetFullPath((Join-Path $configRoot 'skills'))
+    foreach ($skillName in @('exam-evidence','feynman','formative-evidence','learnflow-start','memory-distill','pbl-coach','plain-tone','retrieval','root-affix','self-map','socratic')) {
+      $ownedSkill = [IO.Path]::GetFullPath((Join-Path $userSkillsRoot $skillName))
+      $ownerFile = Join-Path $ownedSkill '.learnflow-managed.json'
+      if (-not (Test-Path -LiteralPath $ownerFile)) { continue }
+      $owner = Get-Content -LiteralPath $ownerFile -Raw -Encoding UTF8 | ConvertFrom-Json
+      if ($owner.owner -ne 'LearnFlow' -or $owner.source -ne 'learnflow-local') { continue }
+      $preservedSkill = [IO.Path]::GetFullPath((Join-Path $backupRoot ('removed-skills\' + $skillName)))
+      if (-not $ownedSkill.StartsWith($userSkillsRoot + '\',[StringComparison]::OrdinalIgnoreCase) -or -not $preservedSkill.StartsWith([IO.Path]::GetFullPath($backupRoot) + '\',[StringComparison]::OrdinalIgnoreCase)) { throw '技能备份路径无效' }
+      New-Item -ItemType Directory -Force -Path (Split-Path -Parent $preservedSkill) | Out-Null
+      Move-Item -LiteralPath $ownedSkill -Destination $preservedSkill
+    }
     $mcpPath = Join-Path $configRoot 'mcp.json'
     if (Test-Path -LiteralPath $mcpPath) {
       $mcp = Get-Content -LiteralPath $mcpPath -Raw -Encoding UTF8 | ConvertFrom-Json
@@ -71,6 +92,36 @@ try {
   if ($LASTEXITCODE -ne 0) { throw '本地插件市场注册失败。备份已保留。' }
   & $nodePath $cli plugin install 'learnflow@learnflow-local' --scope user
   if ($LASTEXITCODE -ne 0) { throw '官方插件安装命令失败。备份已保留。' }
+  # The desktop skill/expert centre does not list skills and agents bundled in a generic plugin.
+  # Register each expert as an actual expert plugin and materialize the user skills it scans.
+  $marketManifest = Get-Content -LiteralPath (Join-Path $marketPath '.codebuddy-plugin\marketplace.json') -Raw -Encoding UTF8 | ConvertFrom-Json
+  foreach ($expert in @($marketManifest.plugins | Where-Object { $_.name -ne 'learnflow' })) {
+    & $nodePath $cli plugin install ($expert.name + '@learnflow-local') --scope user
+    if ($LASTEXITCODE -ne 0) { throw ('专家安装失败：' + $expert.name) }
+  }
+  $userSkillsRoot = Join-Path $configRoot 'skills'
+  New-Item -ItemType Directory -Force -Path $userSkillsRoot | Out-Null
+  foreach ($skill in @(Get-ChildItem -LiteralPath (Join-Path $marketPath 'plugins\learnflow\skills') -Directory)) {
+    $skillTarget = Join-Path $userSkillsRoot $skill.Name
+    $ownerMarker = Join-Path $skillTarget '.learnflow-managed.json'
+    if ((Test-Path -LiteralPath $skillTarget) -and -not (Test-Path -LiteralPath $ownerMarker)) {
+      throw ('已有同名个人技能，未覆盖：' + $skill.Name)
+    }
+    if (Test-Path -LiteralPath $skillTarget) {
+      $skillBackup = Join-Path $backupRoot ('skills\' + $skill.Name)
+      New-Item -ItemType Directory -Force -Path (Split-Path -Parent $skillBackup) | Out-Null
+      Copy-Item -LiteralPath $skillTarget -Destination $skillBackup -Recurse -Force
+    }
+    New-Item -ItemType Directory -Force -Path $skillTarget | Out-Null
+    '{"owner":"LearnFlow","source":"learnflow-local"}' | Set-Content -LiteralPath $ownerMarker -Encoding UTF8
+    foreach ($skillFile in @(Get-ChildItem -LiteralPath $skill.FullName -Recurse -File)) {
+      $relativeSkillPath = $skillFile.FullName.Substring($skill.FullName.Length).TrimStart('\')
+      $destinationSkillPath = Join-Path $skillTarget $relativeSkillPath
+      New-Item -ItemType Directory -Force -Path (Split-Path -Parent $destinationSkillPath) | Out-Null
+      # Copy content, not EFS source attributes. These are our public bundled skill files.
+      [IO.File]::WriteAllBytes($destinationSkillPath, [IO.File]::ReadAllBytes($skillFile.FullName))
+    }
+  }
   $installedManifest = Get-Content -LiteralPath (Join-Path $marketPath 'plugins\learnflow\.codebuddy-plugin\plugin.json') -Raw -Encoding UTF8 | ConvertFrom-Json
   $receipt = @{ product='LearnFlow学习流动'; version=$installedManifest.version; client=$Client; installedAt=(Get-Date).ToUniversalTime().ToString('o'); configRoot=$configRoot; backup=$backupRoot; marketplace=$marketPath; method='official-plugin-cli-and-user-mcp'; mcpConfig=$mcpPath; personalAssets=(Join-Path $env:LOCALAPPDATA 'LearnFlowHost\assets') }
   $receipt | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $distributionRoot ('installation-' + $Client.ToLowerInvariant() + '.json')) -Encoding UTF8
