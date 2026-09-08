@@ -1,6 +1,6 @@
 # LearnFlow学习流动
 
-**当前网页与连接助手版本：1.7.0。** 新增教师课程流程、8 张策略的详细使用说明，以及显示实际返回内容的模型验证。见 [1.7.0 功能与验证](docs/TEACHER-CONNECTION-1.7.md) 和 [最新交付清单](最新交付清单.md)。
+**网页 1.8.0**：侧栏项目文件夹、对话拖放与排序，以及统一暖橙色的教师页、设置和操作反馈。见 [本版操作与设计说明](docs/PROJECTS-MOTION-1.8.md)。1.7 的课程、策略详情和真实模型校验继续保留。当前 1.8 入口：[GitHub Pages](https://banddidonunomarisa741-hub.github.io/learnflow-buddy/?v=1.8.0)。Netlify 账户发布额度耗尽，原 Netlify 入口仍为上一版。
 
 LearnFlow 是面向自主学习者的对话工作台，也是腾讯产业命题的独立开源项目。学习方法、资料保存和记忆均由用户选择。网页可经授权通过本机 WorkBuddy 或 LearnBuddy 调用云端模型；正式 Buddy 应用仍待平台认证、预览与审核。
 

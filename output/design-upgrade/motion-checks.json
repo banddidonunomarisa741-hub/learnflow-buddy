@@ -1,0 +1,50 @@
+{
+  "passed": 31,
+  "checks": [
+    "initial chat remains quiet",
+    "warm palette reaches app and settings tokens",
+    "refresh preserves the actual composer node",
+    "refresh preserves draft",
+    "same-route scene update has no route animation",
+    "same-route scene update keeps draft",
+    "real dialog gets one entrance",
+    "dialog origin is tied to its trigger",
+    "dialog content mutation does not duplicate entrance",
+    "Escape closes native dialog without a delayed handler",
+    "closed dialog animation is cancelled",
+    "model search still filters real controls",
+    "model popover returns focus to trigger",
+    "actual settings route has one reading-area transition",
+    "same-route refresh leaves settings field intact",
+    "same-route refresh never repeats transition",
+    "dark theme is warm charcoal",
+    "actual appearance switch sets expected reduced-motion attribute",
+    "user reduced-motion cancels owned animation",
+    "user reduced-motion stops CSS transitions",
+    "OS reduced-motion overrides app-off preference",
+    "reduced-motion toast has no transition",
+    "leaving settings restores the chat draft",
+    "keyboard navigation has no decorative animation",
+    "mobile composer remains inside viewport",
+    "teacher dialog excluded from global animation",
+    "workspace dialog excluded from global animation",
+    "spatial gallery controls keep their own transforms",
+    "destroy removes owned animation state",
+    "no real model or QQ request attempted",
+    "no browser page errors"
+  ],
+  "errors": [],
+  "apiCalls": [
+    {
+      "method": "GET",
+      "path": "/api/health"
+    },
+    {
+      "method": "GET",
+      "path": "/api/models"
+    }
+  ],
+  "isolated": true,
+  "realModelCalls": 0,
+  "realQQCalls": 0
+}

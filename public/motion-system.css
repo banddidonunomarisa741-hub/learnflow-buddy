@@ -1,0 +1,164 @@
+/* LearnFlow shared finish. Layout, learning data and component behaviour stay with their owners. */
+:root {
+  --lf-motion-paper: #fffefc;
+  --lf-motion-nav: #f8f5f1;
+  --lf-motion-line: #e9e3db;
+  --lf-motion-ink: #2b2825;
+  --lf-motion-muted: #81786f;
+  --lf-motion-accent: #ed7b32;
+  --lf-motion-accent-dark: #a44714;
+  --lf-motion-tint: #fff0e3;
+  --lf-motion-hover: #f0eae3;
+  --lf-motion-surface: #fffefc;
+  --lf-motion-focus: #b8551d;
+  --lf-motion-shadow: 0 12px 40px #50301812, 0 2px 7px #50301808;
+  --lf-motion-ease: cubic-bezier(.22, 1, .36, 1);
+  --lf-motion-move: cubic-bezier(.65, 0, .35, 1);
+  --paper: var(--lf-motion-paper);
+  --white: var(--lf-motion-surface);
+  --ink: var(--lf-motion-ink);
+  --muted: var(--lf-motion-muted);
+  --line: var(--lf-motion-line);
+  --orange: var(--lf-motion-accent);
+  --orange-dark: var(--lf-motion-accent-dark);
+  --orange-light: var(--lf-motion-tint);
+  --lf-sidebar: var(--lf-motion-nav);
+  --lf-hover: var(--lf-motion-hover);
+  --lf-surface: var(--lf-motion-surface);
+  --lf-settings-surface: var(--lf-motion-surface);
+  --lf-settings-rail: var(--lf-motion-nav);
+  --lf-settings-ink: var(--lf-motion-ink);
+  --lf-settings-muted: var(--lf-motion-muted);
+  --lf-settings-line: var(--lf-motion-line);
+  --lf-settings-hover: var(--lf-motion-hover);
+  --lf-settings-soft: var(--lf-motion-nav);
+  --lf-settings-accent: var(--lf-motion-accent-dark);
+}
+html[data-theme=dark] {
+  --lf-motion-paper: #23201e;
+  --lf-motion-nav: #1c1917;
+  --lf-motion-line: #453c35;
+  --lf-motion-ink: #f2eae3;
+  --lf-motion-muted: #b3a59a;
+  --lf-motion-accent: #f29352;
+  --lf-motion-accent-dark: #ffb883;
+  --lf-motion-tint: #453023;
+  --lf-motion-hover: #382f29;
+  --lf-motion-surface: #2a2521;
+  --lf-motion-focus: #ffb883;
+  --lf-motion-shadow: 0 16px 48px #0005, 0 2px 8px #0003;
+  --paper: var(--lf-motion-paper); --white: var(--lf-motion-surface);
+  --ink: var(--lf-motion-ink); --muted: var(--lf-motion-muted); --line: var(--lf-motion-line);
+  --orange: var(--lf-motion-accent); --orange-dark: var(--lf-motion-accent-dark); --orange-light: var(--lf-motion-tint);
+  --lf-sidebar: var(--lf-motion-nav); --lf-hover: var(--lf-motion-hover); --lf-surface: var(--lf-motion-surface);
+  --lf-settings-surface: var(--lf-motion-surface); --lf-settings-rail: var(--lf-motion-nav);
+  --lf-settings-ink: var(--lf-motion-ink); --lf-settings-muted: var(--lf-motion-muted); --lf-settings-line: var(--lf-motion-line);
+  --lf-settings-hover: var(--lf-motion-hover); --lf-settings-soft: var(--lf-motion-nav); --lf-settings-accent: var(--lf-motion-accent-dark);
+}
+/* A consistent focus ring remains visible without changing a control's geometry. */
+:where(button, a, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--lf-motion-focus); outline-offset: 3px;
+}
+input[type=checkbox], input[type=radio] { accent-color: var(--orange-dark); }
+.lf-settings .lf-settings-navitem.active { background: var(--orange-light); color: var(--orange-dark); }
+.lf-settings .lf-settings-navitem.active .icon { color: inherit; }
+.lf-settings-search, .lf-settings .lf-select-trigger { border: 1px solid var(--line); }
+.lf-settings .lf-select-options { border-color: var(--line); box-shadow: var(--lf-motion-shadow); }
+.lf-settings .lf-select-options [aria-selected=true] { background: var(--orange-light); color: var(--orange-dark); }
+.lf-settings .lf-segmented button[aria-pressed=true] { color: var(--orange-dark); }
+.lf-settings .lf-theme-preview:not([data-preview-theme=dark]):not([data-preview-theme=system]) { background: #fffefc; }
+.lf-settings .lf-theme-preview:not([data-preview-theme=dark]):not([data-preview-theme=system]) > i { background: #f0eae3; }
+.lf-settings .lf-theme-preview:not([data-preview-theme=dark]):not([data-preview-theme=system]) em { background: #fff0e3; }
+.lf-settings .lf-theme-preview[data-preview-theme=dark] { background: #23201e; }
+.lf-settings .lf-theme-preview[data-preview-theme=dark] > i { background: #1c1917; }
+.lf-settings .lf-theme-preview[data-preview-theme=dark] em { background: #453023; }
+.lf-settings .lf-theme-preview[data-preview-theme=system] { background: linear-gradient(90deg, #fffefc 50%, #23201e 50%); }
+/* Orange is the action colour. Dark lettering keeps small button text legible. */
+.primary, .lf-settings .primary { background: var(--orange); color: #2b2018; border: 1px solid transparent; box-shadow: 0 1px 2px #73320e12; }
+.secondary, .lf-settings .secondary { background: var(--lf-surface); color: var(--ink); border-color: var(--line); }
+.primary, .secondary { border-radius: 10px; }
+.lf-settings .danger, .danger { color: #b64737; }
+html[data-theme=dark] .danger { color: #ffa492; }
+html #chat-form.composer-polished {
+  background: var(--lf-surface); border-color: var(--line); box-shadow: 0 3px 16px #50301806, 0 1px 3px #50301805;
+  transition: border-color 160ms ease;
+}
+html #chat-form.composer-polished:focus-within { border-color: color-mix(in srgb, var(--orange-dark) 48%, var(--line)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--orange) 8%, transparent); }
+html #chat-form.composer-polished textarea { color: var(--ink); }
+html #chat-form.composer-polished textarea::placeholder { color: var(--muted); }
+html #chat-form #attach-files, html #chat-form #model-trigger { color: var(--ink); }
+html #chat-form #composer-connection, html #chat-form #model-trigger svg { color: var(--muted); }
+html #chat-form #model-trigger[aria-expanded=true] { background: var(--orange-light); color: var(--orange-dark); }
+html #chat-form.composer-polished .prompt-hints .tiny-badge { color: var(--muted); background: var(--lf-sidebar); }
+html #chat-form.composer-polished .send, html #chat-form.composer-polished .send.stop-send { background: #a44714; color: #fff; transform: none; }
+html #chat-form.composer-polished .stop-send span { background: #fff; }
+html[data-theme=dark] #chat-form.composer-polished .send { background: #f29352; color: #2b2018; }
+html[data-theme=dark] #chat-form.composer-polished .stop-send span { background: #2b2018; }
+html #chat-form .attachment-chip { border-color: var(--line); background: var(--lf-sidebar); }
+html #chat-form .attachment-chip strong { color: var(--ink); }
+html #chat-form .attachment-chip small, html #chat-form .attachment-chip button { color: var(--muted); }
+html #chat-form .attachment-chip .file-mini { background: var(--orange-light); color: var(--orange-dark); }
+html #chat-form.composer-polished.dragging { outline-color: var(--orange); }
+html #chat-form.composer-polished.dragging .composer-drop-hint { background: color-mix(in srgb, var(--lf-surface) 96%, transparent); color: var(--orange-dark); }
+html .composer-model-popover.model-menu, #modal, .connection-dialog { border-color: var(--line); background: var(--lf-surface); color: var(--ink); box-shadow: var(--lf-motion-shadow); }
+html .composer-model-popover .model-menu-heading h2, html .composer-model-popover .model-option, html .composer-model-popover .model-search-field input { color: var(--ink); }
+html .composer-model-popover .model-search-field { background: var(--lf-sidebar); }
+html .composer-model-popover .model-search-field:focus-within { outline-color: var(--lf-motion-focus); }
+html .composer-model-popover .model-option[aria-selected=true] { background: var(--orange-light); color: var(--orange-dark); }
+html .composer-model-popover .model-mark { background: var(--lf-surface); border-color: var(--line); color: var(--orange-dark); }
+html .composer-model-popover .model-check { color: var(--orange-dark); }
+html .composer-model-popover .model-menu-footer { border-color: var(--line); }
+html .composer-model-popover :is(.model-group, .model-list-meta, .model-source-note, .model-empty, .model-menu-footer button, .model-option small) { color: var(--muted); }
+#modal::backdrop, .connection-dialog::backdrop { background: #2118104d; backdrop-filter: none; }
+.connection-dialog .connection-client:has(input:checked) { background: var(--orange-light); border-color: var(--orange); }
+.connection-dialog .connection-client input { accent-color: var(--orange-dark); }
+.asset-card { background: var(--lf-surface); border-color: var(--line); border-radius: 18px; box-shadow: 0 1px 3px #50301804; }
+.asset-card small, .asset-empty, .asset-empty h2 { color: var(--muted); }
+.asset-file-icon { background: var(--orange-light); color: var(--orange-dark); border-color: color-mix(in srgb, var(--orange) 30%, var(--line)); }
+.asset-note, .info-strip { background: var(--lf-sidebar); color: var(--muted); }
+.asset-empty, .asset-preview, .reply-tools, .edit-next, .method-toggle, .switch-row { border-color: var(--line); }
+.kanban-column { background: var(--lf-sidebar); border: 1px solid var(--line); border-radius: 16px; }
+.kanban-column h3, .task small { color: var(--muted); }
+.kanban .task { background: var(--lf-surface); border: 1px solid var(--line); border-radius: 11px; }
+.kanban .task select { background: var(--lf-surface); border-color: var(--line); color: var(--ink); }
+.hero:not(:has(.hero-cat)) { background: var(--orange-light); border-color: var(--line); }
+.hero:not(:has(.hero-cat)) p { color: var(--muted); }
+.route-choice.selected { border-color: var(--orange); background: var(--orange-light); }
+.route-choice.selected .choice-dot { border-color: var(--orange); }
+.route-summary { background: var(--orange-light); color: var(--orange-dark); }
+.scene-pills button.selected { border-color: color-mix(in srgb, var(--orange) 35%, var(--line)); color: var(--orange-dark); background: var(--orange-light); }
+.lf-guide-dialogue, .lf-guide-source { border-color: var(--line); }
+.lf-guide-turn { border-color: var(--line); }
+/* Pointer press is delegated by JS: keyboard activation never shrinks a control. */
+.lf-motion-pressable { transition: transform 160ms var(--lf-motion-ease); }
+.lf-motion-pressable.lf-motion-pressed { transform: scale(.97); }
+html #chat-form.composer-polished .send.lf-motion-pressed { transform: scale(.97); }
+.starter-prompts button > span, .context-chevron { display: inline-block; transition: transform 180ms var(--lf-motion-ease); }
+.lf-motion-popup { transform-origin: var(--lf-motion-origin, 50% 50%); }
+/* Visibility is retained during exit, without intercepting the toast's timer. */
+#toast { color: #fffaf5; background: #342920; border: 1px solid #ffffff12; border-radius: 12px; box-shadow: var(--lf-motion-shadow); opacity: 0; visibility: hidden; pointer-events: none; transform: translateX(-50%) translateY(10px); transition: opacity 160ms var(--lf-motion-ease), transform 160ms var(--lf-motion-ease), visibility 0s 160ms; }
+#toast.visible { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); transition: opacity 200ms var(--lf-motion-ease), transform 200ms var(--lf-motion-ease), visibility 0s; }
+@media (hover:hover) and (pointer:fine) {
+  .primary:hover, .lf-settings .primary:hover { background: #dc6b27; color: #241b14; opacity: 1; }
+  .secondary:hover, .lf-settings .secondary:hover { background: var(--lf-sidebar); }
+  html #chat-form.composer-polished .send:hover { background: #bd561b; transform: none; }
+  html #chat-form.composer-polished .send.lf-motion-pressed:hover { transform: scale(.97); }
+  html[data-theme=dark] #chat-form.composer-polished .send:hover { background: #ffad72; }
+  html #chat-form :is(#attach-files, #model-trigger, #composer-connection):hover { background: var(--lf-hover); color: var(--ink); }
+  html .composer-model-popover .model-option:hover, html .composer-model-popover .model-menu-heading button:hover { background: var(--lf-sidebar); }
+  html .composer-model-popover .model-option[aria-selected=true]:hover { background: var(--orange-light); }
+  .starter-prompts button:hover > span { transform: translate(2px, -2px); color: var(--orange-dark); }
+  .learning-context button:hover .context-chevron { transform: translateY(2px); }
+  .asset-title:hover { color: var(--orange-dark); }
+}
+@media (hover:none), (pointer:coarse) {
+  html #chat-form.composer-polished .send:hover { transform: none; }
+  .starter-prompts button:hover > span, .learning-context button:hover .context-chevron { transform: none; }
+}
+/* WAAPI is cancelled separately in motion-system.js. These also stop legacy CSS motion. */
+@media (prefers-reduced-motion:reduce) {
+  *, *::before, *::after { animation: none; transition: none; scroll-behavior: auto; }
+  .lf-motion-pressable.lf-motion-pressed, html #chat-form.composer-polished .send.lf-motion-pressed { transform: none; }
+}
+html[data-reduced-motion=true] *, html[data-reduced-motion=true] *::before, html[data-reduced-motion=true] *::after { animation: none; transition: none; scroll-behavior: auto; }
+html[data-reduced-motion=true] .lf-motion-pressable.lf-motion-pressed, html[data-reduced-motion=true] #chat-form.composer-polished .send.lf-motion-pressed { transform: none; }

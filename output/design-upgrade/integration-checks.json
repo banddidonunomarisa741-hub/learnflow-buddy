@@ -1,0 +1,65 @@
+{
+  "version": "1.8.0",
+  "fixtureOnly": true,
+  "realModelRequests": 0,
+  "qqMessages": 0,
+  "checks": [
+    {
+      "name": "existing numeric session IDs open correct history",
+      "pass": true
+    },
+    {
+      "name": "mouse drag old conversation into a project",
+      "pass": true
+    },
+    {
+      "name": "menu movement and same-project reorder",
+      "pass": true
+    },
+    {
+      "name": "project organization leaves unsent composer draft intact",
+      "pass": true
+    },
+    {
+      "name": "switch away and reopen recovers draft",
+      "pass": true
+    },
+    {
+      "name": "new project conversation appears after first demo message",
+      "pass": true
+    },
+    {
+      "name": "reload retains project membership and order",
+      "pass": true
+    },
+    {
+      "name": "export contains four conversations and two projects",
+      "pass": true
+    },
+    {
+      "name": "clear removes conversations and project store",
+      "pass": true
+    },
+    {
+      "name": "restore restores all four conversations and both projects in order",
+      "pass": true
+    },
+    {
+      "name": "invalid project backup leaves existing stores unchanged",
+      "pass": true
+    },
+    {
+      "name": "pre-1.8 backup restores with no project groups and all conversations",
+      "pass": true
+    },
+    {
+      "name": "memory off writes no conversation bodies and survives reload as an empty project",
+      "pass": true
+    },
+    {
+      "name": "mobile 390px sidebar opens with no horizontal overflow",
+      "pass": true
+    }
+  ],
+  "pageErrors": []
+}

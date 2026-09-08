@@ -1,0 +1,129 @@
+{
+  "fixtureOnly": true,
+  "checks": [
+    {
+      "name": "numeric session IDs render; empty sessions stay hidden",
+      "pass": true
+    },
+    {
+      "name": "regular row click opens session exactly once",
+      "pass": true
+    },
+    {
+      "name": "create two project folders",
+      "pass": true
+    },
+    {
+      "name": "rename project persists",
+      "pass": true
+    },
+    {
+      "name": "project keyboard-menu sorting",
+      "pass": true
+    },
+    {
+      "name": "keyboard menu moves conversations to folder",
+      "pass": true
+    },
+    {
+      "name": "same-folder move up",
+      "pass": true
+    },
+    {
+      "name": "same-folder move down",
+      "pass": true
+    },
+    {
+      "name": "drag displays tactile ghost",
+      "pass": true
+    },
+    {
+      "name": "mouse drag into project",
+      "pass": true
+    },
+    {
+      "name": "mouse drag within project reorders",
+      "pass": true
+    },
+    {
+      "name": "mouse drag out of project",
+      "pass": true
+    },
+    {
+      "name": "Escape cancels drag without metadata change",
+      "pass": true
+    },
+    {
+      "name": "project pointer drag reorders folders",
+      "pass": true
+    },
+    {
+      "name": "collapse hides project conversations",
+      "pass": true
+    },
+    {
+      "name": "sidebar edits do not clear active chat draft",
+      "pass": true
+    },
+    {
+      "name": "delete folder preserves all conversations",
+      "pass": true
+    },
+    {
+      "name": "empty new project conversation is not shown",
+      "pass": true
+    },
+    {
+      "name": "new project conversation appears after actual message",
+      "pass": true
+    },
+    {
+      "name": "sidebar storage contains metadata only",
+      "pass": true
+    },
+    {
+      "name": "touch pointer drag moves conversation to project",
+      "pass": true
+    },
+    {
+      "name": "mobile sidebar has no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "dark project dialog remains readable",
+      "pass": true
+    },
+    {
+      "name": "validate null yields empty metadata",
+      "pass": true
+    },
+    {
+      "name": "restore normalization enforces one folder per conversation",
+      "pass": true
+    },
+    {
+      "name": "bad input rejected before mutation",
+      "pass": true
+    },
+    {
+      "name": "storage failure returns false without half-restore",
+      "pass": true
+    },
+    {
+      "name": "export restore clear APIs work",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "failures": [],
+  "screenshots": [
+    "sidebar-drag-ghost.png",
+    "sidebar-desktop.png",
+    "sidebar-desktop-crop.png",
+    "sidebar-mobile.png",
+    "sidebar-project-dialog-mobile.png",
+    "sidebar-project-dialog-dark.png"
+  ],
+  "passed": 28,
+  "failed": 0
+}
