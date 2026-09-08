@@ -1,3 +1,5 @@
+当前网页版本 **1.9.0**：新增“我的策略”、逐轮 Token 记录、卡片分享链接、反馈互传和内容版本关联。[打开新版](https://banddidonunomarisa741-hub.github.io/learnflow-buddy/?v=1.9.0#my-strategies) · [使用及验证说明](docs/STRATEGY-LIBRARY-1.9.md)。公共社区尚未上线，当前以链接与文件交换卡片。
+
 # LearnFlow学习流动
 
 **网页 1.8.2**：连接确认简化，成功回执区分真实 Token 与尚未提供的积分。[授权与积分核查](docs/WORKBUDDY-AUTH-CREDITS.md)。[打开新版](https://banddidonunomarisa741-hub.github.io/learnflow-buddy/?v=1.8.2)。

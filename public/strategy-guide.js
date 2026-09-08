@@ -149,7 +149,7 @@
     const list = values => `<ul>${values.map(value => `<li>${esc(value)}</li>`).join('')}</ul>`;
     const numbered = steps => `<ol class="lf-guide-steps">${steps.map(([title, detail], index) => `<li><span class="lf-guide-step-number">${String(index + 1).padStart(2, '0')}</span><div><h4>${esc(title)}</h4>${paragraph(detail)}</div></li>`).join('')}</ol>`;
     const sourceInstructions = typeof card.instructions === 'string' ? card.instructions : '';
-    const source = section('这张卡会给模型的指令', `<p class="lf-guide-hint">本次对话采用这张卡时，下面的原始文字会随学习请求一起发送。你的问题、其他已采用的卡片和模型能力也会影响回复。</p><pre class="lf-guide-source">${esc(sourceInstructions || '这张卡没有填写原始指令。')}</pre>`, 'lf-guide-source-section');
+    const source = section('这张卡会给模型的指令', `<p class="lf-guide-hint">启用后，这段指令会随你的问题发送。</p><pre class="lf-guide-source">${esc(sourceInstructions || '尚未填写指令。')}</pre>`, 'lf-guide-source-section');
     const action = ownCard
       ? `<button class="secondary lf-guide-adapt" data-edit-card="${esc(card.id)}">编辑我的方法 ${icon('arrow')}</button>`
       : `<button class="secondary lf-guide-adapt" data-copy-card="${esc(card.id)}">复制一张，改成自己的 ${icon('arrow')}</button>`;
@@ -162,12 +162,18 @@
       content = fit + section('一次学习，具体怎么走', numbered(guide.steps)) + section('看一个例子', example) + source + section('你可以怎么改', list(guide.controls) + action) + section('怎么判断它有没有用', paragraph(guide.evidence), 'lf-guide-evidence');
     } else {
       const suppliedSteps = Array.isArray(card.steps) ? card.steps.filter(step => typeof step === 'string' && step.trim()).slice(0, 12) : [];
-      content = section('使用前先看原文', paragraph('作者没有单独提供适用条件和不适用条件。请结合下面的原始指令判断；不清楚的地方，可以先补充后再启用。'))
-        + (suppliedSteps.length ? section('卡片中保存的步骤', `<ol class="lf-guide-author-steps">${suppliedSteps.map(step => `<li>${esc(step)}</li>`).join('')}</ol>`) : section('具体步骤', paragraph('这张卡没有单独填写步骤。请直接查看原始指令。')))
-        + section('使用示例', `<div class="lf-guide-missing">作者尚未提供示例对话。这里不替作者补写场景，也不把预设文字当成真实学习记录。</div>`)
+      const suppliedExamples = Array.isArray(card.examples) ? card.examples.filter(example => typeof example === 'string' && example.trim()).slice(0, 12) : [];
+      const suppliedLimits = typeof card.limits === 'string' ? card.limits.trim() : '';
+      const suppliedEvidence = typeof card.evidence === 'string' ? card.evidence.trim() : '';
+      const preservedParagraph = value => `<p style="white-space:pre-wrap">${esc(value)}</p>`;
+      content = section('适用边界', preservedParagraph(suppliedLimits || '作者暂未补充适用边界。'))
+        + (suppliedSteps.length ? section('具体步骤', `<ol class="lf-guide-author-steps">${suppliedSteps.map(step => `<li>${esc(step)}</li>`).join('')}</ol>`) : '')
+        + section('使用示例', suppliedExamples.length
+          ? `<div class="lf-guide-dialogue">${suppliedExamples.map((example, index) => `<div class="lf-guide-turn"><span class="lf-guide-speaker">作者示例 ${index + 1}</span>${preservedParagraph(example)}</div>`).join('')}</div>`
+          : paragraph('还没有示例，可以试用后补一条。'))
         + source
-        + section('按自己的需要调整', paragraph('可以修改名称、使用场景、标签和原始指令。把希望助手怎么做、什么时候停下来问你，写清楚就好。') + action)
-        + section('效果与依据', paragraph('这张卡尚未提供可核验的效果材料。标签、评分和使用次数不能证明它适合你；可以先试一个小任务，检查自己的独立作答或实际产出。'), 'lf-guide-evidence');
+        + section('改成适合自己的方法', action)
+        + section('方法依据', preservedParagraph(suppliedEvidence || '作者暂未提供方法依据。'), 'lf-guide-evidence');
     }
 
     return `<div class="lf-strategy-guide" data-strategy-guide="${esc(card.id)}">${intro}${content}</div>`;

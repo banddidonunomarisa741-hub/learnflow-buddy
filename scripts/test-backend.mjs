@@ -44,6 +44,7 @@ try {
   check((await post(base, request, { 'Content-Type': 'text/plain' })).status === 415, 'Reject simple cross-site text posts');
   check((await post(base, { ...request, preferences: { guide: 'invented' } })).status === 400, 'Validate preference enum');
   check((await post(base, { ...request, preferences: { minutes: -2 } })).status === 400, 'Validate learning time');
+  check((await post(base, { ...request, strategies: [{id:'long',title:'Oversize strategy',instructions:'a'.repeat(8001)}] })).status === 400, 'Reject oversized strategy instead of silently truncating its instructions');
   check((await post(base, { messages: [{ role: 'user', content: 'a'.repeat(260001) }] })).status === 413, 'Bound input sizes');
   check((await fetch(base + '/%2e%2e%2fserver%2fserver.mjs')).status === 403, 'Prevent static path traversal');
   check((await fetch(base + '/server/server.mjs')).status === 404, 'Do not expose server files');

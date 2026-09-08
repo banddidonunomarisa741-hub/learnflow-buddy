@@ -85,6 +85,7 @@ function validateChat(data) {
   if (!Array.isArray(strategies) || strategies.length > 12) fail(400, 'INVALID_STRATEGIES', '策略最多 12 张。');
   const cards = strategies.map(s => {
     if (!s || typeof s !== 'object') fail(400, 'INVALID_STRATEGIES', '策略结构错误。');
+    if(typeof s.instructions!=='string'||s.instructions.length>8000)fail(400,'INVALID_STRATEGIES','每张策略指令最多 8000 字符，请精简后再发送。');
     return { id: String(s.id || '').slice(0, 80), title: String(s.title || '').slice(0, 100), instructions: String(s.instructions || '').slice(0, 8000) };
   });
   const preferences = data.preferences && typeof data.preferences === 'object' && !Array.isArray(data.preferences) ? data.preferences : {};
@@ -252,7 +253,7 @@ const server = http.createServer(async (req, res) => {
       lastVerification=null;verifiedModels.clear();PROVIDER = data.provider; BASE = (data.base || '').replace(/\/$/, ''); MODEL = data.model || ''; KEY = data.key || ''; WB_TOKEN = data.token || ''; WB_ENABLED = PROVIDER === 'workbuddy-localassistant';
       return json(res, 200, {ok:true, configured:configured(), verified:false, provider:PROVIDER});
     }
-    if (pathname === '/api/health' && req.method === 'GET') return json(res, 200, {ok:true,service:'LearnFlow local adapter',adapterVersion:'1.8.2',provider:PROVIDER,localCLIAvailable:Boolean(LOCAL_CLI),clients:clientSummary(),selectedClientId:selectedClient?.id||null,clientName:PROVIDER==='local-codebuddy'?selectedClient?.name:null,configured:configured(),busy:cliBusy||workbuddyBusy,model:PROVIDER==='openai-compatible'?MODEL||null:null,verification:lastVerification,mode:configured()?'configured':'demo',storesConversations:false});
+    if (pathname === '/api/health' && req.method === 'GET') return json(res, 200, {ok:true,service:'LearnFlow local adapter',adapterVersion:'1.9.0',provider:PROVIDER,localCLIAvailable:Boolean(LOCAL_CLI),clients:clientSummary(),selectedClientId:selectedClient?.id||null,clientName:PROVIDER==='local-codebuddy'?selectedClient?.name:null,configured:configured(),busy:cliBusy||workbuddyBusy,model:PROVIDER==='openai-compatible'?MODEL||null:null,verification:lastVerification,mode:configured()?'configured':'demo',storesConversations:false});
 
     if(pathname==='/api/models'&&req.method==='GET')return json(res,200,await modelList());
     if(pathname==='/api/probe'&&req.method==='POST'){

@@ -11,23 +11,36 @@
     const color = colors.some(([value]) => value === prefill.color) ? prefill.color : 'orange';
     const scene = scenes.some(([value]) => value === prefill.scene) ? prefill.scene : 'self';
     const tags = Array.isArray(prefill.tags) ? prefill.tags.join('，') : String(prefill.tags || '');
+    const examples = Array.isArray(prefill.examples) ? prefill.examples.filter(value => typeof value === 'string').join('\n\n---\n\n') : String(prefill.examples || '');
 
     showModal(`${modalHead(prefill.id ? '编辑策略' : '新建策略')}
       <div class="studio-layout" data-card-studio>
         <form id="card-form" class="studio-form" data-id="${esc(prefill.id || '')}">
           <label class="studio-field">策略名称
-            <input name="title" required maxlength="60" placeholder="例如：把单词拆开记" value="${esc(prefill.title || '')}" autocomplete="off">
+            <input name="title" required maxlength="160" placeholder="例如：把单词拆开记" value="${esc(prefill.title || '')}" autocomplete="off">
           </label>
           <fieldset class="studio-scene"><legend>适用场景</legend><div class="studio-scene-options">${scenes.map(([value, label]) => `<label><input type="radio" name="scene" value="${value}" ${scene === value ? 'checked' : ''}><span>${label}</span></label>`).join('')}</div></fieldset>
-          <label class="studio-field">标签 <span class="studio-field-hint">逗号分隔，最多 6 个</span>
-            <input name="tags" maxlength="120" placeholder="例如：英语，词根，主动回忆" value="${esc(tags)}" autocomplete="off">
+          <label class="studio-field">标签 <span class="studio-field-hint">逗号分隔，最多 24 个</span>
+            <input name="tags" maxlength="2000" placeholder="例如：英语，词根，主动回忆" value="${esc(tags)}" autocomplete="off">
           </label>
-          <label class="studio-field">一句话介绍
-            <input name="description" required maxlength="160" placeholder="这个方法，帮你解决了什么？" value="${esc(prefill.description || '')}" autocomplete="off">
+          <label class="studio-field">方法介绍
+            <textarea name="description" required maxlength="3000" rows="2" style="min-height:76px" placeholder="这个方法，帮你解决了什么？">${esc(prefill.description || '')}</textarea>
           </label>
           <label class="studio-field">使用步骤
             <textarea name="instructions" required maxlength="8000" rows="4" placeholder="1. 先把单词拆成词根和词缀。&#10;2. 用同一个词根串起几个词。&#10;3. 合上笔记，再用自己的话解释一次。">${esc(prefill.instructions || '')}</textarea>
           </label>
+          <details class="ui-help studio-examples">
+            <summary>示例与适用边界（可选）</summary>
+            <label class="studio-field" style="margin-top:16px">使用示例 <span class="studio-field-hint">例子之间用一行 --- 分隔</span>
+              <textarea name="examples" maxlength="24500" rows="4" placeholder="学习者：我总把 affect 和 effect 弄混。&#10;助手：先看这个句子，需要一个动作还是一个名词？&#10;&#10;---&#10;&#10;这里可以再写一个例子。">${esc(examples)}</textarea>
+            </label>
+            <label class="studio-field">适用边界
+              <textarea name="limits" maxlength="3000" rows="2" style="min-height:76px" placeholder="什么情况下不适合？什么时候应该换个办法？">${esc(prefill.limits || '')}</textarea>
+            </label>
+            <label class="studio-field">方法依据
+              <textarea name="evidence" maxlength="3000" rows="2" style="min-height:76px" placeholder="可以写自己的使用经历、参考资料，或仍待验证的部分。">${esc(prefill.evidence || '')}</textarea>
+            </label>
+          </details>
           <div class="studio-form-footer"><button class="primary studio-save" type="submit">${prefill.id ? '保存修改' : '保存并启用'}</button></div>
         </form>
         <aside class="studio-preview-pane" aria-label="策略卡外观预览">
@@ -60,6 +73,13 @@
     let tilt = { x: 0, y: 0 };
 
     const reducedMotion = () => document.documentElement.dataset.reducedMotion === 'true' || media.matches;
+    const validateDetails = () => {
+      const tagValues = form.elements.tags.value.split(/[,，]/).map(value => value.trim()).filter(Boolean);
+      const exampleValues = form.elements.examples.value.split(/\n\s*---\s*\n/).map(value => value.trim()).filter(Boolean);
+      form.elements.tags.setCustomValidity(tagValues.length > 24 ? '标签最多 24 个。' : tagValues.some(value => value.length > 80) ? '每个标签最多 80 字。' : '');
+      form.elements.examples.setCustomValidity(exampleValues.length > 12 ? '使用示例最多 12 个。' : exampleValues.some(value => value.length > 2000) ? '每个示例最多 2000 字；多个例子用独占一行的 --- 分隔。' : '');
+      return !form.elements.tags.validationMessage && !form.elements.examples.validationMessage;
+    };
     const resetTilt = () => {
       if (frame) cancelAnimationFrame(frame);
       frame = 0;
@@ -69,6 +89,7 @@
       preview.style.setProperty('--studio-glow-y', '25%');
     };
     const updatePreview = () => {
+      validateDetails();
       const values = new FormData(form);
       root.querySelector('.studio-card-copy h3').textContent = String(values.get('title') || '').trim() || '策略名称';
       root.querySelector('.studio-card-copy p').textContent = String(values.get('description') || '').trim() || '填写方法介绍';
@@ -86,6 +107,14 @@
 
     root.addEventListener('input', updatePreview, { signal });
     root.addEventListener('change', updatePreview, { signal });
+    form.addEventListener('submit', event => {
+      if (!validateDetails()) {
+        event.preventDefault(); event.stopPropagation();
+        if (form.elements.examples.validationMessage) root.querySelector('.studio-examples').open = true;
+        form.reportValidity();
+      }
+    }, { signal });
+    form.elements.examples.addEventListener('invalid', () => { root.querySelector('.studio-examples').open = true; }, { signal });
     stage.addEventListener('pointermove', event => {
       if (event.pointerType !== 'mouse' || reducedMotion()) return;
       const rect = stage.getBoundingClientRect();
