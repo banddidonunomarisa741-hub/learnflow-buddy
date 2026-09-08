@@ -1,12 +1,14 @@
 {
   "name": "learnflow-buddy",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "private": true,
   "description": "Local-first learning strategy workspace for the Tencent Buddy ecosystem",
   "scripts": {
     "start": "node server/server.mjs",
     "test": "node scripts/test-backend.mjs"
   },
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "license": "MIT"
 }
