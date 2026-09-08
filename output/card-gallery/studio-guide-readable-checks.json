@@ -1,0 +1,102 @@
+{
+  "fixtureOnly": true,
+  "checks": [
+    {
+      "name": "desktop editor typography and clean heading",
+      "pass": true,
+      "details": {
+        "input": "16px",
+        "label": "15px",
+        "scene": "15px",
+        "hint": "14px",
+        "save": "15px",
+        "intro": false,
+        "english": false
+      }
+    },
+    {
+      "name": "desktop preview color and content update",
+      "pass": true
+    },
+    {
+      "name": "desktop editor no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "desktop edited values save",
+      "pass": true
+    },
+    {
+      "name": "desktop strategy details 16px and secondary 14px",
+      "pass": true,
+      "details": {
+        "body": "16px",
+        "step": "16px",
+        "example": "16px",
+        "source": "16px",
+        "hint": "14px",
+        "heading": "18px",
+        "kicker": "none"
+      }
+    },
+    {
+      "name": "desktop detail actions reachable and uncut",
+      "pass": true
+    },
+    {
+      "name": "mobile editor typography and clean heading",
+      "pass": true,
+      "details": {
+        "input": "16px",
+        "label": "15px",
+        "scene": "15px",
+        "hint": "14px",
+        "save": "15px",
+        "intro": false,
+        "english": false
+      }
+    },
+    {
+      "name": "mobile preview color and content update",
+      "pass": true
+    },
+    {
+      "name": "mobile editor no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "mobile edited values save",
+      "pass": true
+    },
+    {
+      "name": "mobile strategy details 16px and secondary 14px",
+      "pass": true,
+      "details": {
+        "body": "16px",
+        "step": "16px",
+        "example": "16px",
+        "source": "16px",
+        "hint": "14px",
+        "heading": "18px",
+        "kicker": "none"
+      }
+    },
+    {
+      "name": "mobile detail actions reachable and uncut",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    "studio-readable-desktop-form.png",
+    "studio-readable-desktop-preview.png",
+    "guide-readable-desktop-top.png",
+    "guide-readable-desktop-example.png",
+    "studio-readable-mobile-form.png",
+    "studio-readable-mobile-preview.png",
+    "guide-readable-mobile-top.png",
+    "guide-readable-mobile-example.png"
+  ],
+  "passed": 12,
+  "failed": 0
+}

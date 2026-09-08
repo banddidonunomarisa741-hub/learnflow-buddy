@@ -1,0 +1,40 @@
+{
+  "passed": 27,
+  "checks": [
+    "settings header has no descriptive subtitle",
+    "sidebar has no repeated brand footer",
+    "desktop nav is 16px",
+    "preference labels are 16px",
+    "save button is at least 15px",
+    "functional nav icon is 16px with 1.8 viewBox stroke",
+    "saving preserves profile semantics",
+    "settings search filters to matching section",
+    "search Enter navigates to filtered result",
+    "empty search reports no match",
+    "Escape restores all navigation items",
+    "backup limitations retained in one collapsible help",
+    "export downloads saved learning data",
+    "restoring requires explicit replacement confirmation",
+    "cancel restore leaves profile unchanged",
+    "clear still requires a second explicit action",
+    "appearance has no lecture or repeated persistence footer",
+    "dark theme switches and persists",
+    "message type size still changes",
+    "reduced-motion switch still persists",
+    "mobile theme choices use readable full rows",
+    "mobile settings nav is at least 15px",
+    "mobile page does not overflow horizontally",
+    "mobile preference input stays readable without zoom",
+    "saved settings are intact after navigating themes",
+    "no model or QQ request made",
+    "no browser errors"
+  ],
+  "errors": [],
+  "api": [
+    {
+      "path": "/api/health",
+      "method": "GET"
+    }
+  ],
+  "isolated": true
+}

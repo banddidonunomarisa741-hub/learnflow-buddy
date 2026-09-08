@@ -1,6 +1,6 @@
 {
   "name": "learnflow-buddy",
-  "version": "1.8.0",
+  "version": "1.8.1",
   "private": true,
   "description": "Local-first learning strategy workspace for the Tencent Buddy ecosystem",
   "scripts": {

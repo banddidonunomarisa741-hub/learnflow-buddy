@@ -1,0 +1,44 @@
+/* Readable controls and restrained page chrome. Component actions keep their own state. */
+:root{--lf-ui-font:"Segoe UI","Microsoft YaHei","PingFang SC",sans-serif;--lf-motion-muted:#69615a}
+html[data-theme=dark]{--lf-motion-muted:#c1b6ad}
+body{font-family:var(--lf-ui-font);font-size:16px}
+button,input,select,textarea{font-family:inherit}
+.sidebar{width:280px;padding:20px 14px 12px}.main-shell{margin-left:280px;width:calc(100% - 280px)}
+.brand span{font-size:20px;letter-spacing:0}.brand small{font-size:14px;letter-spacing:0;margin-top:2px}.brand img{width:36px;height:36px}
+.sidebar :is(.new-session,.sidebar-search,.nav-item){font-size:16px;min-height:44px;padding:11px 12px;gap:12px}
+.sidebar kbd,.profile-menu a span{font-size:14px;opacity:1}
+.sidebar .profile{font-size:16px;min-height:54px;align-items:center;padding:10px 8px;border-top:0}.sidebar-bottom{border-top:1px solid var(--line);padding-top:8px}
+.profile-menu{width:270px}.profile-menu-heading,.profile-menu a,.profile-menu>button{font-size:16px}.profile-menu-heading small{font-size:14px}
+.topbar{min-height:60px}.topbar #page-label{font-size:18px;font-weight:600}.topbar .top-actions>button:not(.shell-icon){font-size:15px}
+.sidebar svg,.topbar svg,.icon,.profile-menu svg,.page-head svg,.ui-toolbar svg,.learning-context svg,.starter-prompts svg,.reply-tools svg{width:16px;height:16px;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.sidebar .shell-icon svg,.sidebar-reopen svg{width:16px;height:16px}.shell-icon{min-width:36px;min-height:36px}
+.page-head{margin-bottom:24px;align-items:center;gap:16px}.page-head h1{font-family:inherit;font-size:28px;letter-spacing:0;line-height:1.3;margin:0}
+.page-head .primary,.page-head .secondary,.button-row button,.button-row a,.primary,.secondary{font-size:15px;min-height:42px;line-height:1.4}
+.text-link{font-size:15px}.field,.field input,.field select,.field textarea{font-size:16px}.modal-head h2{font-size:24px;font-family:inherit;letter-spacing:0}.modal-copy,.caption,.mini-note{font-size:14px;line-height:1.65;color:var(--muted)}
+.setting-card h2{font-size:20px}.setting-card :is(p,label),.switch-row strong{font-size:16px}.setting-card .modal-copy{font-size:14px}
+.ui-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:0 0 20px;font-size:15px}.ui-toolbar>a{color:var(--orange-dark)}
+.ui-help{font-size:14px;color:var(--ink);line-height:1.7;margin:12px 0}.ui-help summary{width:fit-content;cursor:pointer;font-size:15px;color:var(--ink)}.ui-help p{max-width:720px;padding:12px 0;margin:0;font-size:15px;line-height:1.7;color:var(--ink)}.ui-toolbar .ui-help{margin:0}
+.chat-welcome h1{font-family:inherit;font-size:32px;letter-spacing:0}.chat-welcome .scene-pills{margin-top:24px}.scene-pills button{font-size:15px;min-height:40px}
+.learning-context{font-size:15px}.learning-context button{font-size:15px;min-height:36px}.starter-prompts button{font-size:15px;min-height:42px}.message-label{font-size:14px}.reply-tools button,.reply-tools a{font-size:14px;min-height:36px}.next-prompts button{font-size:15px}
+#chat-form.composer-polished #chat-input{font-size:18px;line-height:1.65}.composer-dock{padding-bottom:20px}
+html #chat-form #model-trigger,html #chat-form #composer-connection{font-size:15px;min-height:36px}html #chat-form .composer-status-label{font-size:14px}
+#chat-form #attachment-status,#chat-form #connection-banner{font-size:14px;line-height:1.6}.attachment-chip strong{font-size:15px}.attachment-chip small{font-size:14px}
+html .composer-model-popover .model-option strong{font-size:16px}html .composer-model-popover :is(.model-group,.model-list-meta,.model-source-note,.model-empty,.model-menu-footer button,.model-option small,.model-proof-badge){font-size:14px}html .composer-model-popover .model-menu-heading h2{font-size:20px}html .composer-model-popover .model-search-field input{font-size:16px}
+.reply-receipt,.reply-receipt p{font-size:14px}.reply-receipt{margin-top:8px}.reply-receipt summary{font-size:14px}
+.connection-dialog :is(p,small,legend,summary,label,.connection-consent,.connection-current,.connection-result,.connection-proof dl,.connection-proof pre,.connection-proof>small){font-size:14px;line-height:1.6}.connection-dialog :is(button,.connection-client strong){font-size:15px}.connection-dialog .connection-actions button{font-size:15px;min-height:42px}.connection-dialog h2{font-size:24px}.connection-dialog .connection-proof h3{font-size:18px}
+.sf-heading{margin-bottom:24px;align-items:center}.sf-heading h1{font-family:inherit;font-size:28px;line-height:1.3;letter-spacing:0}.sf-heading>div{max-width:none}.sf-create,.sf-import{font-size:15px;min-height:42px}.sf-search input{font-size:16px}.sf-filters button{font-size:15px}.sf-footer{justify-content:flex-end;font-size:15px}.sf-footer a{font-size:15px}
+.sf-card-description,.sf-card-subtitle,.sf-back p,.sf-steps p{font-size:16px;line-height:1.55}.sf-card-meta,.sf-card-stamp,.sf-tags span{font-size:14px;letter-spacing:0;font-family:inherit}.sf-use,.sf-full,.sf-back-button{font-size:15px}.sf-card-copy h2,.sf-back h2{font-family:inherit}.sf-card-stamp{margin-top:12px}.sf-full{margin-top:14px}
+.asset-card .caption,.asset-card small{font-size:14px}.asset-title{font-size:20px;line-height:1.45}.asset-empty h2{font-size:20px;color:var(--ink)}.asset-empty p{font-size:16px}.asset-file-icon{font-size:14px}
+.metric strong{font-family:inherit;font-size:28px}.metric span,.metric strong small{font-size:14px}.token-note,.card-bottom>span,.tag,.memory-meta{font-size:14px}.strategy-card .description,.memory-card p{font-size:16px;line-height:1.65}.strategy-card h3,.memory-card h3{font-size:20px}.strategy-card .adopt{font-size:15px;min-height:40px}
+.section-heading h2,.kanban-column h3{font-family:inherit;font-size:18px}.kanban .task p{font-size:16px}.kanban .task small{font-size:14px}.kanban .task select{font-size:15px;min-height:38px}
+.lf-guide-section :is(p,li),.lf-guide-dialogue{font-size:16px}.lf-guide-meta,.lf-guide-source,.lf-guide-label{font-size:14px}
+#toast{font-size:15px;max-width:calc(100vw - 32px);line-height:1.6}
+@media(max-width:760px){.sidebar{width:280px;max-width:calc(100vw - 48px)}.main-shell{width:100%;margin-left:0}.page-head h1,.sf-heading h1{font-size:26px}.page-head,.sf-heading{align-items:flex-start;gap:12px}.page-head>div{min-width:0}.page-head .primary,.sf-create{white-space:nowrap;padding:10px 12px}.chat-welcome h1{font-size:28px}.learning-context button{font-size:14px}.starter-prompts button{font-size:14px}.sf-heading{flex-wrap:wrap}.ui-toolbar{gap:10px}.composer-dock{padding-bottom:12px}}
+
+/* Keep controls readable at the physical icon size shown in the Buddy reference. */
+html .sidebar .nav-item .icon,html .sidebar button svg,html .topbar button svg{width:16px;height:16px;stroke-width:1.8}
+.sf-stage-heading,.sf-stage-heading strong,.sf-view-switch button,.sf-counter,.sf-rail button,.sf-rail button span,.sf-back .sf-card-stamp{font-family:inherit;font-size:14px;letter-spacing:0}.sf-stage-heading button{font-size:14px;min-height:36px}.sf-stage-heading strong{font-weight:500}
+.sf-card .sf-art{flex-basis:132px;height:132px}.sf-slot{height:500px}.sf-gallery[data-layout=list] .sf-slot{height:500px}.sf-card-actions{margin-top:auto;padding-top:12px}.sf-card-description,.sf-card-subtitle{opacity:1}.sf-back .sf-card-stamp{max-height:none;flex-shrink:0}.sf-back .sf-steps{min-height:0;overflow-y:auto;flex:1}.sf-full,.sf-back-button{flex-shrink:0}.sf-rail button{white-space:nowrap}.sf-create{background:var(--orange-dark);color:#fff}
+@media(max-width:760px){.sf-stage{height:560px}.sf-slot{height:500px}.sf-card .sf-art{height:112px;flex-basis:112px}}
+
+.reply-actions button,.reply-actions button span,.reply-actions .text-link{font-size:14px;min-height:36px}.reply-actions svg{width:16px;height:16px;stroke-width:1.8}.next-choices{margin-top:18px}.next-choices button{font-size:15px;min-height:40px}.context-chevron{font-size:16px}.lf-settings-search kbd{font-size:14px}

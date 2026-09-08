@@ -70,8 +70,8 @@
       container.classList.add('ws-host');
       container.innerHTML = `<div class="ws-workspace"><div class="ws-section-heading"><span>项目</span><button class="ws-heading-action" data-ws-action="create-project" aria-label="新增项目" title="新增项目">${svg('plus')}</button></div><div class="ws-projects">${data.projects.map(project => {
         const list = rows(project.id);
-        return `<section class="ws-project ${project.collapsed ? 'is-collapsed' : ''}" data-ws-project="${esc(project.id)}"><div class="ws-project-row"><button class="ws-drag-handle" data-ws-drag="project" data-ws-id="${esc(project.id)}" aria-label="拖动项目：${esc(project.name)}" title="拖动项目排序">${svg('grip')}</button><button class="ws-project-toggle" data-ws-action="toggle-project" data-ws-id="${esc(project.id)}" aria-expanded="${!project.collapsed}" aria-controls="ws-project-${esc(project.id)}"><span class="ws-folder">${svg('folder')}</span><span class="ws-project-name">${esc(project.name)}</span><span class="ws-count">${list.length}</span><span class="ws-chevron">${svg('chevron')}</span></button><button class="ws-row-menu" data-ws-action="project-menu" data-ws-id="${esc(project.id)}" aria-label="项目选项：${esc(project.name)}">${svg('more')}</button></div><div class="ws-project-content" id="ws-project-${esc(project.id)}" ${project.collapsed ? 'hidden' : ''}>${list.map(session => row(session, project.id)).join('')}${!list.length ? '<div class="ws-project-empty">拖一段对话到这里</div>' : ''}<button class="ws-new-project-chat" data-ws-action="new-project-chat" data-ws-id="${esc(project.id)}">${svg('plus')}<span>在项目里新建对话</span></button></div></section>`;
-      }).join('')}${!data.projects.length ? '<button class="ws-project-placeholder" data-ws-action="create-project">'+svg('folder')+'<span>把一个目标放进一个项目</span></button>' : ''}</div><div class="ws-section-heading ws-conversation-heading"><span>对话</span><span class="ws-section-hint">拖动整理</span></div><div class="ws-loose-drop" data-ws-drop-group="">${rows('').map(session => row(session, '')).join('')}${!rows('').length ? '<div class="ws-loose-empty">新的学习对话会出现在这里<br><span>也可以把对话从项目中拖出来</span></div>' : '<div class="ws-drop-tail" aria-hidden="true"></div>'}</div><div class="ws-live" role="status" aria-live="polite" aria-atomic="true"></div></div>`;
+        return `<section class="ws-project ${project.collapsed ? 'is-collapsed' : ''}" data-ws-project="${esc(project.id)}"><div class="ws-project-row"><button class="ws-drag-handle" data-ws-drag="project" data-ws-id="${esc(project.id)}" aria-label="拖动项目：${esc(project.name)}" title="拖动项目排序">${svg('grip')}</button><button class="ws-project-toggle" data-ws-action="toggle-project" data-ws-id="${esc(project.id)}" aria-expanded="${!project.collapsed}" aria-controls="ws-project-${esc(project.id)}"><span class="ws-folder">${svg('folder')}</span><span class="ws-project-name">${esc(project.name)}</span><span class="ws-count">${list.length}</span><span class="ws-chevron">${svg('chevron')}</span></button><button class="ws-row-menu" data-ws-action="project-menu" data-ws-id="${esc(project.id)}" aria-label="项目选项：${esc(project.name)}">${svg('more')}</button></div><div class="ws-project-content" id="ws-project-${esc(project.id)}" ${project.collapsed ? 'hidden' : ''}>${list.map(session => row(session, project.id)).join('')}<button class="ws-new-project-chat" data-ws-action="new-project-chat" data-ws-id="${esc(project.id)}">${svg('plus')}<span>新对话</span></button></div></section>`;
+      }).join('')}${!data.projects.length ? '<button class="ws-project-placeholder" data-ws-action="create-project">'+svg('folder')+'<span>新建项目</span></button>' : ''}</div><div class="ws-section-heading ws-conversation-heading"><span>对话</span></div><div class="ws-loose-drop" data-ws-drop-group="">${rows('').map(session => row(session, '')).join('')}${!rows('').length ? '<div class="ws-loose-empty">暂无对话</div>' : '<div class="ws-drop-tail" aria-hidden="true"></div>'}</div><div class="ws-live" role="status" aria-live="polite" aria-atomic="true"></div></div>`;
       container.scrollTop = scroll;
       if (focusAction) [...container.querySelectorAll('[data-ws-action]')].find(element => element.dataset.wsAction === focusAction && element.dataset.wsId === focusId)?.focus({preventScroll: true});
     }
@@ -100,7 +100,7 @@
       closePopup();
       const element = document.createElement('dialog');
       element.className = 'ws-dialog';
-      element.innerHTML = `<header class="ws-dialog-heading"><div><span>LEARNFLOW / 学习流动</span><h2>${esc(title)}</h2></div><button data-ws-action="close-popup" class="ws-dialog-close" aria-label="关闭">${svg('close')}</button></header><div class="ws-dialog-body">${body}</div>`;
+      element.innerHTML = `<header class="ws-dialog-heading"><h2>${esc(title)}</h2><button data-ws-action="close-popup" class="ws-dialog-close" aria-label="关闭">${svg('close')}</button></header><div class="ws-dialog-body">${body}</div>`;
       document.body.append(element); popup = element;
       element.addEventListener('click', handleClick);
       element.addEventListener('close', () => {element.remove(); if (popup === element) popup = null;}, {once: true});
@@ -110,7 +110,7 @@
     function projectForm(id = '') {
       const project = projectBy(id);
       if (!project && data.projects.length >= 100) {toast('先整理一下已有项目，最多可以保留 100 个。'); return;}
-      const element = dialog(project ? '给项目换个名字' : '开始一个学习项目', `<form class="ws-name-form"><label>项目名称<input name="name" required maxlength="40" autocomplete="off" value="${esc(project?.name || '')}" placeholder="例如：六级复习、把概率论学明白"></label><p>把相关对话放在一起，回来时更容易接着学。</p><div class="ws-form-error" role="status"></div><button type="submit" class="ws-primary">${project ? '保存名称' : '创建项目'} ${svg('plus')}</button></form>`);
+      const element = dialog(project ? '重命名项目' : '新建项目', `<form class="ws-name-form"><label>项目名称<input name="name" required maxlength="40" autocomplete="off" value="${esc(project?.name || '')}" placeholder="输入项目名称"></label><div class="ws-form-error" role="status"></div><button type="submit" class="ws-primary">${project ? '保存' : '创建'}</button></form>`);
       element.querySelector('form').addEventListener('submit', event => {
         event.preventDefault(); const name = element.querySelector('[name=name]').value.trim();
         if (!name || data.projects.some(item => item.id !== id && item.name.toLocaleLowerCase() === name.toLocaleLowerCase())) {element.querySelector('.ws-form-error').textContent = name ? '已经有同名项目，换一个更容易分辨的名字吧。' : '先给项目起个名字。'; return;}
@@ -123,12 +123,12 @@
     function projectMenu(id) {
       const project = projectBy(id); if (!project) return;
       const index = data.projects.indexOf(project);
-      dialog(project.name, `<div class="ws-menu-list"><button data-ws-action="new-project-chat" data-ws-id="${esc(id)}">${svg('plus')}新建项目对话</button><button data-ws-action="rename-project" data-ws-id="${esc(id)}">${svg('edit')}修改项目名称</button><div class="ws-menu-divider"></div><button data-ws-action="project-up" data-ws-id="${esc(id)}" ${index === 0 ? 'disabled' : ''}>${svg('up')}向上移动</button><button data-ws-action="project-down" data-ws-id="${esc(id)}" ${index === data.projects.length - 1 ? 'disabled' : ''}>${svg('down')}向下移动</button><div class="ws-menu-divider"></div><button class="ws-danger" data-ws-action="delete-project" data-ws-id="${esc(id)}">${svg('remove')}移除项目文件夹</button></div>`);
+      dialog(project.name, `<div class="ws-menu-list"><button data-ws-action="new-project-chat" data-ws-id="${esc(id)}">${svg('plus')}新对话</button><button data-ws-action="rename-project" data-ws-id="${esc(id)}">${svg('edit')}重命名</button><div class="ws-menu-divider"></div><button data-ws-action="project-up" data-ws-id="${esc(id)}" ${index === 0 ? 'disabled' : ''}>${svg('up')}向上移动</button><button data-ws-action="project-down" data-ws-id="${esc(id)}" ${index === data.projects.length - 1 ? 'disabled' : ''}>${svg('down')}向下移动</button><div class="ws-menu-divider"></div><button class="ws-danger" data-ws-action="delete-project" data-ws-id="${esc(id)}">${svg('remove')}删除项目</button></div>`);
     }
     function sessionMenu(id) {
       const session = sessionBy(id); if (!session) return;
       const group = groupFor(id), list = rows(group), index = list.findIndex(item => item.id === id);
-      const element = dialog('整理这段对话', `<p class="ws-moving-title">${esc(sessionTitle(session))}</p><div class="ws-menu-label">移到</div><div class="ws-menu-list ws-destination-list"><button data-ws-action="move-session" data-ws-id="${esc(id)}" data-ws-target="" ${!group ? 'aria-current="true"' : ''}>${svg('chat')}<span>项目之外的对话</span>${!group ? svg('check') : ''}</button>${data.projects.map(project => `<button data-ws-action="move-session" data-ws-id="${esc(id)}" data-ws-target="${esc(project.id)}" ${group === project.id ? 'aria-current="true"' : ''}>${svg('folder')}<span>${esc(project.name)}</span>${group === project.id ? svg('check') : ''}</button>`).join('')}</div><div class="ws-menu-divider"></div><div class="ws-menu-label">在当前位置排序</div><div class="ws-menu-order"><button data-ws-action="session-up" data-ws-id="${esc(id)}" ${index <= 0 ? 'disabled' : ''}>${svg('up')}上移一位</button><button data-ws-action="session-down" data-ws-id="${esc(id)}" ${index >= list.length - 1 ? 'disabled' : ''}>${svg('down')}下移一位</button></div>`);
+      const element = dialog('移动对话', `<p class="ws-moving-title">${esc(sessionTitle(session))}</p><div class="ws-menu-label">移动到</div><div class="ws-menu-list ws-destination-list"><button data-ws-action="move-session" data-ws-id="${esc(id)}" data-ws-target="" ${!group ? 'aria-current="true"' : ''}>${svg('chat')}<span>未分组对话</span>${!group ? svg('check') : ''}</button>${data.projects.map(project => `<button data-ws-action="move-session" data-ws-id="${esc(id)}" data-ws-target="${esc(project.id)}" ${group === project.id ? 'aria-current="true"' : ''}>${svg('folder')}<span>${esc(project.name)}</span>${group === project.id ? svg('check') : ''}</button>`).join('')}</div><div class="ws-menu-divider"></div><div class="ws-menu-label">排序</div><div class="ws-menu-order"><button data-ws-action="session-up" data-ws-id="${esc(id)}" ${index <= 0 ? 'disabled' : ''}>${svg('up')}上移一位</button><button data-ws-action="session-down" data-ws-id="${esc(id)}" ${index >= list.length - 1 ? 'disabled' : ''}>${svg('down')}下移一位</button></div>`);
       element.querySelector('[aria-current]')?.focus({preventScroll: true});
     }
     function moveSession(id, targetGroup, position = Infinity) {
@@ -151,11 +151,11 @@
     }
     function deleteProject(id) {
       const project = projectBy(id); if (!project) return;
-      const element = dialog('只移除项目文件夹', `<p class="ws-delete-copy">“${esc(project.name)}”里的对话会移回侧栏的「对话」，内容和会话记录都会保留。</p><div class="ws-dialog-actions"><button class="ws-secondary" data-ws-action="close-popup">保留项目</button><button class="ws-primary" data-ws-confirm-delete>移除文件夹</button></div>`);
+      const element = dialog('删除项目', `<p class="ws-delete-copy">“${esc(project.name)}”里的对话会移回侧栏的「对话」，内容和会话记录都会保留。</p><div class="ws-dialog-actions"><button class="ws-secondary" data-ws-action="close-popup">保留项目</button><button class="ws-primary" data-ws-confirm-delete>删除项目</button></div>`);
       element.querySelector('[data-ws-confirm-delete]').onclick = () => {
         data.looseOrder = unique([...project.sessionIds, ...data.looseOrder]);
         data.projects = data.projects.filter(item => item.id !== id);
-        closePopup(); changed('delete-project'); toast('文件夹已移除，对话还在。');
+        closePopup(); changed('delete-project'); toast('项目已删除，对话已保留。');
       };
     }
     async function handleClick(event) {
@@ -175,7 +175,7 @@
         else if (action === 'new-project-chat') {
           closePopup(); const result = await onNewSession(id); const rawId = result && typeof result === 'object' ? result.id : result; const sessionId = ['string', 'number'].includes(typeof rawId) ? String(rawId) : '';
           if (sessionId && projectBy(id)) {projectBy(id).collapsed = false; moveSession(sessionId, id); await render();}
-        } else if (action === 'move-session') {closePopup(); moveSession(id, target); toast(target ? '已移入“' + projectBy(target)?.name + '”。' : '已移回项目之外的对话。');}
+        } else if (action === 'move-session') {closePopup(); moveSession(id, target); toast(target ? '已移入“' + projectBy(target)?.name + '”。' : '已移回未分组对话。');}
         else if (action === 'session-up' || action === 'session-down') {const group = groupFor(id), index = rows(group).findIndex(item => item.id === id); closePopup(); moveSession(id, group, index + (action === 'session-up' ? -1 : 1));}
         else if (action === 'project-up' || action === 'project-down') {const index = data.projects.findIndex(item => item.id === id); closePopup(); moveProject(id, index + (action === 'project-up' ? -1 : 1));}
       } catch (error) {toast(error.message || '这次没有整理成功，请再试一次。');}

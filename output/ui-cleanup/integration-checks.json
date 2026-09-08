@@ -1,0 +1,29 @@
+{
+  "version": "1.8.1",
+  "fixtureOnly": true,
+  "realModelRequests": 0,
+  "qqMessages": 0,
+  "checks": {
+    "navigationText16px": true,
+    "navigationIcons16pxStroke1_8": true,
+    "sidebarLongNameFits": true,
+    "rootChatVisibleTextAtLeast14px": true,
+    "classroomVisibleTextAtLeast14px": true,
+    "settingsVisibleTextAtLeast14px": true,
+    "marketVisibleTextAtLeast14px": true,
+    "assetsOpenHelpAndRefresh": true,
+    "taskCreatedAndMoved": true,
+    "strategyFlipAndExpand": true,
+    "largeTextFrontActionsFit": true,
+    "mobile390CardActionsFit": true,
+    "mobile390ClassroomFullWidth": true,
+    "longCourseAndObjectiveWrap": true,
+    "settled720ReflowFits": true,
+    "darkSettingsReadable": true,
+    "classroomHelpEscape": true,
+    "modelErrorVisible14px": true,
+    "modelRetryPreservesDraft": true,
+    "decorativeHeadersAndRepeatedFootnotesRemoved": true
+  },
+  "pageErrors": []
+}

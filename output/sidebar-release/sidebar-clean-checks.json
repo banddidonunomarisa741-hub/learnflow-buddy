@@ -1,0 +1,77 @@
+{
+  "fixtureOnly": true,
+  "checks": [
+    {
+      "name": "desktop readable type and thin icons",
+      "pass": true,
+      "details": {
+        "project": "15px",
+        "session": "15px",
+        "section": "14px",
+        "icon": "16px",
+        "stroke": "1.8px"
+      }
+    },
+    {
+      "name": "desktop removed filler copy",
+      "pass": true
+    },
+    {
+      "name": "drag ghost still appears",
+      "pass": true
+    },
+    {
+      "name": "pointer drop still assigns project",
+      "pass": true
+    },
+    {
+      "name": "desktop minimal create dialog and 16px input",
+      "pass": true
+    },
+    {
+      "name": "desktop move menu readable",
+      "pass": true
+    },
+    {
+      "name": "desktop modal no horizontal overflow",
+      "pass": true
+    },
+    {
+      "name": "mobile readable type and thin icons",
+      "pass": true,
+      "details": {
+        "project": "15px",
+        "session": "15px",
+        "section": "14px",
+        "icon": "16px",
+        "stroke": "1.8px"
+      }
+    },
+    {
+      "name": "mobile removed filler copy",
+      "pass": true
+    },
+    {
+      "name": "mobile minimal create dialog and 16px input",
+      "pass": true
+    },
+    {
+      "name": "mobile move menu readable",
+      "pass": true
+    },
+    {
+      "name": "mobile modal no horizontal overflow",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "screenshots": [
+    "sidebar-clean-desktop-crop.png",
+    "sidebar-clean-create-desktop.png",
+    "sidebar-clean-mobile.png",
+    "sidebar-clean-create-mobile.png",
+    "sidebar-clean-move-mobile.png"
+  ],
+  "passed": 12,
+  "failed": 0
+}
