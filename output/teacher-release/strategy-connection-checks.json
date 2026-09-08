@@ -1,0 +1,233 @@
+{
+  "fixtureOnly": true,
+  "realModelRequests": 0,
+  "pageErrors": [],
+  "checks": [
+    {
+      "name": "evidence: full instructions match saved card",
+      "pass": true
+    },
+    {
+      "name": "evidence: concrete steps and labelled authored example",
+      "pass": true
+    },
+    {
+      "name": "evidence: default offers copy without edit",
+      "pass": true
+    },
+    {
+      "name": "roots: full instructions match saved card",
+      "pass": true
+    },
+    {
+      "name": "roots: concrete steps and labelled authored example",
+      "pass": true
+    },
+    {
+      "name": "roots: default offers copy without edit",
+      "pass": true
+    },
+    {
+      "name": "feynman: full instructions match saved card",
+      "pass": true
+    },
+    {
+      "name": "feynman: concrete steps and labelled authored example",
+      "pass": true
+    },
+    {
+      "name": "feynman: default offers copy without edit",
+      "pass": true
+    },
+    {
+      "name": "retrieval: full instructions match saved card",
+      "pass": true
+    },
+    {
+      "name": "retrieval: concrete steps and labelled authored example",
+      "pass": true
+    },
+    {
+      "name": "retrieval: default offers copy without edit",
+      "pass": true
+    },
+    {
+      "name": "socratic: full instructions match saved card",
+      "pass": true
+    },
+    {
+      "name": "socratic: concrete steps and labelled authored example",
+      "pass": true
+    },
+    {
+      "name": "socratic: default offers copy without edit",
+      "pass": true
+    },
+    {
+      "name": "pbl: full instructions match saved card",
+      "pass": true
+    },
+    {
+      "name": "pbl: concrete steps and labelled authored example",
+      "pass": true
+    },
+    {
+      "name": "pbl: default offers copy without edit",
+      "pass": true
+    },
+    {
+      "name": "plain: full instructions match saved card",
+      "pass": true
+    },
+    {
+      "name": "plain: concrete steps and labelled authored example",
+      "pass": true
+    },
+    {
+      "name": "plain: default offers copy without edit",
+      "pass": true
+    },
+    {
+      "name": "teacher: full instructions match saved card",
+      "pass": true
+    },
+    {
+      "name": "teacher: concrete steps and labelled authored example",
+      "pass": true
+    },
+    {
+      "name": "teacher: default offers copy without edit",
+      "pass": true
+    },
+    {
+      "name": "copy opens editable prefilled instructions",
+      "pass": true
+    },
+    {
+      "name": "copy saves new custom card while default stays unchanged",
+      "pass": true
+    },
+    {
+      "name": "custom guide does not invent dialogue",
+      "pass": true
+    },
+    {
+      "name": "custom guide retains editable raw instruction",
+      "pass": true
+    },
+    {
+      "name": "mobile guide fits dialog width",
+      "pass": true
+    },
+    {
+      "name": "strategy inspection sends no API mutations",
+      "pass": true
+    },
+    {
+      "name": "models-only stage is pending, not verified",
+      "pass": true
+    },
+    {
+      "name": "opening and loading models sends zero POSTs",
+      "pass": true
+    },
+    {
+      "name": "local client picker contains both WorkBuddy and LearnBuddy",
+      "pass": true
+    },
+    {
+      "name": "selecting client does not itself authorize or probe",
+      "pass": true
+    },
+    {
+      "name": "explicit consent sends selected client then probe",
+      "pass": true
+    },
+    {
+      "name": "verified false has no green ready state or proof",
+      "pass": true
+    },
+    {
+      "name": "failed probe preserves chat draft",
+      "pass": true
+    },
+    {
+      "name": "verified true displays returned nonce and receipt",
+      "pass": true
+    },
+    {
+      "name": "verified true sets ready status",
+      "pass": true
+    },
+    {
+      "name": "success also preserves draft",
+      "pass": true
+    },
+    {
+      "name": "switching model resets to pending",
+      "pass": true
+    },
+    {
+      "name": "switching model preserves draft",
+      "pass": true
+    },
+    {
+      "name": "closing cancels verification UI without clearing draft",
+      "pass": true
+    },
+    {
+      "name": "aborted probe cannot publish a late success",
+      "pass": true
+    },
+    {
+      "name": "connection modal fits mobile width",
+      "pass": true
+    },
+    {
+      "name": "Feynman example uses speed rather than displacement velocity",
+      "pass": true
+    }
+  ],
+  "screenshots": [
+    "strategy-guide-desktop.png",
+    "strategy-guide-desktop-example.png",
+    "strategy-guide-mobile.png",
+    "strategy-guide-mobile-example.png",
+    "connection-failed-fixture.png",
+    "connection-proof-fixture.png",
+    "connection-mobile-fixture.png"
+  ],
+  "failures": [],
+  "connectionRequests": [
+    {
+      "endpoint": "/api/connection",
+      "clientId": "learnbuddy",
+      "model": "",
+      "consent": true
+    },
+    {
+      "endpoint": "/api/probe",
+      "model": "auto",
+      "consent": true
+    },
+    {
+      "endpoint": "/api/connection",
+      "clientId": "workbuddy",
+      "model": "",
+      "consent": true
+    },
+    {
+      "endpoint": "/api/probe",
+      "model": "auto",
+      "consent": true
+    },
+    {
+      "endpoint": "/api/probe",
+      "model": "fixture-b",
+      "consent": true
+    }
+  ],
+  "passed": 46,
+  "failed": 0,
+  "contentReview": "费曼示例使用“速率”：总路程/总时间为平均速率，避免与按位移定义的平均速度混淆。相关四张截图已更新。"
+}

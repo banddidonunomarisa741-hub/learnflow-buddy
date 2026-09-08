@@ -1,0 +1,21 @@
+{
+  "verified": true,
+  "source": "unmocked browser form after real /api/chat/stream request",
+  "clientName": "WorkBuddy",
+  "requestedModel": "auto",
+  "assessment": "【已有证据】\n学生本次提交为向 AI 的请求（\"用一个简短例子解释……再给我一道题\"），并未先尝试自己解释。请求本身显示：学生主动设定 150 字上限，对简洁表达有意识；明确要求练习题，愿意做自我验证。AI 回复中的\"方向区分\"与\"堵车/下雨\"类比属外部材料，不能据此推断学生已掌握。\n\n【尚不确定】\n学生是否真正区分 P(A|B) 与 P(B|A) 的方向差异；能否用自己的话重述并换用新例子；能否独立算出 P(女生|戴眼镜)＝12/20、P(戴眼镜|女生)＝12/30，并各自说明两者为何不相等。\n\n【后续检验（一次）】\n请学生在不参考 AI 回复的前提下：①用 ≤80 字写出 P(A|B) 与 P(B|A) 的区别，最好含一个非\"堵车/下雨\"的新例子；②独立计算上述两个条件概率，并各用一句话说明为何不相等。之后与本次 AI 回复对照，重点看类比是否被替换、是否给出具体数值与理由。",
+  "manualStatus": "pending",
+  "modelRecord": {
+    "id": "auto",
+    "label": "Auto（客户端选择）",
+    "verification": {
+      "verified": true,
+      "checkedAt": "2026-09-08T03:11:11.602Z",
+      "latencyMs": 34031,
+      "model": "minimax-m3",
+      "requestedModel": "auto",
+      "clientName": "WorkBuddy",
+      "clientId": "7cd1a2d76ef328a7"
+    }
+  }
+}

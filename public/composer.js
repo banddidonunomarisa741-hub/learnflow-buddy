@@ -1,7 +1,7 @@
 /* Attachments stay in this tab until sent. Saving is a separate choice. */
 (() => {
   let files = [], draft = '', reading = false, models = [], selected = '';
-  let state = '未连接', detail = '连接自己的模型后开始对话。';
+  let verifiedFor='',state = '未连接', detail = '连接自己的模型后开始对话。';
   let loadingModels = null, modelSource = '', attachmentStatus = '', attachmentVersion = 0;
   let mode = 'demo', busy = false, lastInput = null, attachmentEpoch = 0;
   const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
@@ -53,8 +53,8 @@
     const trigger = form.querySelector('#model-trigger');
     trigger.innerHTML = `<span class="composer-model-name">${esc(label)}</span>${svg('chevron')}`;
     trigger.disabled = busy; trigger.title = mode === 'api' ? '切换本次对话使用的模型' : '连接后使用自己的模型'; trigger.setAttribute('aria-expanded', String(menu.open));
-    const failed = /失败|检查/.test(state), ready = mode === 'api' && models.length > 0 && !failed;
-    const status = mode === 'demo' ? '演示' : failed ? '连接异常' : state === '正在验证' ? '验证中' : ready ? '已连接' : '连接中';
+    const failed = /失败|检查/.test(state), ready = mode === 'api' && verifiedFor===selected && !failed;
+    const status = mode === 'demo' ? '演示' : failed ? '连接异常' : state === '正在验证' ? '验证中' : ready ? '已验证' : '待验证';
     const statusButton = form.querySelector('#composer-connection');
     statusButton.querySelector('.composer-status-label').textContent = status;
     statusButton.dataset.state = mode === 'demo' ? 'demo' : failed ? 'error' : ready ? 'ready' : 'pending';
@@ -75,7 +75,7 @@
   function drawOptions(query = '') {
     const matches = models.filter(item => (item.id + ' ' + modelLabel(item) + ' ' + family(item.id)).toLowerCase().includes(query.trim().toLowerCase()));
     const groups = [...new Set(matches.map(item => family(item.id)))];
-    menu.querySelector('#model-options').innerHTML = matches.length ? groups.map(group => `<div role="group" aria-label="${esc(group)}"><div class="model-group">${esc(group)}</div>${matches.filter(item => family(item.id) === group).map(item => `<button type="button" role="option" aria-selected="${item.id === selected}" data-model-id="${esc(item.id)}" class="model-option"><span class="model-mark" aria-hidden="true">${item.id === 'auto' ? 'A' : esc(group.slice(0, 1))}</span><span class="model-option-copy"><strong>${esc(modelLabel(item))}</strong>${modelLabel(item) !== item.id && item.id !== 'auto' ? `<small>${esc(item.id)}</small>` : item.id === 'auto' ? '<small>由当前服务选择</small>' : ''}</span>${item.id === selected ? `<span class="model-check" aria-hidden="true">${svg('check')}</span>` : ''}</button>`).join('')}</div>`).join('') : `<p class="model-empty">${models.length ? '没有找到，换个名字试试。' : '还没有可用模型。请先检查连接。'}</p>`;
+    menu.querySelector('#model-options').innerHTML = matches.length ? groups.map(group => `<div role="group" aria-label="${esc(group)}"><div class="model-group">${esc(group)}</div>${matches.filter(item => family(item.id) === group).map(item => `<button type="button" role="option" aria-selected="${item.id === selected}" data-model-id="${esc(item.id)}" class="model-option"><span class="model-mark" aria-hidden="true">${item.id === 'auto' ? 'A' : esc(group.slice(0, 1))}</span><span class="model-option-copy"><strong>${esc(modelLabel(item))}</strong><span class="model-proof-badge ${item.verification?.verified?'passed':item.verification?.verified===false?'failed':''}">${item.verification?.verified?'本机曾验证通过':item.verification?.verified===false?'最近请求未完成':'客户端声明 · 尚未验证'}</span>${modelLabel(item) !== item.id && item.id !== 'auto' ? `<small>${esc(item.id)}</small>` : item.id === 'auto' ? '<small>由当前服务选择</small>' : ''}</span>${item.id === selected ? `<span class="model-check" aria-hidden="true">${svg('check')}</span>` : ''}</button>`).join('')}</div>`).join('') : `<p class="model-empty">${models.length ? '没有找到，换个名字试试。' : '还没有可用模型。请先检查连接。'}</p>`;
     menu.querySelector('#model-count').textContent = `${matches.length} 个模型`; positionMenu();
   }
   function openModels() {
@@ -118,23 +118,23 @@
         models = [...unique.values()];
         if (!models.some(item => item.id === selected)) selected = models.some(item => item.id === data.defaultModel) ? data.defaultModel : models[0]?.id || '';
         modelSource = data.source || '当前连接的模型服务';
-        if (state !== '连接成功' && state !== '正在验证') { state = models.length ? '已连接' : '连接待检查'; detail = models.length ? '模型列表已读取，可以开始对话。' : '暂时没有可用模型，请检查连接。'; }
+        if (state !== '连接成功' && state !== '正在验证') { state = models.length ? '已授权，待验证' : '连接待检查'; detail = models.length ? '已读取客户端声明的模型；收到回答后才会标记可用。' : '暂时没有可用模型，请检查连接。'; }
         mount(); if (menu.open) drawOptions(menu.querySelector('#model-search').value); return data;
       } catch (error) { state = '连接待检查'; detail = error.message || '请更新连接助手后重试。'; mount(); throw error; }
       finally { loadingModels = null; mount(); }
     })();
     return loadingModels;
   }
-  async function verify(status = () => {}) {
+  async function verify(status = () => {}, options={}) {
     state = '正在验证'; detail = '正在等模型回复…'; mount(); status(detail);
     try {
       await refresh();
-      const response = await window.learnflowFetch('/api/probe', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({consent: true, model: selected || undefined}), signal: AbortSignal.timeout(65000)});
+      const response = await window.learnflowFetch('/api/probe', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({consent: true, model: selected || undefined}), signal: options.signal?AbortSignal.any([options.signal,AbortSignal.timeout(65000)]):AbortSignal.timeout(65000)});
       const data = await response.json();
       if (!response.ok || !data.verified) throw Error(data.message || '模型没有完成验证。');
-      state = '连接成功'; detail = `${data.model || selected} 已回复`; status('✓ 已连接，可以开始学习。'); mount();
+      verifiedFor=selected;state = '连接成功'; detail = `${data.model || selected} 已回复`; status('✓ 已连接，可以开始学习。'); mount();
       window.dispatchEvent(new CustomEvent('learnflow-verified', {detail: data})); return data;
-    } catch (error) { state = '连接待检查'; detail = error.message; status('这次没连上：' + error.message); mount(); throw error; }
+    } catch (error) { verifiedFor='';state = '连接待检查'; detail = error.message; status('这次没连上：' + error.message); mount(); throw error; }
   }
   async function add(incoming) {
     if (busy || reading) return;
@@ -182,22 +182,25 @@
     if (button.id === 'model-trigger') openModels(); if (button.id === 'close-models') closeModels();
     if (button.id === 'composer-connection' || button.id === 'model-connection-settings') { closeModels(false); window.LearnFlowConnection?.open(); }
     if (button.id === 'refresh-models') { button.disabled = true; button.querySelector('span').textContent = '刷新中…'; refresh().catch(error => say(error.message)).finally(() => { button.disabled = false; if (button.querySelector('span')) button.querySelector('span').textContent = '刷新列表'; }); }
-    if (button.dataset.modelId && models.some(item => item.id === button.dataset.modelId)) { selected = button.dataset.modelId; try { sessionStorage.setItem('learnflow.model', selected); } catch {} state = '已连接'; detail = `下一条消息使用 ${modelLabel(models.find(item => item.id === selected))}`; closeModels(); mount(); }
+    if (button.dataset.modelId && models.some(item => item.id === button.dataset.modelId)) { selected = button.dataset.modelId; try { sessionStorage.setItem('learnflow.model', selected); } catch {} verifiedFor='';state = '已授权，待验证';window.dispatchEvent(new Event('learnflow-model-changed')); detail = `下一条消息使用 ${modelLabel(models.find(item => item.id === selected))}`; closeModels(); mount(); }
     if (button.dataset.removeAttachment !== undefined && !busy) { files.splice(Number(button.dataset.removeAttachment), 1); attachmentVersion++; attachmentStatus = ''; mount(); }
   });
   document.addEventListener('dragover', event => { if (Array.from(event.dataTransfer?.types || []).includes('Files')) { if (!document.querySelector('#chat-form')) return; event.preventDefault(); if (!busy && !reading) document.querySelector('#chat-form').classList.add('dragging'); } });
   document.addEventListener('dragleave', event => { if (!event.relatedTarget) document.querySelector('#chat-form')?.classList.remove('dragging'); });
   document.addEventListener('drop', event => { if (event.dataTransfer?.files.length && document.querySelector('#chat-form')) { event.preventDefault(); document.querySelector('#chat-form').classList.remove('dragging'); add([...event.dataTransfer.files]); } });
   document.addEventListener('paste', event => { if (event.target.id === 'chat-input' && event.clipboardData?.files.length) { event.preventDefault(); add([...event.clipboardData.files]); } });
-  window.addEventListener('learnflow-connected', () => refresh().catch(() => {}));
-  window.addEventListener('learnflow-disconnected', () => { models = []; selected = ''; state = '未连接'; detail = '可以重新连接模型。'; try { sessionStorage.removeItem('learnflow.model'); } catch {} closeModels(false); mount(); });
+  window.addEventListener('learnflow-connected', () => { mode='api';refresh().catch(() => {}); });
+  window.addEventListener('learnflow-disconnected', () => { mode='demo';models = []; selected = ''; verifiedFor='';state = '未连接'; detail = '可以重新连接模型。'; try { sessionStorage.removeItem('learnflow.model'); } catch {} closeModels(false); mount(); });
   const setDraft = text => { draft = String(text ?? ''); const input = document.querySelector('#chat-input'); if (input) { input.value = draft; resizeInput(input); } };
   const clear = () => { files = []; draft = ''; attachmentStatus = ''; attachmentVersion++; attachmentEpoch++; };
   window.LearnFlowComposer = {
     mount, refresh, verify, add, files: () => files, draft: () => draft, model: () => selected || undefined, ready: () => !reading, clear,
     restore: (items, text) => { files = items; attachmentVersion++; setDraft(text); }, setDraft,
-    failure: message => { state = '本次请求失败'; detail = message; },
-    success: model => { state = '连接成功'; detail = `${model || selected} 已回复`; window.dispatchEvent(new CustomEvent('learnflow-verified', {detail: {model: model || selected, verified: true}})); },
+    failure: message => { verifiedFor='';state = '本次请求失败'; detail = message;window.dispatchEvent(new Event('learnflow-model-failed')); },
+    success: model => { verifiedFor=selected;state = '连接成功'; detail = `${model || selected} 已回复`; window.dispatchEvent(new CustomEvent('learnflow-verified', {detail: {model: model || selected, verified: true}})); },
+    select: id => {selected=id;verifiedFor='';state='已授权，待验证';try{sessionStorage.setItem('learnflow.model',id);}catch{}mount();},
+    resetVerification:()=>{verifiedFor='';state='已授权，待验证';},
+    connectionStatus:()=>({connected:mode==='api',verified:verifiedFor===selected&&!!verifiedFor,model:selected,label:detail}),
     reset: clear
   };
 })();

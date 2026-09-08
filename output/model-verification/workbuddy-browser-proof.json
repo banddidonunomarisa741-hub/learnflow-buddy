@@ -1,0 +1,21 @@
+{
+  "verified": true,
+  "checkedAt": "2026-09-08T02:53:50.304Z",
+  "latencyMs": 8506,
+  "model": "deepseek-v4-flash",
+  "requestedModel": "auto",
+  "clientName": "WorkBuddy",
+  "clientId": "7cd1a2d76ef328a7",
+  "requestId": "552ef04b-e8e2-405f-aa48-c3e697d34920",
+  "prompt": "请计算47加86，只回答数值133，然后原样写出校验码 LF-46e99569。不需要解释。",
+  "response": "133\n\nLF-46e99569",
+  "usage": {
+    "total_tokens": 3190,
+    "prompt_tokens": 3118,
+    "completion_tokens": 72,
+    "cache_read_tokens": 0,
+    "cache_creation_tokens": 3118,
+    "basis": "reported_input_plus_output",
+    "source": "provider"
+  }
+}

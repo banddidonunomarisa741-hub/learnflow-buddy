@@ -1,0 +1,25 @@
+{
+  "recordedAt": "2026-09-08T03:10:36.155Z",
+  "fixtureOnly": true,
+  "lateRepliesDeliberatelyIgnoreAbort": true,
+  "checks": [
+    {
+      "name": "显式取消中断signal，忽略不合作接口的晚到评价",
+      "passed": true
+    },
+    {
+      "name": "人工编辑立即取消，并保留已确认评价与依据",
+      "passed": true
+    },
+    {
+      "name": "切换学生及关闭所属弹窗都会中止，晚到任务不串入新表单",
+      "passed": true
+    },
+    {
+      "name": "离开课堂dispose中止请求，晚到数据不写本机草稿",
+      "passed": true
+    }
+  ],
+  "apiWrites": [],
+  "pageErrors": []
+}

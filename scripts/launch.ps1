@@ -5,7 +5,7 @@ $learnflowUrl = "http://127.0.0.1:$Port"
 $learnflowReady = $false
 try { $learnflowHealth = Invoke-RestMethod "$learnflowUrl/api/health" -TimeoutSec 2; $learnflowReady = $learnflowHealth.service -eq 'LearnFlow local adapter' } catch { }
 # Only replace an older instance launched from this exact helper installation.
-if ($learnflowReady -and $learnflowHealth.adapterVersion -ne '1.4.0') {
+if ($learnflowReady -and $learnflowHealth.adapterVersion -ne '1.7.0') {
   $learnflowEntry = Join-Path $learnflowRoot 'server\server.mjs'
   $learnflowListener = Get-NetTCPConnection -LocalPort $Port -State Listen -ErrorAction SilentlyContinue | Select-Object -First 1
   if ($learnflowListener) {

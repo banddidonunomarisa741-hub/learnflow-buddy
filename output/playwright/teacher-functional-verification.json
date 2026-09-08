@@ -1,0 +1,127 @@
+{
+  "recordedAt": "2026-09-08T03:11:18.923Z",
+  "provenance": "本文件由本任务先前三次真实浏览器夹具运行的 PASS 输出整理，不表示本次再次运行。",
+  "fixtureOnly": true,
+  "realModelValidation": false,
+  "realQQSendValidation": false,
+  "checks": [
+    {
+      "name": "教师人工确认评价",
+      "passed": true
+    },
+    {
+      "name": "AI 作业草稿经确认布置",
+      "passed": true
+    },
+    {
+      "name": "学生提交作业",
+      "passed": true
+    },
+    {
+      "name": "QQ 回执预览未自动写入",
+      "passed": true
+    },
+    {
+      "name": "QQ 回执仅经选择关联、不自动完成",
+      "passed": true
+    },
+    {
+      "name": "教师核验后完成",
+      "passed": true
+    },
+    {
+      "name": "学习对话默认零勾选",
+      "passed": true
+    },
+    {
+      "name": "取消分享不保存学习包",
+      "passed": true
+    },
+    {
+      "name": "只保存选择片段",
+      "passed": true
+    },
+    {
+      "name": "真实、估算、未知和部分用量正确区分",
+      "passed": true
+    },
+    {
+      "name": "AI 失败不生成教师核验",
+      "passed": true
+    },
+    {
+      "name": "格式错误学习包不导入",
+      "passed": true
+    },
+    {
+      "name": "外部学生 ID 的作业被拒绝",
+      "passed": true
+    },
+    {
+      "name": "390px 手机布局无页面横溢",
+      "passed": true
+    },
+    {
+      "name": "无 QQ 或真实 API 写请求",
+      "passed": true
+    },
+    {
+      "name": "无页面运行异常",
+      "passed": true
+    },
+    {
+      "name": "创建课程不会自动伪造学生",
+      "passed": true
+    },
+    {
+      "name": "取消邀请不自动加入",
+      "passed": true
+    },
+    {
+      "name": "链接邀请经同意加入独立浏览器",
+      "passed": true
+    },
+    {
+      "name": "跨设备加入不伪装在线同步",
+      "passed": true
+    },
+    {
+      "name": "教师预览确认后导入另一设备学习包",
+      "passed": true
+    },
+    {
+      "name": "外部学生导入匹配身份的作业",
+      "passed": true
+    },
+    {
+      "name": "作业提交包导入后等待人工确认",
+      "passed": true
+    },
+    {
+      "name": "不同学生 ID 的作业回传拒绝",
+      "passed": true
+    },
+    {
+      "name": "跨设备文件流程完成人工核验",
+      "passed": true
+    },
+    {
+      "name": "逻辑层拒绝纯空格课程",
+      "passed": true
+    },
+    {
+      "name": "逻辑层拒绝未经确认的布置",
+      "passed": true
+    },
+    {
+      "name": "非法消息结构在预览前拒绝",
+      "passed": true
+    }
+  ],
+  "screenshots": [
+    "teacher-demo-desktop.png",
+    "teacher-demo-mobile.png"
+  ],
+  "apiWrites": [],
+  "pageErrors": []
+}

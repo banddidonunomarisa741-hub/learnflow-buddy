@@ -1,0 +1,69 @@
+{
+  "fixtureOnly": true,
+  "realModelOrQQRequests": 0,
+  "checks": [
+    {
+      "name": "direct #classroom recognizes authorized connection before chat mount",
+      "pass": true
+    },
+    {
+      "name": "no model call before teacher clicks generate",
+      "pass": true
+    },
+    {
+      "name": "full app teacher request uses teaching purpose and fills draft",
+      "pass": true
+    },
+    {
+      "name": "teacher request disables memory",
+      "pass": true
+    },
+    {
+      "name": "disconnected classroom blocks generation without network call",
+      "pass": true
+    },
+    {
+      "name": "disconnected generation preserves prior teacher draft",
+      "pass": true
+    },
+    {
+      "name": "disconnected composer is in demo state",
+      "pass": true
+    },
+    {
+      "name": "teacher request reaches held stream",
+      "pass": true
+    },
+    {
+      "name": "cancel retains existing teacher content",
+      "pass": true
+    },
+    {
+      "name": "chat sends after teacher cancellation through full app",
+      "pass": true
+    },
+    {
+      "name": "resumed chat displays fixture model reply",
+      "pass": true
+    },
+    {
+      "name": "cancelled teacher late response does not replace chat",
+      "pass": true
+    }
+  ],
+  "pageErrors": [],
+  "failures": [],
+  "disconnectedButtonDisabled": false,
+  "requestPurposes": [
+    {
+      "endpoint": "/api/chat/stream",
+      "purpose": "teacher-assessment"
+    },
+    {
+      "endpoint": "/api/chat/stream",
+      "purpose": "learning-chat"
+    }
+  ],
+  "passed": 12,
+  "failed": 0
+}

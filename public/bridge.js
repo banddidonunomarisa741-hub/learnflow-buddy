@@ -27,7 +27,7 @@
       const d=await r.json();if(!r.ok)throw Error(d.message||'无法创建连接请求');
       popup.location.href=base+'/#pair='+d.id;status('请在弹出的本机窗口点击同意。确认后会自动测试模型并显示结果。');
       const until=Date.now()+180000;
-      while(Date.now()<until){await new Promise(r=>setTimeout(r,1200));const r=await raw(base+'/api/pair/poll',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:d.id,proof}),signal:AbortSignal.timeout(5000)});const p=await r.json();if(!r.ok)throw Error(p.message);if(p.denied)throw Error('你已取消连接，尚未授权此网页。');if(p.token){grant=p.token;try{sessionStorage.setItem('learnflow.bridge',grant);}catch{}window.dispatchEvent(new Event('learnflow-connected'));status('已连接本机模型。你可以留在这个网页继续学习。');popup.close();return;}}
+      while(Date.now()<until){await new Promise(r=>setTimeout(r,1200));const r=await raw(base+'/api/pair/poll',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:d.id,proof}),signal:AbortSignal.timeout(5000)});const p=await r.json();if(!r.ok)throw Error(p.message);if(p.denied)throw Error('你已取消连接，尚未授权此网页。');if(p.token){grant=p.token;try{sessionStorage.setItem('learnflow.bridge',grant);}catch{}window.dispatchEvent(new Event('learnflow-connected'));status('本机访问权限已确认，接下来测试模型是否能回答。');popup.close();return;}}
       throw Error('连接请求已过期，请重新发起。');
     }catch(e){popup.close();throw Error(e.message==='Failed to fetch'?'未找到本机助手，或浏览器尚未允许访问本地网络。请先安装 / 打开助手，再重试。':e.message);}
   }
@@ -36,10 +36,11 @@
   if(!here&&grant)setTimeout(async()=>{if((await health())?.configured)window.dispatchEvent(new Event('learnflow-connected'));},100);
   if(here&&location.hash.startsWith('#pair='))setTimeout(async()=>{
     const id=location.hash.slice(6),dialog=document.createElement('dialog');dialog.className='pair-dialog';document.body.append(dialog);
-    try{const r=await raw('/api/pair/pending?id='+encodeURIComponent(id));const d=await r.json();if(!r.ok)throw Error(d.message);
+    try{const healthResponse=await raw('/api/health');const localHealth=await healthResponse.json();const r=await raw('/api/pair/pending?id='+encodeURIComponent(id));const d=await r.json();if(!r.ok)throw Error(d.message);
       dialog.innerHTML='<h2>允许这个网页连接学习助手吗？</h2><p id="pair-origin"></p><p>允许它使用本机已配置模型进行学习对话，并访问你确认保存的学习资产。模型调用会使用账号额度。</p><p>如果你另外扫码连接 QQ，网页也能显示机器人的学习收件箱和提醒。发消息或设置提醒时，会让你确认收件人、内容和时间。</p><p>客户端登录密钥留在本机。连接有效期最多 8 小时，可在网页随时断开；QQ 连接和已设定的提醒可在连接器页面单独取消。</p><label><input type="checkbox" id="pair-consent"> 我确认这是我刚才发起的连接</label><p role="status" id="pair-status"></p><div class="button-row"><button class="primary" id="pair-approve">同意并连接原网页</button><button class="secondary" id="pair-deny">取消</button></div>';
       dialog.querySelector('#pair-origin').textContent='请求来源：'+d.origin;
-      async function answer(consent){if(consent&&!dialog.querySelector('#pair-consent').checked){dialog.querySelector('#pair-status').textContent='请先确认请求来源。';return;}const r=await raw('/api/pair/approve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,consent})});const d=await r.json();dialog.querySelector('#pair-status').textContent=r.ok?'已处理，请回到原网页。':d.message;}
+      if(localHealth.clients?.length){const group=document.createElement('fieldset');group.className='connection-clients';const legend=document.createElement('legend');legend.textContent='选择本次授权使用的客户端入口';group.append(legend);for(const client of localHealth.clients){const label=document.createElement('label');label.className='connection-client';const input=document.createElement('input');input.type='radio';input.name='pair-client';input.value=client.id;input.checked=client.id===localHealth.selectedClientId;const span=document.createElement('span');span.textContent=client.name+' · '+client.method;label.append(input,span);group.append(label);}dialog.querySelector('#pair-origin').after(group);}
+      async function answer(consent){if(consent&&!dialog.querySelector('#pair-consent').checked){dialog.querySelector('#pair-status').textContent='请先确认请求来源。';return;}const r=await raw('/api/pair/approve',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,consent,clientId:consent?dialog.querySelector('[name="pair-client"]:checked')?.value:undefined})});const d=await r.json();dialog.querySelector('#pair-status').textContent=r.ok?'已处理，请回到原网页。':d.message;}
       dialog.querySelector('#pair-approve').onclick=()=>answer(true);dialog.querySelector('#pair-deny').onclick=()=>answer(false);
     }catch(e){dialog.textContent=e.message;}
     dialog.showModal();
