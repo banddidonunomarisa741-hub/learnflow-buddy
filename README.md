@@ -1,5 +1,7 @@
 # LearnFlow学习流动
 
+**网页 1.8.2**：连接确认简化，成功回执区分真实 Token 与尚未提供的积分。[授权与积分核查](docs/WORKBUDDY-AUTH-CREDITS.md)。[打开新版](https://banddidonunomarisa741-hub.github.io/learnflow-buddy/?v=1.8.2)。
+
 **网页 1.8.1**：放大正文与控件，统一图标，精简教师页和全站重复说明。项目分组、立体策略卡和原有模型连接保留。见 [本版界面说明](docs/UI-CLARITY-1.8.1.md)。[打开新版](https://banddidonunomarisa741-hub.github.io/learnflow-buddy/?v=1.8.1)。Netlify 额度耗尽，原 Netlify 入口仍为上一版。
 
 LearnFlow 是面向自主学习者的对话工作台，也是腾讯产业命题的独立开源项目。学习方法、资料保存和记忆均由用户选择。网页可经授权通过本机 WorkBuddy 或 LearnBuddy 调用云端模型；正式 Buddy 应用仍待平台认证、预览与审核。

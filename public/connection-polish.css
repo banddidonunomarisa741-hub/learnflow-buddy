@@ -9,3 +9,19 @@
 .connection-dialog.is-verified>.connection-actions:not(:last-child),.connection-dialog.is-verified>.connection-consent,.connection-dialog.is-verified>details{display:none}
 .model-proof-badge{font-size:9px;color:var(--muted);font-weight:400;margin-top:4px}.model-proof-badge.passed{color:#488259}.model-proof-badge.failed{color:#bf784d}.reply-receipt{display:block;color:var(--muted);font-size:10px;margin:12px 0 0;line-height:1.7}.reply-receipt summary{cursor:pointer}.reply-receipt p{font-size:10px;line-height:1.7;overflow-wrap:anywhere}
 @media(max-width:620px){.connection-dialog{padding:22px}.connection-dialog h2{font-size:21px}.connection-dialog .connection-actions{flex-direction:column}.connection-proof dl{grid-template-columns:66px 1fr}.connection-dialog .connection-result{font-size:12px}}
+
+/* Account consent and receipts use the same readable LearnFlow controls. */
+.connection-dialog>p,.connection-dialog .connection-consent,.connection-dialog details p,.connection-dialog details li{font-size:15px;line-height:1.7}
+.connection-dialog .connection-actions button,.connection-dialog .connection-client strong,.connection-dialog summary{font-size:15px}
+.connection-dialog .connection-result,.connection-clients legend{font-size:14px}
+.connection-proof{border-color:var(--line);background:var(--lf-surface,var(--paper));padding:20px}
+.connection-proof h3{font-size:21px;color:var(--ink)}
+.connection-proof dl{grid-template-columns:94px 1fr;font-size:15px;gap:12px}
+.connection-proof .connection-proof-details{margin-top:18px;padding-bottom:0}
+.connection-proof-details dl{margin-top:16px}.connection-proof pre{font-size:14px}
+.pair-origin{font-weight:600;overflow-wrap:anywhere;color:var(--ink)!important}
+.connection-dialog #pair-status:empty{display:none}
+.reply-receipt{font-size:13px}.reply-receipt p{font-size:14px;line-height:1.7}
+.usage-grid{display:grid;grid-template-columns:110px minmax(0,1fr);gap:8px 16px;margin:16px 0;font-size:15px;line-height:1.5}
+.usage-grid dt,.usage-grid dd{margin:0;overflow-wrap:anywhere}.usage-grid dd{color:var(--ink)}
+.reply-receipt .usage-request{font-size:12px}

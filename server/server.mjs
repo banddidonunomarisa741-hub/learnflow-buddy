@@ -6,6 +6,7 @@ import {discoverClients, cliChat, cliModels} from './local-cli.mjs';
 import {randomUUID,randomBytes} from 'node:crypto';
 import {attachments,addAttachments} from './attachments.mjs';
 import {compatibleStream} from './compatible-stream.mjs';
+import {withBilling} from './billing.mjs';
 import {qqConnector} from './tencent-ecosystem.mjs';
 const LOCAL_CLIENTS = await discoverClients();
 let selectedClient=LOCAL_CLIENTS[0]||null,LOCAL_CLI=selectedClient?.cli||null;
@@ -190,6 +191,9 @@ async function modelList(){
   return {models:[{id:'host-default',label:'WorkBuddy 宿主默认模型'}],defaultModel:'host-default',attachments:false,source:'此官方文字通道不提供模型切换或附件'};
 }
 async function runChat(chat,options={}){
+  return withBilling(await runChatInternal(chat,options));
+}
+async function runChatInternal(chat,options={}){
   if(!configured())fail(503,'MODEL_NOT_CONFIGURED','请先连接学习助手。');
   if(chat.purpose?.startsWith('teacher-'))options={...options,effort:'low'};
   if(PROVIDER==='local-codebuddy'){
@@ -248,7 +252,7 @@ const server = http.createServer(async (req, res) => {
       lastVerification=null;verifiedModels.clear();PROVIDER = data.provider; BASE = (data.base || '').replace(/\/$/, ''); MODEL = data.model || ''; KEY = data.key || ''; WB_TOKEN = data.token || ''; WB_ENABLED = PROVIDER === 'workbuddy-localassistant';
       return json(res, 200, {ok:true, configured:configured(), verified:false, provider:PROVIDER});
     }
-    if (pathname === '/api/health' && req.method === 'GET') return json(res, 200, {ok:true,service:'LearnFlow local adapter',adapterVersion:'1.7.0',provider:PROVIDER,localCLIAvailable:Boolean(LOCAL_CLI),clients:clientSummary(),selectedClientId:selectedClient?.id||null,clientName:PROVIDER==='local-codebuddy'?selectedClient?.name:null,configured:configured(),busy:cliBusy||workbuddyBusy,model:PROVIDER==='openai-compatible'?MODEL||null:null,verification:lastVerification,mode:configured()?'configured':'demo',storesConversations:false});
+    if (pathname === '/api/health' && req.method === 'GET') return json(res, 200, {ok:true,service:'LearnFlow local adapter',adapterVersion:'1.8.2',provider:PROVIDER,localCLIAvailable:Boolean(LOCAL_CLI),clients:clientSummary(),selectedClientId:selectedClient?.id||null,clientName:PROVIDER==='local-codebuddy'?selectedClient?.name:null,configured:configured(),busy:cliBusy||workbuddyBusy,model:PROVIDER==='openai-compatible'?MODEL||null:null,verification:lastVerification,mode:configured()?'configured':'demo',storesConversations:false});
 
     if(pathname==='/api/models'&&req.method==='GET')return json(res,200,await modelList());
     if(pathname==='/api/probe'&&req.method==='POST'){
@@ -258,7 +262,7 @@ const server = http.createServer(async (req, res) => {
       const prompt=`请计算47加86，只回答数值133，然后原样写出校验码 ${nonce}。不需要解释。`;
       try{const result=await runChat(validateChat({messages:[{role:'user',content:prompt}],model:d.model}),{signal:abort.signal,timeoutMs:55000,probe:true});
         const verified=result.status==='completed'&&typeof result.reply==='string'&&result.reply.includes(nonce)&&result.reply.includes('133');
-        lastVerification={verified,checkedAt:new Date().toISOString(),latencyMs:Date.now()-started,model:result.model,requestedModel:d.model||'auto',clientName:result.client?.name||PROVIDER,clientId:selectedClient?.id||null,requestId:result.receipt?.requestId||randomUUID(),prompt,response:result.reply,usage:result.usage};
+        lastVerification={verified,checkedAt:new Date().toISOString(),latencyMs:Date.now()-started,model:result.model,requestedModel:d.model||'auto',clientName:result.client?.name||PROVIDER,clientId:selectedClient?.id||null,requestId:result.receipt?.requestId||randomUUID(),prompt,response:result.reply,usage:result.usage,billing:result.billing};
         verifiedModels.set(verificationKey(d.model||'auto'),{verified,checkedAt:lastVerification.checkedAt,model:result.model,latencyMs:lastVerification.latencyMs});
         return json(res,200,{ok:verified,...lastVerification,message:verified?'已收到当前模型的校验回答。':'收到了内容，但校验不匹配；暂不标为验证成功。'});
       }catch(e){lastVerification={verified:false,checkedAt:new Date().toISOString(),model:d.model||'auto',message:e.message,latencyMs:Date.now()-started};throw e;}

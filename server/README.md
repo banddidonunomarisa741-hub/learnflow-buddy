@@ -54,3 +54,8 @@ POST /api/chat，请求 Content-Type 为 application/json：
 `/api/ecosystem/qq/*` 提供明确授权的 QQ 连接、收件与提醒。扫码和机器人身份配置只能在本机页面进行；已配对网页可以访问收件与提醒，但不能取得身份凭据。发送要指定来自扫码或实际来信的账号、正文和唯一操作编号，并明确确认。详见 [QQ API 与运行限制](../docs/TENCENT-CONNECTORS.md)。
 
 QQ 凭据、收件和待发提醒只在服务内存中，退出即清除。更新版本应先提示用户断开并清楚告知需要重新扫码；不通过运行中调试器修改服务。已有提醒可能已被 QQ 接收时，不自动重发。
+
+
+## 1.8.2：明确区分用量与积分
+
+本机 CLI 已用真实请求验证；官方 OAuth 仍缺少审核启用的应用身份，未联调。`/api/probe`、`/api/chat`、`/api/chat/stream` 的最终结果增加 `billing`：现有通道均为 `status:unavailable`，`creditsConsumed` 与 `remainingCredits` 为 null。Token 用量、CLI 的费用占位值和模型倍率都不作为积分。详见 [官方能力核查](../docs/WORKBUDDY-AUTH-CREDITS.md)。
