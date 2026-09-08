@@ -1,0 +1,278 @@
+/* LearnFlow's little learning objects. All material is drawn locally in CSS. */
+.sf-art {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  height: 164px;
+  pointer-events: none;
+  perspective: 650px;
+  transform-style: preserve-3d;
+  --art-ink: var(--sf-accent, #df7c43);
+}
+.sf-art::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 112px;
+  width: 132px;
+  height: 28px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, var(--sf-shadow, #5e49382c), transparent 70%);
+  transform: translateX(-50%) rotate(-9deg);
+  opacity: .65;
+}
+.sf-art .art-piece {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  box-sizing: border-box;
+  transform-style: preserve-3d;
+}
+.sf-art .art-glyph {
+  display: grid;
+  place-items: center;
+  position: absolute;
+  right: calc(50% - 106px);
+  top: 108px;
+  width: 29px;
+  height: 29px;
+  border: 1px solid #ffffffdc;
+  border-radius: 9px;
+  color: var(--art-ink);
+  background: linear-gradient(145deg, #fff, #ffffff99);
+  box-shadow: 0 3px 6px #453e3510, inset 0 -1px 1px #453e3508;
+  transform: rotate(-9deg) translateZ(22px);
+}
+.sf-art .art-glyph svg { width: 17px; height: 17px; stroke-width: 1.6; }
+
+/* A warm stack of annotated sheets, held together by a copper clip. */
+.sf-art--evidence :is(.p1, .p2, .p3) {
+  width: 128px;
+  height: 99px;
+  border: 1px solid #fff8;
+  border-radius: 9px;
+  transform: translate(-50%, -50%) rotateX(38deg) rotateZ(-24deg);
+  background: linear-gradient(135deg, #fffdf8, #f1e6d5);
+  box-shadow: -1px 3px 0 #dac7ac, -3px 6px 0 #ede0cc, -5px 11px 16px #a16e3620;
+}
+.sf-art--evidence .p1 { margin: 12px 0 0 -10px; background: #f2cbaa; }
+.sf-art--evidence .p2 { margin: 4px 0 0 -3px; background: #fff5e7; }
+.sf-art--evidence .p3 {
+  margin-top: -7px;
+  background:
+    linear-gradient(90deg, transparent 0 15%, #f7c796 15% 79%, transparent 79%) 0 59px / 100% 9px no-repeat,
+    repeating-linear-gradient(0deg, transparent 0 8px, #ccc4b57a 8px 10px) 20px 29px / 87px 49px no-repeat,
+    linear-gradient(140deg, #fff, #fff8ef);
+}
+.sf-art--evidence .p3::after {
+  content: ""; position: absolute; left: 20px; top: 14px; width: 40px; height: 5px;
+  background: #c67643; border-radius: 2px;
+}
+.sf-art--evidence .p4 {
+  width: 17px; height: 46px; border: 4px solid #d99051; border-top-color: #f9c78d;
+  border-radius: 9px; transform: translate(26px, -62px) rotateX(38deg) rotateZ(-24deg) translateZ(8px);
+  box-shadow: 2px 3px 3px #6e472b26, inset 1px 1px 0 #ffddb3;
+}
+.sf-art--evidence .p5 {
+  width: 24px; height: 24px; border: 1px solid #ffd2a4; border-radius: 50%;
+  background: linear-gradient(135deg, #ffc786, #e7954d);
+  transform: translate(-52px, 21px) rotateX(38deg) rotateZ(-24deg) translateZ(9px);
+  box-shadow: 0 3px 0 #bd7547, 0 6px 10px #956d4230;
+}
+.sf-art--evidence .p5::after {
+  content: ""; position: absolute; left: 7px; top: 5px; width: 5px; height: 9px;
+  border-right: 2px solid #fff5de; border-bottom: 2px solid #fff5de; transform: rotate(35deg);
+}
+
+/* Folded leaves with a raised vein, anchored in a porcelain seed pot. */
+.sf-art--roots .p1 {
+  width: 5px; height: 86px; border-radius: 6px; background: linear-gradient(90deg, #447f61, #b5d3a7);
+  transform: translate(-50%, -64%); box-shadow: 3px 3px 5px #49654512;
+}
+.sf-art--roots :is(.p2, .p3, .p4) {
+  width: 54px; height: 73px; border-radius: 4px 82% 4px 82%;
+  background: linear-gradient(128deg, #d5e6c2 0, #a3c899 45%, #6eab85 48%, #81b790 72%, #cae0ae);
+  border: 1px solid #d1e6bb; box-shadow: 1px 3px 0 #64977a, 4px 7px 9px #53745a20;
+}
+.sf-art--roots .p2 { transform: translate(-57px, -62px) rotate(-24deg) rotateY(-20deg) translateZ(15px); }
+.sf-art--roots .p3 { transform: translate(1px, -75px) rotate(69deg) rotateY(14deg) scale(.87) translateZ(20px); }
+.sf-art--roots .p4 { transform: translate(-1px, -25px) rotate(80deg) rotateY(20deg) scale(.65) translateZ(23px); }
+.sf-art--roots .p5 {
+  width: 79px; height: 40px; border-radius: 7px 7px 28px 28px;
+  background: linear-gradient(105deg, #e5efdd, #fffef4 38%, #d8e7ca);
+  transform: translate(-50%, 30px) rotate(-7deg) translateZ(19px);
+  box-shadow: 0 3px 0 #bfd2b5, 2px 9px 10px #627c4220;
+}
+.sf-art--roots .p5::before {
+  content: ""; position: absolute; inset: -5px 0 auto; height: 13px; border-radius: 50%;
+  border: 4px solid #eef4e5; background: linear-gradient(90deg, #8ea681, #c4d4aa);
+}
+
+/* Two speech objects: inset ink lines, soft beveled edges, real overlap. */
+.sf-art--feynman :is(.p1, .p2) {
+  width: 111px; height: 71px; border-radius: 18px; border: 1px solid #ffffffc9;
+  box-shadow: -2px 4px 0 #a8bfd9, -4px 8px 0 #c6d8ea, -6px 13px 14px #6b88a127;
+}
+.sf-art--feynman .p1 {
+  transform: translate(-87px, -56px) rotateX(24deg) rotateZ(-13deg);
+  background: linear-gradient(140deg, #d2e7ff, #94bae0);
+}
+.sf-art--feynman .p2 {
+  transform: translate(-17px, -20px) rotateX(24deg) rotateZ(-13deg) translateZ(14px);
+  background: linear-gradient(135deg, #fff, #f3f6ff); box-shadow: -2px 4px 0 #d5dfeb, -4px 8px 12px #6180aa2b;
+}
+.sf-art--feynman :is(.p1, .p2)::before {
+  content: ""; position: absolute; left: 21px; bottom: -7px; width: 21px; height: 21px;
+  border-radius: 0 0 3px 0; transform: skewY(-31deg); background: inherit;
+}
+.sf-art--feynman :is(.p1, .p2)::after {
+  content: ""; position: absolute; inset: 22px 19px;
+  background: repeating-linear-gradient(0deg, transparent 0 9px, #7293b36e 9px 13px);
+  border-radius: 3px;
+}
+.sf-art--feynman .p3 {
+  width: 25px; height: 25px; border-radius: 8px; background: linear-gradient(135deg, #c7cbfa, #939ade);
+  transform: translate(63px, -49px) rotate(-22deg) translateZ(23px); box-shadow: -2px 3px 0 #7783ba, -4px 6px 9px #5b709124;
+}
+.sf-art--feynman .p4 {
+  width: 14px; height: 14px; border-radius: 50%; background: linear-gradient(135deg, #ffdfb0, #e3aa69);
+  transform: translate(-74px, 44px) translateZ(27px); box-shadow: 0 4px 5px #a67e4533;
+}
+.sf-art--feynman .p5 { width: 8px; height: 8px; border-radius: 50%; background: #b9cee4; transform: translate(81px, -68px); }
+
+/* Recollection as concentric glass hoops suspended above the table. */
+.sf-art--retrieval :is(.p1, .p2, .p3) {
+  width: 127px; height: 115px; border: 13px solid #c2b8ec; border-radius: 50%;
+  background: transparent;
+  box-shadow: inset 1px 2px 1px #ffffffb0, inset -2px -2px 1px #8774b585, -2px 4px 0 #a194cd, -4px 7px 0 #afa1d4, -6px 13px 14px #73658320;
+  transform: translate(-50%, -50%) rotateX(48deg) rotateZ(-26deg);
+}
+.sf-art--retrieval .p1 { margin-top: 16px; margin-left: -12px; border-color: #c4b9df; opacity: .75; }
+.sf-art--retrieval .p2 { margin-top: 2px; border-color: #ded4f6; }
+.sf-art--retrieval .p3 { margin-top: -17px; margin-left: 12px; border-color: #efe8ff; }
+.sf-art--retrieval .p4 {
+  width: 29px; height: 29px; border-radius: 50%; transform: translate(-12px, -25px) translateZ(44px);
+  background: radial-gradient(circle at 30% 24%, #fff, #e4d9fb 25%, #ab94d5 69%, #7765a4);
+  box-shadow: -4px 9px 13px #7e699d34;
+}
+.sf-art--retrieval .p5 {
+  width: 13px; height: 13px; border-radius: 50%; transform: translate(66px, -42px) translateZ(32px);
+  background: radial-gradient(circle at 30% 24%, #ffeac7, #dbaa66); box-shadow: -3px 5px 7px #a5764230;
+}
+
+/* An enamel question token in a fine brass orbit. */
+.sf-art--socratic .p1 {
+  width: 175px; height: 108px; border: 3px solid #d6a366; border-top-color: #fff1d0;
+  border-radius: 50%; transform: translate(-50%, -50%) rotateX(36deg) rotateZ(-29deg);
+  box-shadow: -1px 2px 0 #c69351, -2px 6px 10px #9b713427;
+}
+.sf-art--socratic .p2 {
+  width: 90px; height: 96px; border-radius: 29px; border: 1px solid #fff2d7;
+  background: linear-gradient(130deg, #fbdc9e, #e9bd70);
+  transform: translate(-50%, -59%) rotateX(14deg) rotateY(-22deg) rotateZ(-14deg) translateZ(14px);
+  box-shadow: -3px 3px 0 #cb9a4f, -6px 7px 0 #d1a258, -9px 14px 15px #96763929;
+}
+.sf-art--socratic .p2::after {
+  content: "?"; display: grid; place-items: center; position: absolute; inset: 0;
+  color: #fff9e9; font: 600 66px/1 Georgia, serif; text-shadow: 0 2px 1px #c88d44;
+}
+.sf-art--socratic .p3 {
+  width: 19px; height: 19px; border-radius: 50%; transform: translate(65px, -33px) translateZ(35px);
+  background: radial-gradient(circle at 30% 20%, #fff6df, #e7b86b 60%, #b78b45); box-shadow: -3px 5px 8px #9c7b3929;
+}
+.sf-art--socratic .p4 {
+  width: 12px; height: 12px; border-radius: 50%; transform: translate(-82px, 16px) translateZ(30px);
+  background: radial-gradient(circle at 30% 20%, #fff6df, #deb477 60%, #bd945d); box-shadow: -2px 4px 5px #9c7b3930;
+}
+.sf-art--socratic .p5 {
+  width: 26px; height: 26px; border: 2px solid #fff9df; border-radius: 8px;
+  background: linear-gradient(135deg, #e8cead, #c1a37b); transform: translate(-77px, -60px) rotate(17deg) translateZ(18px);
+  box-shadow: -2px 3px 0 #b69b78;
+}
+
+/* Five ceramic project tiles on an isometric connection map. */
+.sf-art--pbl::after {
+  content: ""; position: absolute; width: 123px; height: 65px; left: 50%; top: 50%;
+  border: 2px dashed #9ab4c0; border-radius: 10px;
+  transform: translate(-50%, -37%) rotateX(43deg) rotateZ(-24deg); z-index: -1;
+}
+.sf-art--pbl .art-piece {
+  width: 59px; height: 48px; border: 1px solid #ffffffe6; border-radius: 11px;
+  background: linear-gradient(130deg, #f6fbff, #dce7f2);
+  box-shadow: -2px 3px 0 #adc4d5, -4px 6px 0 #bcceda, -6px 10px 10px #5c768823;
+}
+.sf-art--pbl .p1 { transform: translate(-91px, -26px) rotateX(35deg) rotateZ(-25deg); }
+.sf-art--pbl .p2 { transform: translate(-23px, -58px) rotateX(35deg) rotateZ(-25deg) translateZ(8px); background: linear-gradient(135deg, #c9e1e8, #83bdc9); }
+.sf-art--pbl .p3 { transform: translate(43px, -19px) rotateX(35deg) rotateZ(-25deg); }
+.sf-art--pbl .p4 { transform: translate(-28px, 18px) rotateX(35deg) rotateZ(-25deg); background: linear-gradient(135deg, #e3e1f8, #b3add7); }
+.sf-art--pbl .p5 { transform: translate(-28px, -17px) rotateX(35deg) rotateZ(-25deg) translateZ(25px); background: linear-gradient(135deg, #fff9e5, #eed09f); }
+.sf-art--pbl .art-piece::before {
+  content: ""; position: absolute; width: 13px; height: 13px; border: 2px solid #769bae7d; border-radius: 4px; left: 21px; top: 15px;
+}
+.sf-art--pbl .p2::before { border-color: #f3fffc; }
+.sf-art--pbl .p5::before { width: 9px; height: 15px; top: 11px; border: 0; border-right: 3px solid #bd9054; border-bottom: 3px solid #bd9054; border-radius: 0; transform: rotate(40deg); }
+
+/* A quiet white keycap: the least ornamented method is still tactile. */
+.sf-art--plain .p1 {
+  width: 119px; height: 94px; border: 1px solid #fff; border-radius: 25px;
+  background: linear-gradient(135deg, #fffef9, #eef0e7);
+  transform: translate(-50%, -55%) rotateX(29deg) rotateY(-13deg) rotateZ(-15deg);
+  box-shadow: -2px 4px 0 #d2d9ca, -4px 8px 0 #e1e5d8, -7px 14px 15px #65705620, inset 1px 1px 1px #fff;
+}
+.sf-art--plain .p1::after {
+  content: "Aa"; position: absolute; inset: 0; display: grid; place-items: center;
+  color: #6c8676; font: 500 43px/1 Georgia, serif; letter-spacing: -4px; text-shadow: 0 1px 1px #fff;
+}
+.sf-art--plain .p2 {
+  width: 74px; height: 13px; border-radius: 9px; background: linear-gradient(90deg, #f7c8aa, #e09970);
+  transform: translate(-82px, 38px) rotate(-22deg) translateZ(26px); box-shadow: 0 3px 0 #b47e5e, 0 6px 8px #8a705224;
+}
+.sf-art--plain .p3 { width: 21px; height: 21px; border-radius: 50%; background: radial-gradient(circle at 30% 24%, #e0ead8, #91ad8b); transform: translate(66px, -44px) translateZ(18px); box-shadow: -2px 5px 7px #66835f26; }
+.sf-art--plain .p4 { width: 7px; height: 7px; border-radius: 50%; background: #bfd0b3; transform: translate(89px, -30px); }
+.sf-art--plain .p5 { display: none; }
+
+/* A teacher's pad, with a separate small feedback note. */
+.sf-art--teacher .p1 {
+  width: 111px; height: 121px; border-radius: 12px; background: linear-gradient(135deg, #c9bcdd, #a995c1);
+  transform: translate(-54%, -56%) rotateX(26deg) rotateZ(-17deg);
+  box-shadow: -2px 4px 0 #9481b1, -4px 7px 0 #ae9bc6, -7px 13px 15px #826b9824;
+}
+.sf-art--teacher .p2 {
+  width: 94px; height: 96px; border-radius: 6px;
+  background: repeating-linear-gradient(0deg, transparent 0 13px, #d5cbdc 13px 15px) 14px 27px / 65px 48px no-repeat, linear-gradient(135deg, #fff, #f9f5ff);
+  transform: translate(-56%, -55%) rotateX(26deg) rotateZ(-17deg) translateZ(7px);
+  box-shadow: -1px 2px 0 #d5cbdf, -2px 4px 3px #695b7420;
+}
+.sf-art--teacher .p3 {
+  width: 41px; height: 19px; border-radius: 5px; border: 1px solid #fff9;
+  background: linear-gradient(160deg, #fcf9ee, #d3cbba); transform: translate(-38px, -66px) rotate(-17deg) translateZ(16px);
+  box-shadow: 0 3px 0 #b5aa94, -2px 4px 5px #75694520;
+}
+.sf-art--teacher .p4 {
+  width: 50px; height: 44px; border-radius: 5px; border: 1px solid #ffffffe6;
+  background: linear-gradient(140deg, #f7e7bb, #e9d393); transform: translate(26px, 15px) rotate(12deg) translateZ(28px);
+  box-shadow: -2px 3px 0 #c9b881, -4px 7px 8px #9a884426;
+}
+.sf-art--teacher .p4::after { content: ""; position: absolute; left: 18px; top: 10px; width: 9px; height: 16px; border: solid #a09157; border-width: 0 2px 2px 0; transform: rotate(38deg); }
+.sf-art--teacher .p5 { width: 11px; height: 11px; border-radius: 50%; background: #c8badf; transform: translate(68px, -43px) translateZ(24px); box-shadow: 1px 3px 3px #9276b524; }
+
+/* Personal cards get a small buildable object of their own. */
+.sf-art--custom :is(.p1, .p2, .p3) {
+  width: 90px; height: 80px; border-radius: 18px; border: 1px solid #fff9;
+  transform: translate(-50%, -50%) rotateX(37deg) rotateZ(-28deg);
+  background: linear-gradient(135deg, #fff, var(--sf-tint, #f4dec8));
+  box-shadow: -2px 4px 0 #c9bbac, -4px 8px 13px #6b584827;
+}
+.sf-art--custom .p1 { margin: 17px 0 0 -14px; opacity: .6; }
+.sf-art--custom .p2 { margin: 2px 0 0 -2px; opacity: .85; }
+.sf-art--custom .p3 { margin: -14px 0 0 11px; }
+.sf-art--custom .p3::before, .sf-art--custom .p3::after { content: ""; position: absolute; left: 50%; top: 50%; background: var(--art-ink); border-radius: 3px; transform: translate(-50%, -50%); opacity: .65; }
+.sf-art--custom .p3::before { width: 24px; height: 4px; }
+.sf-art--custom .p3::after { width: 4px; height: 24px; }
+.sf-art--custom .p4 { width: 19px; height: 19px; border-radius: 50%; background: radial-gradient(circle at 30% 25%, #fff, var(--sf-accent, #dc9c63)); transform: translate(76px, -31px) translateZ(20px); box-shadow: -2px 5px 7px #8a705326; }
+.sf-art--custom .p5 { display: none; }
+
+@media (max-width: 420px) {
+  .sf-art { height: 152px; }
+}
