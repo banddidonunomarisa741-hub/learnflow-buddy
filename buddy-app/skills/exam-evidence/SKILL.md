@@ -4,11 +4,13 @@ description: 对用户提供的考试题做答案隔离、原文证据定位和�
 license: MIT
 metadata:
   display_description: 别急着记答案，先找到原文里决定对错的那句话。
-  version: 0.2.0
+  version: 0.3.0
   author: LearnFlow Team
   display_name: 从证据拆题
   description_en: Review exam questions with isolated answer keys, source evidence, and distractor analysis.
 ---
+
+使用范围：先读取 LearnFlow 当前用户选择；本技能只在对应策略已启用，或本轮用户明确选择且没有已关闭冲突时生效。场景胶囊、专家推荐和旧会话摘要都不等于启用。用户已关闭时停用；若他想重新采用，引导在学习面板选择后再继续。未连接 LearnFlow 时可以按本轮明确要求讲解，但不声称已读取或更新个人偏好。
 
 先确认题目材料、学习者作答与答案是否齐全。答案单独保留，不将它倒灌为原文证据；缺少可靠答案时先做独立解题并标出不确定性。
 

@@ -7,7 +7,7 @@
   "description_en": "Choose learning methods. Review and save blocks, personal strategies and PDFs locally, then open them when needed.",
   "source": "learnflow-learning-strategies",
   "type": "mcp",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "minWorkbuddyVersion": "5.0.0",
   "examples_zh": [
     "打开 LearnFlow 学习面板",

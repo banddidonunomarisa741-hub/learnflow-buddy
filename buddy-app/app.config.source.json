@@ -1,16 +1,20 @@
 {
   "format": "learnflow-config-source/v1",
-  "status": "local-source-not-platform-import",
-  "notice": "这是 LearnFlow 的控制台配置源稿，不是腾讯公开导入 schema。需在控制台填入/映射真实资源 ID 后导出官方 JSON 并完成宿主预览与审核。",
+  "status": "source-not-platform-import",
+  "notice": "控制台填表源稿；不是腾讯平台导入格式。平台 ID、模型 ID 和审核状态仅依据实际控制台填写；Client Secret 只存部署环境，不能填回此公开文件。",
   "app": {
     "name": "LearnFlow学习流动",
-    "description": "遇到不会的，陪你弄明白；碰到好用的学法，留给下次。LearnFlow 提供可选择的学习方法、错题复盘和自己的学习资料库。",
+    "description": "从卡住的地方开始学。选择适合自己的方法，留下有用的学习资料，也可以把愿意分享的学习过程交给老师。",
     "avatar": "assets/app-icon-256.png",
     "appId": null,
     "clientId": null,
-    "oauthScopes": [],
+    "oauthScopes": [
+      "user.profile.readable"
+    ],
     "oauthCallbackUrl": null,
-    "trustedOrigins": []
+    "trustedOrigins": [],
+    "clientSecret": null,
+    "oauthCallbackPath": "/oauth/workbuddy/callback"
   },
   "home": {
     "slogan": "先从你卡住的地方开始。",
@@ -20,9 +24,6 @@
         "name": "复盘错题",
         "systemPromptFile": "modes/exam.md",
         "skills": [
-          "exam-evidence",
-          "retrieval",
-          "plain-tone",
           "learnflow-start"
         ]
       },
@@ -31,9 +32,6 @@
         "name": "学点新的",
         "systemPromptFile": "modes/self.md",
         "skills": [
-          "self-map",
-          "socratic",
-          "plain-tone",
           "learnflow-start"
         ]
       },
@@ -42,9 +40,6 @@
         "name": "把项目做出来",
         "systemPromptFile": "modes/project.md",
         "skills": [
-          "pbl-coach",
-          "formative-evidence",
-          "plain-tone",
           "learnflow-start"
         ]
       }
@@ -56,10 +51,13 @@
         "prompt": "我想按词根词缀记单词，请先用一个小词族带我练，再让我回忆。",
         "mode": "exam",
         "skills": [
+          "learnflow-start"
+        ],
+        "expert": "learnflow-exam-coach",
+        "suggestedStrategyRefs": [
           "root-affix",
           "retrieval"
-        ],
-        "expert": "learnflow-exam-coach"
+        ]
       },
       {
         "id": "question-review",
@@ -67,9 +65,12 @@
         "prompt": "请根据我提供的题目和作答，定位证据、分析干扰项，最后给一题迁移练习。",
         "mode": "exam",
         "skills": [
-          "exam-evidence"
+          "learnflow-start"
         ],
-        "expert": "learnflow-exam-coach"
+        "expert": "learnflow-exam-coach",
+        "suggestedStrategyRefs": [
+          "exam-evidence"
+        ]
       },
       {
         "id": "concept",
@@ -77,10 +78,13 @@
         "prompt": "我想把一个概念真正讲明白，请先看我的解释，再找一处关键缺口。",
         "mode": "self",
         "skills": [
+          "learnflow-start"
+        ],
+        "expert": "learnflow-learning-guide",
+        "suggestedStrategyRefs": [
           "feynman",
           "socratic"
-        ],
-        "expert": "learnflow-learning-guide"
+        ]
       },
       {
         "id": "roadmap",
@@ -88,9 +92,12 @@
         "prompt": "请把我的学习目标拆成先修关系和可完成的小成果，先安排今天的一步。",
         "mode": "self",
         "skills": [
-          "self-map"
+          "learnflow-start"
         ],
-        "expert": "learnflow-learning-guide"
+        "expert": "learnflow-learning-guide",
+        "suggestedStrategyRefs": [
+          "self-map"
+        ]
       },
       {
         "id": "project-map",
@@ -98,9 +105,12 @@
         "prompt": "请帮我把项目想法变成驱动问题、角色分工和里程碑，用产物说明完成标准。",
         "mode": "project",
         "skills": [
-          "pbl-coach"
+          "learnflow-start"
         ],
-        "expert": "learnflow-project-coach"
+        "expert": "learnflow-project-coach",
+        "suggestedStrategyRefs": [
+          "pbl-coach"
+        ]
       },
       {
         "id": "teacher-review",
@@ -108,9 +118,12 @@
         "prompt": "请基于我主动提供的学习产物整理过程性评价草稿，列出证据和待核验项。",
         "mode": "project",
         "skills": [
-          "formative-evidence"
+          "learnflow-start"
         ],
-        "expert": "learnflow-teaching-partner"
+        "expert": "learnflow-teaching-partner",
+        "suggestedStrategyRefs": [
+          "formative-evidence"
+        ]
       },
       {
         "id": "personal-strategy",
@@ -118,12 +131,25 @@
         "prompt": "请把我明确选择的学习方法整理成可编辑的专属策略草稿，确认后再保存。",
         "mode": "self",
         "skills": [
-          "memory-distill"
+          "learnflow-start"
         ],
-        "expert": "learnflow-learning-guide"
+        "expert": "learnflow-learning-guide",
+        "suggestedStrategyRefs": [
+          "memory-distill"
+        ]
       }
     ],
-    "builtInConnectors": []
+    "builtInConnectors": [],
+    "builtInConnectorCandidates": [
+      {
+        "source": "learnflow-learning-cloud",
+        "platformConnectorId": null,
+        "configSource": "connector/remote",
+        "auth": "oauth-pkce",
+        "status": "service-candidate-awaiting-host-preview",
+        "enableAfter": "真实资源 ID、HTTPS/OAuth 和指定客户端预览通过后加入 builtInConnectors"
+      }
+    ]
   },
   "marketplace": {
     "skillsSource": "skills/",
@@ -151,8 +177,13 @@
     },
     "connectors": [
       {
+        "source": "learnflow-learning-cloud",
+        "status": "0.3.0-remote-service-candidate",
+        "autoEnable": false
+      },
+      {
         "source": "learnflow-learning-strategies",
-        "status": "local-plugin-0.2.0-with-native-confirmation",
+        "status": "local-stdio-compatible",
         "autoEnable": false
       }
     ],
@@ -184,8 +215,19 @@
       "modelIds": [],
       "defaultModelId": null
     },
-    "skipFirstBindSuggested": true,
-    "memoryPolicy": "opt-in-confirm-before-persist-revocable"
+    "skipFirstBindSuggested": false,
+    "memoryPolicy": "opt-in-confirm-before-persist-revocable",
+    "strategySelectionPolicy": {
+      "source": "LearnFlow authenticated user preferences selectedStrategies",
+      "modeBinding": "learnflow-start only",
+      "capsuleSuggestions": "本轮任务建议；不写入用户选择、不覆盖关闭项",
+      "disabledWins": true,
+      "persistence": "用户在面板确认后更新；模型不能替代确认"
+    },
+    "bindingDescription": {
+      "zh": "你的学习策略、学习资料和课程空间",
+      "en": "Your learning strategies, saved work, and courses"
+    }
   },
   "preview": {
     "publicWebsitePath": "../public/",
@@ -193,14 +235,57 @@
     "platformExportFile": null,
     "hostPreviewVerified": false,
     "localPluginSource": "dist/learnflow-plugin",
-    "mcpAppResource": "ui://learnflow/workspace.html"
+    "mcpAppResource": "ui://learnflow/workspace.html",
+    "remoteServiceSource": "service/",
+    "remoteMcpEndpoint": "/mcp",
+    "healthEndpoint": "/healthz",
+    "remoteHostPreviewVerified": false
   },
   "requiredBeforePublish": [
     "确认主体权限与教育服务类目",
     "填写真实对外联系邮箱",
     "在平台上传资源并回填真实资源 ID",
+    "部署公开 HTTPS 服务并实测 OAuth 绑定、续期、撤销及租户隔离",
     "根据实际功能配置最小 OAuth scope 与合法回调域名",
     "导出官方 JSON 并在指定客户端预览",
-    "创建审核与配置审核通过"
-  ]
+    "在实际宿主模型验证策略启用与关闭均生效",
+    "创建审核、连接器审核与配置审核通过"
+  ],
+  "version": "0.3.0",
+  "platformResourceMapping": {
+    "status": "pending-console-values",
+    "skillIds": {
+      "exam-evidence": null,
+      "feynman": null,
+      "formative-evidence": null,
+      "learnflow-start": null,
+      "memory-distill": null,
+      "pbl-coach": null,
+      "plain-tone": null,
+      "retrieval": null,
+      "root-affix": null,
+      "self-map": null,
+      "socratic": null
+    },
+    "expertIds": {
+      "learnflow-learning-guide": null,
+      "learnflow-exam-coach": null,
+      "learnflow-project-coach": null,
+      "learnflow-teaching-partner": null
+    },
+    "remoteConnectorId": null,
+    "modelIds": [],
+    "defaultModelId": null
+  },
+  "releaseGates": {
+    "developerIdentityApproved": false,
+    "applicationCreationApproved": false,
+    "connectorReviewApproved": false,
+    "httpsOAuthVerified": false,
+    "officialConfigExportVerified": false,
+    "officialHostPreviewVerified": false,
+    "modelStrategyEnableDisableVerified": false,
+    "configurationReviewApproved": false,
+    "evidenceFiles": {}
+  }
 }

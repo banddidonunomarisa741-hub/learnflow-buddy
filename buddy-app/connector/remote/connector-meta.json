@@ -1,0 +1,22 @@
+{
+  "name": "LearnFlow学习流动",
+  "name_zh": "LearnFlow学习流动",
+  "name_en": "LearnFlow",
+  "description": "Choose learning strategies, keep reviewed learning work, and share selected evidence with your course.",
+  "description_zh": "选择适合自己的学法，确认保存学习资料；也可以加入课程，把选中的学习过程交给老师。",
+  "description_en": "Choose learning strategies, save reviewed work, and submit selected evidence to a course for teacher review.",
+  "source": "learnflow-learning-cloud",
+  "type": "mcp",
+  "version": "0.3.0",
+  "minWorkbuddyVersion": "5.0.0",
+  "examples_zh": [
+    "打开 LearnFlow，看看我选了哪些学习方法",
+    "把这次复盘整理成学习块，让我改完再保存",
+    "把我选中的练习交给老师，先让我检查提交内容"
+  ],
+  "examples_en": [
+    "Open LearnFlow and show my selected learning methods.",
+    "Draft a learning block so I can edit it before saving.",
+    "Prepare selected practice for my teacher and let me review the submission."
+  ]
+}

@@ -4,11 +4,13 @@ description: 在学习者需要检验概念理解、用自己的话解释或寻�
 license: MIT
 metadata:
   display_description: 试着讲给第一次接触的人听，讲不顺的地方一起拆开。
-  version: 0.2.0
+  version: 0.3.0
   author: LearnFlow Team
   display_name: 讲给小白听
   description_en: Check conceptual understanding through a plain explanation and a targeted transfer question.
 ---
+
+使用范围：先读取 LearnFlow 当前用户选择；本技能只在对应策略已启用，或本轮用户明确选择且没有已关闭冲突时生效。场景胶囊、专家推荐和旧会话摘要都不等于启用。用户已关闭时停用；若他想重新采用，引导在学习面板选择后再继续。未连接 LearnFlow 时可以按本轮明确要求讲解，但不声称已读取或更新个人偏好。
 
 请学习者先用自己的话解释目标概念；已有解释时直接开始检查。找出最影响理解的一处遗漏或误解，用日常例子补足，再给一道情境改变但原理相同的小问题。
 

@@ -20,11 +20,7 @@
         "en": "Plan small learning steps, check conceptual gaps through transfer, and draft revocable strategies from confirmed preferences."
       },
       "skills": [
-        "self-map",
-        "feynman",
-        "socratic",
-        "memory-distill",
-        "plain-tone"
+        "learnflow-start"
       ],
       "quickPrompts": [
         {
@@ -53,7 +49,15 @@
           "zh": "偏好提炼",
           "en": "Preferences"
         }
-      ]
+      ],
+      "availableStrategyRefs": [
+        "self-map",
+        "feynman",
+        "socratic",
+        "memory-distill",
+        "plain-tone"
+      ],
+      "platformExpertId": null
     },
     {
       "id": "learnflow-exam-coach",
@@ -71,10 +75,7 @@
         "en": "Use supplied questions and responses to locate evidence, diagnose distractors, and test transfer with a new practice item."
       },
       "skills": [
-        "exam-evidence",
-        "root-affix",
-        "retrieval",
-        "plain-tone"
+        "learnflow-start"
       ],
       "quickPrompts": [
         {
@@ -103,7 +104,14 @@
           "zh": "迁移练习",
           "en": "Transfer"
         }
-      ]
+      ],
+      "availableStrategyRefs": [
+        "exam-evidence",
+        "root-affix",
+        "retrieval",
+        "plain-tone"
+      ],
+      "platformExpertId": null
     },
     {
       "id": "learnflow-project-coach",
@@ -121,10 +129,7 @@
         "en": "Turn ideas into driving questions, responsibilities, and evidence-based milestones, with guidance grounded in actual work."
       },
       "skills": [
-        "pbl-coach",
-        "self-map",
-        "formative-evidence",
-        "plain-tone"
+        "learnflow-start"
       ],
       "quickPrompts": [
         {
@@ -153,7 +158,14 @@
           "zh": "过程证据",
           "en": "Artifacts"
         }
-      ]
+      ],
+      "availableStrategyRefs": [
+        "pbl-coach",
+        "self-map",
+        "formative-evidence",
+        "plain-tone"
+      ],
+      "platformExpertId": null
     },
     {
       "id": "learnflow-teaching-partner",
@@ -171,9 +183,7 @@
         "en": "Align goals and rubrics with authorized learning artifacts, supporting teacher review and instructional adjustments."
       },
       "skills": [
-        "formative-evidence",
-        "pbl-coach",
-        "plain-tone"
+        "learnflow-start"
       ],
       "quickPrompts": [
         {
@@ -202,7 +212,15 @@
           "zh": "教师核验",
           "en": "Teacher review"
         }
-      ]
+      ],
+      "availableStrategyRefs": [
+        "formative-evidence",
+        "pbl-coach",
+        "plain-tone"
+      ],
+      "platformExpertId": null
     }
-  ]
+  ],
+  "version": "0.3.0",
+  "status": "source-not-platform-import"
 }

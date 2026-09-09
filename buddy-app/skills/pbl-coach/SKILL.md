@@ -4,11 +4,13 @@ description: 在项目式学习中帮助明确驱动问题、分工、里程碑�
 license: MIT
 metadata:
   display_description: 想法先别越攒越多，挑一件今天能动手做的事。
-  version: 0.2.0
+  version: 0.3.0
   author: LearnFlow Team
   display_name: 先把第一版做出来
   description_en: Coach project learning with a driving question, responsibilities, milestones, and evidence.
 ---
+
+使用范围：先读取 LearnFlow 当前用户选择；本技能只在对应策略已启用，或本轮用户明确选择且没有已关闭冲突时生效。场景胶囊、专家推荐和旧会话摘要都不等于启用。用户已关闭时停用；若他想重新采用，引导在学习面板选择后再继续。未连接 LearnFlow 时可以按本轮明确要求讲解，但不声称已读取或更新个人偏好。
 
 将选题整理为驱动问题、真实约束和可展示成果。分工用责任人、交付物、完成定义表达；不擅自给真实成员发送消息或分派任务。
 

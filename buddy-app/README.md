@@ -1,5 +1,13 @@
 # LearnFlow学习流动 · Buddy 工程
 
+## 新版 Buddy 服务 0.3.0
+
+正式 Buddy 方向的新服务位于 `service/`：标准 HTTP MCP、MCP Apps 学习面板、SQLite 持久存储、课程邀请与核验、个人策略版本和主动分享。先阅读 [新版服务说明](service/README.md) 与 [控制台配置指南](../docs/BUDDY-CONSOLE-GUIDE.md)。新服务需要 Node.js 24；在 `service/` 安装依赖后运行 `npm run preview`，打开 `http://127.0.0.1:4318/preview`。
+
+预览使用本机测试身份。公开部署、真实账号授权及指定 Buddy 客户端内的面板展示仍须验收。`app.config.source.json` 是填表源稿，不是伪造的平台导入文件。新服务的草稿持久保存为待确认记录，确认后成为学习资产；以下旧插件的内存草稿、Windows 窗口和 WPS 打开流程不适用于新远程服务。
+
+## 原有本地插件入口
+
 本工程可作为本地插件安装到 LearnBuddy / WorkBuddy，包含 11 个 Skill、4 个专家候选、12 个 MCP 工具和学习面板。正式 Buddy 应用仍需平台分配 ID、资源审核和指定客户端预览；本目录不伪造这些结果。
 
 ## 在本机开始
