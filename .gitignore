@@ -22,3 +22,7 @@ buddy-app/dist/
 buddy-app/.build-deps/
 buddy-app/research/
 *.log
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+buddy-app/service/data/
